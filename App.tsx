@@ -1,9 +1,11 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
+import "./src/index.css";
 
 export default function App() {
   return (
     <View style={styles.container}>
+      <a className="button is-primary">this is bulma button!</a>
       <Text>Open up App.tsx to start working on your app!</Text>
     </View>
   );
@@ -11,9 +13,9 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
+    alignItems: "center",
+    backgroundColor: "#fff",
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: "center",
   },
 });
