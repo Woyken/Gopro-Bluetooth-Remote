@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import MonochromePhotosIcon from '@material-ui/icons/MonochromePhotos';
-import BurstModeIcon from '@material-ui/icons/BurstMode';
-import FlipCameraIosIcon from '@material-ui/icons/FlipCameraIos';
-import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
-import { Dialog, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
-import { PhotoMode } from '../../../actions/photoMode';
 
+import BurstModeIcon from '@mui/icons-material/BurstMode';
+import FlipCameraIosIcon from '@mui/icons-material/FlipCameraIos';
+import MonochromePhotosIcon from '@mui/icons-material/MonochromePhotos';
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
+import { Dialog, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+
+import PhotoMode from '../../../actions/photoMode';
 
 interface OwnProps {
     onModeChange: (photoMode: PhotoMode) => void;
@@ -13,7 +14,7 @@ interface OwnProps {
     open: boolean;
 }
 
-class PhotoSubmodesList extends Component<OwnProps, {}> {
+class PhotoSubmodesList extends Component<OwnProps, unknown> {
     constructor(props: OwnProps) {
         super(props);
         this.state = {};
@@ -25,33 +26,52 @@ class PhotoSubmodesList extends Component<OwnProps, {}> {
             <div>
                 <Dialog open={open} onClose={onClose}>
                     <List>
-                        <ListItem button onClick={(): void => {onModeChange(PhotoMode.burst)}}>
+                        <ListItem
+                            button
+                            onClick={(): void => {
+                                onModeChange(PhotoMode.burst);
+                            }}
+                        >
                             <ListItemIcon>
-                                <BurstModeIcon/>
+                                <BurstModeIcon />
                             </ListItemIcon>
-                            <ListItemText primary="Photo burst"/>
+                            <ListItemText primary="Photo burst" />
                         </ListItem>
-                        <ListItem button onClick={(): void => {onModeChange(PhotoMode.continuous)}}>
+                        <ListItem
+                            button
+                            onClick={(): void => {
+                                onModeChange(PhotoMode.continuous);
+                            }}
+                        >
                             <ListItemIcon>
-                                <FlipCameraIosIcon/>
+                                <FlipCameraIosIcon />
                             </ListItemIcon>
-                            <ListItemText primary="Photo continuous"/>
+                            <ListItemText primary="Photo continuous" />
                         </ListItem>
-                        <ListItem button onClick={(): void => {onModeChange(PhotoMode.single)}}>
+                        <ListItem
+                            button
+                            onClick={(): void => {
+                                onModeChange(PhotoMode.single);
+                            }}
+                        >
                             <ListItemIcon>
-                                <PhotoCameraIcon/>
+                                <PhotoCameraIcon />
                             </ListItemIcon>
-                            <ListItemText primary="Photo single"/>
+                            <ListItemText primary="Photo single" />
                         </ListItem>
-                        <ListItem button onClick={(): void => {onModeChange(PhotoMode.night)}}>
+                        <ListItem
+                            button
+                            onClick={(): void => {
+                                onModeChange(PhotoMode.night);
+                            }}
+                        >
                             <ListItemIcon>
-                                <MonochromePhotosIcon></MonochromePhotosIcon>
+                                <MonochromePhotosIcon />
                             </ListItemIcon>
-                            <ListItemText primary="Photo night"/>
+                            <ListItemText primary="Photo night" />
                         </ListItem>
                     </List>
                 </Dialog>
-
             </div>
         );
     }

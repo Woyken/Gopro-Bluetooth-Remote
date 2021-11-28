@@ -1,60 +1,52 @@
 import React, { Component } from 'react';
-import { Grid, Cell } from "styled-css-grid";
+
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import CameraIcon from '@mui/icons-material/Camera';
+import NotListedLocationIcon from '@mui/icons-material/NotListedLocation';
+import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
+import WifiIcon from '@mui/icons-material/Wifi';
+
 import Controls from '../Controls/Controls';
+import PhotoMacroMode from '../MacroMode/Photo/PhotoMacroMode';
+import TimelapseMacroMode from '../MacroMode/Timelapse/TimelapseMacroMode';
 import VideoMacroMode from '../MacroMode/Video/VideoMacroMode';
 
-import CameraIcon from '@material-ui/icons/Camera';
-import BookmarkIcon from '@material-ui/icons/Bookmark';
-import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
-import WifiIcon from '@material-ui/icons/Wifi';
-import NotListedLocationIcon from '@material-ui/icons/NotListedLocation';
+const Grid: any = undefined;
+const Cell: any = undefined;
 
-import TimelapseMacroMode from '../MacroMode/Timelapse/TimelapseMacroMode';
-import PhotoMacroMode from '../MacroMode/Photo/PhotoMacroMode';
-
-
-
-
-class Content extends Component<{}, {}> {
-    constructor(props: {}) {
-     super(props);
+class Content extends Component<unknown, unknown> {
+    constructor(props: unknown) {
+        super(props);
         this.state = {};
     }
 
     render(): React.ReactNode {
         return (
             <div>
-                <Grid
-                    columns={"1fr 1fr 1fr"}
-                    rows={"1fr 4fr 1fr"}
-                    areas={[
-                        "wifi locate shutdown",
-                        "logo logo logo",
-                        "modeBtn shutter tag",
-                    ]}>
+                <Grid columns="1fr 1fr 1fr" rows="1fr 4fr 1fr" areas={['wifi locate shutdown', 'logo logo logo', 'modeBtn shutter tag']}>
                     <Cell center area="wifi">
-                        <WifiIcon fontSize="large"></WifiIcon>
+                        <WifiIcon fontSize="large" />
                     </Cell>
                     <Cell center area="locate">
-                        <NotListedLocationIcon fontSize="large"></NotListedLocationIcon>
+                        <NotListedLocationIcon fontSize="large" />
                     </Cell>
                     <Cell center area="shutdown">
-                        <PowerSettingsNewIcon fontSize="large"></PowerSettingsNewIcon>
+                        <PowerSettingsNewIcon fontSize="large" />
                     </Cell>
                     <Cell center area="modeBtn">
-                        <TimelapseMacroMode/>
-                        <VideoMacroMode/>
-                        <PhotoMacroMode/>
+                        <TimelapseMacroMode />
+                        <VideoMacroMode />
+                        <PhotoMacroMode />
                     </Cell>
                     <Cell center area="shutter">
-                        <CameraIcon fontSize="large"></CameraIcon>
+                        <CameraIcon fontSize="large" />
                     </Cell>
                     <Cell center area="tag">
-                        <BookmarkIcon fontSize="large"></BookmarkIcon>
+                        <BookmarkIcon fontSize="large" />
                     </Cell>
                 </Grid>
 
-                <Controls></Controls>
+                <Controls />
             </div>
         );
     }

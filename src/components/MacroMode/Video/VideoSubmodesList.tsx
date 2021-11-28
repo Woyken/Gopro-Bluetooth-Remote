@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import VideocamIcon from '@material-ui/icons/Videocam';
-import LoopIcon from '@material-ui/icons/Loop';
-import MonochromePhotosIcon from '@material-ui/icons/MonochromePhotos';
-import { Dialog, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
-import { VideoMode } from '../../../actions/videoMode';
 
+import LoopIcon from '@mui/icons-material/Loop';
+import MonochromePhotosIcon from '@mui/icons-material/MonochromePhotos';
+import VideocamIcon from '@mui/icons-material/Videocam';
+import { Dialog, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+
+import VideoMode from '../../../actions/videoMode';
 
 interface OwnProps {
     onModeChange: (videoMode: VideoMode) => void;
@@ -12,7 +13,7 @@ interface OwnProps {
     open: boolean;
 }
 
-class VideoSubmodesList extends Component<OwnProps, {}> {
+class VideoSubmodesList extends Component<OwnProps, unknown> {
     constructor(props: OwnProps) {
         super(props);
         this.state = {};
@@ -24,27 +25,41 @@ class VideoSubmodesList extends Component<OwnProps, {}> {
             <div>
                 <Dialog open={open} onClose={onClose}>
                     <List>
-                        <ListItem button onClick={(): void => {onModeChange(VideoMode.video)}}>
+                        <ListItem
+                            button
+                            onClick={(): void => {
+                                onModeChange(VideoMode.video);
+                            }}
+                        >
                             <ListItemIcon>
-                                <VideocamIcon></VideocamIcon>
+                                <VideocamIcon />
                             </ListItemIcon>
-                            <ListItemText primary="Video"/>
+                            <ListItemText primary="Video" />
                         </ListItem>
-                        <ListItem button onClick={(): void => {onModeChange(VideoMode.loop)}}>
+                        <ListItem
+                            button
+                            onClick={(): void => {
+                                onModeChange(VideoMode.loop);
+                            }}
+                        >
                             <ListItemIcon>
-                                <LoopIcon></LoopIcon>
+                                <LoopIcon />
                             </ListItemIcon>
-                            <ListItemText primary="Loop"/>
+                            <ListItemText primary="Loop" />
                         </ListItem>
-                        <ListItem button onClick={(): void => {onModeChange(VideoMode.photo)}}>
+                        <ListItem
+                            button
+                            onClick={(): void => {
+                                onModeChange(VideoMode.photo);
+                            }}
+                        >
                             <ListItemIcon>
-                                <MonochromePhotosIcon></MonochromePhotosIcon>
+                                <MonochromePhotosIcon />
                             </ListItemIcon>
-                            <ListItemText primary="Photo video"/>
+                            <ListItemText primary="Photo video" />
                         </ListItem>
                     </List>
                 </Dialog>
-
             </div>
         );
     }

@@ -1,10 +1,27 @@
-import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import { Provider } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
+
+import { createTheme, ThemeProvider } from '@mui/material';
+
+import { store } from './store/store';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import 'react-toastify/dist/ReactToastify.css';
+import './index.css';
+
+const theme = createTheme();
+
+ReactDOM.render(
+    <Provider store={store}>
+        <ThemeProvider theme={theme}>
+            <ToastContainer />
+            <App />
+        </ThemeProvider>
+    </Provider>,
+    document.getElementById('root')
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

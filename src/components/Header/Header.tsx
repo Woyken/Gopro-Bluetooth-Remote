@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { AppBar, Toolbar, Typography } from '@material-ui/core';
 
-class Header extends Component<{}, {}> {
-    constructor(props: {}) {
+import { AppBar, Toolbar, Typography } from '@mui/material';
+
+class Header extends Component<unknown, unknown> {
+    constructor(props: unknown) {
         super(props);
         this.state = {};
     }
@@ -12,9 +13,7 @@ class Header extends Component<{}, {}> {
             <div>
                 <AppBar>
                     <Toolbar>
-                        <Typography variant="h6">
-                            Gopro web bluetooth remote
-                        </Typography>
+                        <Typography variant="h6">Gopro web bluetooth remote</Typography>
                     </Toolbar>
                 </AppBar>
             </div>

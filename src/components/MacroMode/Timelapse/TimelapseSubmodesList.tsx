@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import LoopIcon from '@material-ui/icons/Loop';
-import TimelapseIcon from '@material-ui/icons/Timelapse';
-import SwitchVideoIcon from '@material-ui/icons/SwitchVideo';
-import CameraEnhanceIcon from '@material-ui/icons/CameraEnhance';
-import { Dialog, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
-import { TimelapseMode } from '../../../actions/timelapseMode';
 
+import CameraEnhanceIcon from '@mui/icons-material/CameraEnhance';
+import LoopIcon from '@mui/icons-material/Loop';
+import SwitchVideoIcon from '@mui/icons-material/SwitchVideo';
+import TimelapseIcon from '@mui/icons-material/Timelapse';
+import { Dialog, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+
+import TimelapseMode from '../../../actions/timelapseMode';
 
 interface OwnProps {
     onModeChange: (timelapseMode: TimelapseMode) => void;
@@ -13,7 +14,7 @@ interface OwnProps {
     open: boolean;
 }
 
-class TimelapseSubmodesList extends Component<OwnProps, {}> {
+class TimelapseSubmodesList extends Component<OwnProps, unknown> {
     constructor(props: OwnProps) {
         super(props);
         this.state = {};
@@ -25,33 +26,52 @@ class TimelapseSubmodesList extends Component<OwnProps, {}> {
             <div>
                 <Dialog open={open} onClose={onClose}>
                     <List>
-                        <ListItem button onClick={(): void => {onModeChange(TimelapseMode.timeWarp)}}>
+                        <ListItem
+                            button
+                            onClick={(): void => {
+                                onModeChange(TimelapseMode.timeWarp);
+                            }}
+                        >
                             <ListItemIcon>
-                                <SwitchVideoIcon/>
+                                <SwitchVideoIcon />
                             </ListItemIcon>
-                            <ListItemText primary="Timelapse time-warp"/>
+                            <ListItemText primary="Timelapse time-warp" />
                         </ListItem>
-                        <ListItem button onClick={(): void => {onModeChange(TimelapseMode.photo)}}>
+                        <ListItem
+                            button
+                            onClick={(): void => {
+                                onModeChange(TimelapseMode.photo);
+                            }}
+                        >
                             <ListItemIcon>
-                                <CameraEnhanceIcon/>
+                                <CameraEnhanceIcon />
                             </ListItemIcon>
-                            <ListItemText primary="Timelapse photo"/>
+                            <ListItemText primary="Timelapse photo" />
                         </ListItem>
-                        <ListItem button onClick={(): void => {onModeChange(TimelapseMode.nightPhoto)}}>
+                        <ListItem
+                            button
+                            onClick={(): void => {
+                                onModeChange(TimelapseMode.nightPhoto);
+                            }}
+                        >
                             <ListItemIcon>
-                                <LoopIcon/>
+                                <LoopIcon />
                             </ListItemIcon>
-                            <ListItemText primary="Timelapse night photo"/>
+                            <ListItemText primary="Timelapse night photo" />
                         </ListItem>
-                        <ListItem button onClick={(): void => {onModeChange(TimelapseMode.video)}}>
+                        <ListItem
+                            button
+                            onClick={(): void => {
+                                onModeChange(TimelapseMode.video);
+                            }}
+                        >
                             <ListItemIcon>
-                                <TimelapseIcon/>
+                                <TimelapseIcon />
                             </ListItemIcon>
-                            <ListItemText primary="Timelapse video"/>
+                            <ListItemText primary="Timelapse video" />
                         </ListItem>
                     </List>
                 </Dialog>
-
             </div>
         );
     }

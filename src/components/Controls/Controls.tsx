@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Button } from "@material-ui/core";
 
-class Controls extends Component<{}, {}> {
-    constructor(props: {}) {
+import { Button } from '@mui/material';
+
+class Controls extends Component<unknown, unknown> {
+    constructor(props: unknown) {
         super(props);
         this.state = {};
     }
