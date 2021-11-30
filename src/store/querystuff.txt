@@ -37,4 +37,7 @@ usb connected:
 2b 01 07            2c 01 ff
 Some kind of custom mode? weird, anyway, it disconnects right after the message anyway...
 
+
+started recording
+3D 01 00 (unknown)
 */
