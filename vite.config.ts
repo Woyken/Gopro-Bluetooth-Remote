@@ -3,6 +3,7 @@ import { resolve } from 'path';
 
 import { UserConfig } from 'vite';
 import Checker from 'vite-plugin-checker';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 import react from '@vitejs/plugin-react';
 
@@ -24,6 +25,7 @@ const config: () => UserConfig = () => ({
         ],
     },
     plugins: [
+        tsconfigPaths(),
         react({
             babel: {
                 plugins: [
