@@ -1,14 +1,28 @@
+import MainModeView from 'components/MainModeView';
 import React from 'react';
+import { makeStyles } from 'theme/makeStyles';
 
 import { Box, Button, Container, Typography } from '@mui/material';
 
 import AllCommandsButtons from './components/AllCommandsButtons';
-import { gattConnect, requestDevice } from './store/goproBluetoothSlice';
+import { gattConnect, requestDevice, tempSettingsDump } from './store/goproBluetoothSlice';
 import { useAppDispatch, useAppSelector } from './store/hooks';
 
 import './App.css';
 
+const useStyles = makeStyles()({
+    flexContent: {
+        position: 'absolute',
+        height: '100%',
+        width: '100%',
+        maxHeight: '-webkit-fill-available',
+        display: 'flex',
+        flexDirection: 'column',
+    },
+});
+
 const App: React.FC = () => {
+    const { classes } = useStyles();
     const goproBluetooth = useAppSelector((state) => state.goproBluetoothReducer);
     const dispatch = useAppDispatch();
     if (window.location.protocol === 'http:') {
@@ -22,7 +36,7 @@ const App: React.FC = () => {
             return <div>Select Gopro bluetooth device from prompt</div>;
         }
         return (
-            <div>
+            <div className={classes.flexContent}>
                 <Container maxWidth="sm">
                     <Box sx={{ my: 4 }}>
                         <Typography variant="h4" component="h1" gutterBottom>
@@ -32,6 +46,7 @@ const App: React.FC = () => {
                         {goproBluetooth.error ? <div>{goproBluetooth.error}</div> : null}
                     </Box>
                 </Container>
+                <MainModeView />
             </div>
         );
     }
@@ -56,7 +71,7 @@ const App: React.FC = () => {
     // TODO need a concept how could switching between modes look
     // Imitating Gopro UI doesn't really work, since we don't have preview here
     return (
-        <div>
+        <div className={classes.flexContent}>
             <Container maxWidth="sm">
                 <Box sx={{ my: 4 }}>
                     <Typography variant="h4" component="h1" gutterBottom>
@@ -66,6 +81,7 @@ const App: React.FC = () => {
                     {(window as unknown as { allButtons: boolean }).allButtons ? <AllCommandsButtons /> : null}
                 </Box>
             </Container>
+            <MainModeView />
             {/* <div columns="1fr" rows="65px 1fr 45px" areas={['header', 'content', 'footer']}>
                 <div area="header">
                     <Header />
