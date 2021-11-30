@@ -43,6 +43,13 @@ export const requestDevice = createAsyncThunk<SelectDeviceResult, void, { state:
     };
 });
 
+export const tempSettingsDump = createAsyncThunk('bluetoothDevice/tempSettingsDump', async () => {
+    const { characteristics } = bluetoothDeviceState;
+    if (!characteristics) throw new Error('no characteristics');
+    const { queryCharacteristic } = characteristics;
+    await queryCharacteristic.writeValue(new Uint8Array([0x01, 0x12]));
+});
+
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface GattConnectResult {}
 
@@ -82,6 +89,8 @@ export const gattConnect = createAsyncThunk<GattConnectResult, void, { state: Ro
     };
     bluetoothDeviceState.characteristics.commandResponseCharacteristic.oncharacteristicvaluechanged = onCommandResponseProvider(dispatch);
     await bluetoothDeviceState.characteristics.commandResponseCharacteristic.startNotifications();
+    bluetoothDeviceState.characteristics.queryResponseCharacteristic.oncharacteristicvaluechanged = onSettingsResponseProvider();
+    await bluetoothDeviceState.characteristics.queryResponseCharacteristic.startNotifications();
 
     // TODO delay these until after initial connection
     dispatch(openGoProGetVersion());
@@ -213,6 +222,46 @@ function dispatchCommandResponse(dispatch: ThunkDispatch<RootState, unknown, Any
     }
 }
 
+function onSettingsResponseProvider() {
+    let responseDataAccumulator: number[] = [];
+    let messageLengthLeft = 0;
+    return (ev: Event) => {
+        const characteristic = ev.target as BluetoothRemoteGATTCharacteristic;
+        async function parseSingleMessage(): Promise<PacketResponse | undefined> {
+            const { value } = characteristic;
+            if (!value) {
+                // Should not be possible...
+                throw new Error('This should not be possible, empty response value');
+            }
+            const packetHeader = parsePacketHeader(value);
+            if (packetHeader.isStart) {
+                responseDataAccumulator = Array.from(new Uint8Array(value.buffer)).slice(packetHeader.headerSizeBytes);
+                messageLengthLeft = packetHeader.messageLength;
+                messageLengthLeft -= responseDataAccumulator.length;
+            } else {
+                // TODO consider using continuationIndex
+                const continuationData = Array.from(new Uint8Array(value.buffer)).slice(packetHeader.headerSizeBytes);
+                messageLengthLeft -= continuationData.length;
+                responseDataAccumulator.push(...continuationData);
+            }
+            if (messageLengthLeft === 0) {
+                return responseDataAccumulator;
+            }
+            if (messageLengthLeft < 0) throw new Error('Did response messages get out of sync?');
+            return undefined;
+        }
+        parseSingleMessage()
+            .then((response) => {
+                if (!response) return;
+                console.log('settings dump', response);
+            })
+            .catch((error) => {
+                // dispatch()
+                toast(`Error while parsing response message ${error}`);
+            });
+    };
+}
+
 function onCommandResponseProvider(dispatch: ThunkDispatch<RootState, unknown, AnyAction>) {
     let responseDataAccumulator: number[] = [];
     let messageLengthLeft = 0;
@@ -278,7 +327,7 @@ function parsePacketHeader(data: DataView) {
         headerSizeBytes = 2;
         const byte2 = data.getUint8(1);
         // eslint-disable-next-line no-bitwise
-        messageLength = (byte1 & (0b00011111 << 8)) | byte2;
+        messageLength = ((byte1 & 0b00011111) << 8) | byte2;
     } else if (startType === 0b10) {
         headerSizeBytes = 3;
         const byte2 = data.getUint8(1);
@@ -449,6 +498,19 @@ class Submode:
         Burst =      bytearray(0x05,0x03,0x01,0x02,0x01,0x00)
         TimeLapse =  bytearray(0x05,0x03,0x01,0x02,0x01,0x01)
         NightLapse = bytearray(0x05,0x03,0x01,0x02,0x01,0x02)
+
+
+
+more commands from  https://gethypoxic.com/blogs/technical/gopro-hero5-interfaces
+
+// Not sure which characteristic, though, probably command, needs testing
+VIDEO_PROTUNE_RESET (0x03 0x10, 0x01, 0x01),
+MULTISHOT_VIDEO_PROTUNE_RESET(0x03, 0x11, 0x01, 0x01),
+PHOTO_PROTUNE_RESET(0x03, 0x12, 0x01, 0x01),
+
+
+
+
 */
 
 // Standard commands

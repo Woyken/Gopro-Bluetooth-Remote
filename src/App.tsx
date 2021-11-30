@@ -62,7 +62,8 @@ const App: React.FC = () => {
                     <Typography variant="h4" component="h1" gutterBottom>
                         Connected to &quot;{goproBluetooth.deviceName}&quot;
                     </Typography>
-                    {(window as any).allButtons ? <AllCommandsButtons /> : null}
+                    <Button onClick={() => dispatch(tempSettingsDump())}>settings dump</Button>
+                    {(window as unknown as { allButtons: boolean }).allButtons ? <AllCommandsButtons /> : null}
                 </Box>
             </Container>
             {/* <div columns="1fr" rows="65px 1fr 45px" areas={['header', 'content', 'footer']}>
