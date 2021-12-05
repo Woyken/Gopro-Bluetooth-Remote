@@ -33,6 +33,10 @@ export const settingResolution2: SettingMetadata = {
             label: '960 (4:3)',
         },
         {
+            id: 0x1,
+            label: '4K',
+        },
+        {
             id: 0x4,
             label: '2.7K',
         },
@@ -81,16 +85,32 @@ export const settingFov4: SettingMetadata = {
     length: 1,
     values: [
         {
+            id: 0x4,
+            label: 'Linear',
+        },
+        {
             id: 0x0,
             label: 'Wide',
         },
         {
             id: 0x3,
-            label: 'Linear',
+            label: 'Super view',
+        },
+    ],
+};
+
+export const settingLowLight8: SettingMetadata = {
+    id: 0x8,
+    label: 'Low light',
+    length: 1,
+    values: [
+        {
+            id: 0x0,
+            label: 'Off',
         },
         {
-            id: 0x4,
-            label: 'Super view',
+            id: 0x1,
+            label: 'Auto',
         },
     ],
 };
@@ -136,6 +156,22 @@ export const settingWhiteBalance11: SettingMetadata = {
         { id: 0x7, label: '6000K' },
         { id: 0x3, label: '6500K' },
         { id: 0x4, label: 'Native' },
+    ],
+};
+
+export const settingColor12: SettingMetadata = {
+    id: 0xc, // 12
+    label: 'Color',
+    length: 1,
+    values: [
+        {
+            id: 0x0,
+            label: 'GoPro',
+        },
+        {
+            id: 0x1,
+            label: 'Flat',
+        },
     ],
 };
 
@@ -380,16 +416,18 @@ export const videoModeKnownSettings: SettingMetadata[] = [
     settingResolution2,
     settingFps3,
     settingFov4,
+    settingLowLight8,
+    settingStabilization78,
     settingProtune10,
+    settingShutter73,
+    settingEvComp15,
     settingWhiteBalance11,
+    settingIsoMin102,
     settingIsoMax13,
     settingSharpness14,
-    settingEvComp15,
-    settingShutter73,
-    settingStabilization78,
-    settingMicrophone80,
+    settingColor12,
     settingRawAudio81,
-    settingIsoMin102,
+    settingMicrophone80,
     settingVideoTimer107,
     settingResolutionFormat108,
 ];
@@ -418,22 +456,6 @@ export const settingInterval6: SettingMetadata = {
         {
             id: 0x4,
             label: '120m',
-        },
-    ],
-};
-
-export const settingLowLight8: SettingMetadata = {
-    id: 0x8,
-    label: 'Low light',
-    length: 1,
-    values: [
-        {
-            id: 0x0,
-            label: 'Off',
-        },
-        {
-            id: 0x1,
-            label: 'Auto',
         },
     ],
 };
@@ -636,18 +658,9 @@ export const settingSharpness38: SettingMetadata = {
 
 export const settingColor36: SettingMetadata = {
     id: 0x24, // 36
-    label: 'Color',
-    length: 1,
-    values: [
-        {
-            id: 0x0,
-            label: 'GOPRO',
-        },
-        {
-            id: 0x1,
-            label: 'Flat',
-        },
-    ],
+    label: settingColor12.label,
+    length: settingColor12.length,
+    values: settingColor12.values,
 };
 
 export const settingProtune34: SettingMetadata = {
