@@ -1,11 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 
 import { goproBluetoothReducer } from './goproBluetoothSlice';
+import { goproSettingsReducer } from './goproSettingsSlice';
 
 export const store = configureStore({
     reducer: {
         goproBluetoothReducer,
+        goproSettingsReducer,
     },
+    devTools: true,
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
