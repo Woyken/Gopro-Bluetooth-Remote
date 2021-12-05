@@ -445,14 +445,6 @@ export const settingInterval6: SettingMetadata = {
 
 export const loopingModeKnownSettings: SettingMetadata[] = [settingResolution2, settingFps3, settingFov4, settingInterval6, settingLowLight8, settingStabilization78];
 
-/*
-Speed 111
-    5x 8
-    2x 7
-    10x 9
-    15x 0
-    30x 1
-*/
 export const settingSpeed111: SettingMetadata = {
     id: 0x6f, // 111
     label: 'Speed',
@@ -1275,4 +1267,5 @@ export const allKnownSettings: SettingMetadata[] = [
     ...photoNightModeKnownSettings,
     ...photoBurstModeKnownSettings,
     ...photoSingleModeKnownSettings,
+    ...generalSettings,
 ];
