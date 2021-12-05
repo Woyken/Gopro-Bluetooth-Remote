@@ -22,6 +22,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "https-preview": "serve dist",
     "serve": "vite preview",
     "lint": "eslint src --ext .tsx --ext .ts",
     "lint:fix": "npm run lint -- --fix",
@@ -47,11 +48,13 @@
     "eslint-plugin-react": "^7.26.1",
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
+    "https-localhost": "^4.7.0",
     "prettier": "^2.4.1",
     "ts-jest": "^27.0.7",
     "typescript": "4.4.4",
     "vite": "^2.6.13",
     "vite-plugin-checker": "^0.3.4",
+    "vite-plugin-pwa": "^0.11.10",
     "vite-react-jsx": "^1.1.2",
     "vite-tsconfig-paths": "^3.3.17"
   }
