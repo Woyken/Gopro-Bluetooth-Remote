@@ -196,6 +196,18 @@ export const settingIsoMax13: SettingMetadata = {
             id: 0x4,
             label: '800',
         },
+        {
+            id: 0x2,
+            label: '400',
+        },
+        {
+            id: 0x7,
+            label: '200',
+        },
+        {
+            id: 0x8,
+            label: '100',
+        },
     ],
 };
 
@@ -352,37 +364,8 @@ export const settingRawAudio81: SettingMetadata = {
 export const settingIsoMin102: SettingMetadata = {
     id: 0x66, // 102
     label: 'ISO min',
-    length: 1,
-    values: [
-        {
-            id: 0x8,
-            label: '100',
-        },
-        {
-            id: 0x7,
-            label: '200',
-        },
-        {
-            id: 0x2,
-            label: '400',
-        },
-        {
-            id: 0x4,
-            label: '800',
-        },
-        {
-            id: 0x1,
-            label: '1600',
-        },
-        {
-            id: 0x3,
-            label: '3200',
-        },
-        {
-            id: 0x0,
-            label: '6400',
-        },
-    ],
+    length: settingIsoMax13.length,
+    values: settingIsoMax13.values,
 };
 
 export const settingVideoTimer107: SettingMetadata = {
