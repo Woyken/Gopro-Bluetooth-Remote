@@ -67,8 +67,6 @@ const SingleSetting: React.FC<IProps> = (props) => {
     // goproBluetooth.goproBluetoothDeviceCommandsState
 
     const { setting } = props;
-    const [selectedValue, setSelectedValue] = useState('');
-
     const currentSettingValue = settings2[setting.id];
 
     const handleChange = (event: SelectChangeEvent) => {

@@ -11,7 +11,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { goproBlePacketDataReaderProvider } from '../packetParsing/goproPacketReader';
 
-import { allKnownSettings, SettingMetadata } from './goproSettingsMetadata';
 import { statusEncodingActive10, statusSystemBusy8, statusSystemReady82 } from './goproStatusMetadata';
 
 interface SelectDeviceResult {
@@ -23,7 +22,7 @@ export const requestDevice = createAsyncThunk<SelectDeviceResult, void, { state:
         filters: [{ services: ['0000fea6-0000-1000-8000-00805f9b34fb'] }],
         optionalServices: ['0000fea6-0000-1000-8000-00805f9b34fb', 'b5f90001-aa8d-11e3-9046-0002a5d5c51b'],
     });
-    device.ongattserverdisconnected = (ev) => {
+    device.ongattserverdisconnected = () => {
         // On disconnect, invalidate all GATT services and characteristics https://web.dev/bluetooth/#disconnect
         bluetoothDeviceState.characteristics = undefined;
         bluetoothDeviceState.gattServer = undefined;
@@ -124,14 +123,14 @@ export async function writeGoProPacketData(characteristic: BluetoothRemoteGATTCh
     return undefined;
 }
 
-export const subscribeToSettingsChanges = createAsyncThunk<void, number[], { state: RootState }>('bluetoothDevice/subscribeToSettingsChanges', async (settingsIds, { dispatch }) => {
+export const subscribeToSettingsChanges = createAsyncThunk<void, number[], { state: RootState }>('bluetoothDevice/subscribeToSettingsChanges', async (settingsIds) => {
     const { characteristics } = bluetoothDeviceState;
     if (!characteristics) throw new Error('no characteristics');
     const { queryCharacteristic } = characteristics;
     await writeGoProPacketData(queryCharacteristic, [0x52, ...settingsIds]);
 });
 
-export const subscribeToStatusChanges = createAsyncThunk<void, number[], { state: RootState }>('bluetoothDevice/subscribeToStatusChanges', async (statusIds, { dispatch }) => {
+export const subscribeToStatusChanges = createAsyncThunk<void, number[], { state: RootState }>('bluetoothDevice/subscribeToStatusChanges', async (statusIds) => {
     const { characteristics } = bluetoothDeviceState;
     if (!characteristics) throw new Error('no characteristics');
     const { queryCharacteristic } = characteristics;
