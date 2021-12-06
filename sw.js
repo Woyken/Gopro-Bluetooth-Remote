@@ -93,17 +93,17 @@ define(['./workbox-a51b997a'], (function (workbox) { 'use strict';
    */
 
   workbox.precacheAndRoute([{
-    "url": "assets/index.5561b2f0.css",
+    "url": "assets/index.5145e04e.js",
     "revision": null
   }, {
-    "url": "assets/index.7fe5ea93.js",
+    "url": "assets/index.5561b2f0.css",
     "revision": null
   }, {
     "url": "assets/vendor.47404bea.js",
     "revision": null
   }, {
     "url": "index.html",
-    "revision": "5f299ebe706baba683940b34abc3e18e"
+    "revision": "07f7140ecb2821f7ddcfd2f063c81834"
   }, {
     "url": "camera.ico",
     "revision": "043eb22b6e8605bbceb61cf021c602a8"
@@ -118,7 +118,7 @@ define(['./workbox-a51b997a'], (function (workbox) { 'use strict';
     "revision": "e61972f55c2e6c9d65b2d1d3daefdafe"
   }, {
     "url": "manifest.webmanifest",
-    "revision": "5017650080867d56517ecb5eb18a1428"
+    "revision": "cb94684381f63cd6e517e70eb97da1a4"
   }], {});
   workbox.cleanupOutdatedCaches();
   workbox.registerRoute(new workbox.NavigationRoute(workbox.createHandlerBoundToURL("index.html")));
