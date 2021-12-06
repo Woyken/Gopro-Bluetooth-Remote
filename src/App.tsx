@@ -9,8 +9,6 @@ import { Box, Button, Container, Typography } from '@mui/material';
 import AllCommandsButtons from './components/AllCommandsButtons';
 import { useAppDispatch, useAppSelector } from './store/hooks';
 
-import './App.css';
-
 const useStyles = makeStyles()({
     flexContent: {
         position: 'absolute',
