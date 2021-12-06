@@ -74,6 +74,7 @@ const useStyles = makeStyles()({
 const MainModeView: React.FC = () => {
     const { classes } = useStyles();
     const statuses = useAppSelector((state) => state.goproSettingsReducer.statuses);
+    const deviceName = useAppSelector((state) => state.goproBluetoothReducer.deviceName);
     const isWifiApEnabled = statuses[statusApState69.id] === 1;
     const batteryPercentage = statuses[statusInternalBatteryPercentage70.id];
     const dispatch = useAppDispatch();
@@ -104,7 +105,7 @@ const MainModeView: React.FC = () => {
                     <br />
                     <Container sx={{ width: 'fit-content' }}>
                         <Paper sx={{ padding: '0.4em' }} elevation={2}>
-                            <Typography variant="h4">Le camera</Typography>
+                            <Typography variant="h4">{deviceName}</Typography>
                         </Paper>
                         <IconButton onClick={handlePowerButtonClick}>
                             <PowerSettingsNewIcon />
