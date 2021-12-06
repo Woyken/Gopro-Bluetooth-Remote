@@ -1,3 +1,4 @@
+import { ServiceWorkerContainer } from 'components/pwa/ServiceWorkerContainer';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 
@@ -13,6 +14,7 @@ export const AppProvider: React.FC = () => {
     return (
         <Provider store={store}>
             <ThemeProvider theme={theme}>
+                <ServiceWorkerContainer />
                 <ToastContainer />
                 <App />
             </ThemeProvider>
