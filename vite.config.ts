@@ -11,7 +11,7 @@ import react from '@vitejs/plugin-react';
 const pwaOptions: Partial<VitePWAOptions> = {
     mode: 'development',
     // includeAssets: ['favicon.svg'],
-    base: '/',
+    base: '/Gopro-Bluetooth-Remote/',
     includeAssets: ['camera.ico', 'robots.txt'],
     manifest: {
         name: 'Gopro web-bluetooth remote',
@@ -44,6 +44,7 @@ function pathResolve(dir: string) {
 
 // https://vitejs.dev/config/
 const config: () => UserConfig = () => ({
+    base: '/Gopro-Bluetooth-Remote/',
     server: {
         hmr: { port: 443 },
     },
