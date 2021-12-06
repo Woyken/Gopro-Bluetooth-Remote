@@ -1,0 +1,545 @@
+HERO 7 Black settings
+
+ALL VALUES ARE IN DECIMAL
+
+1st dump
+[18,0,1,1,0,2,1,9,3,1,5,4,1,3,5,1,0,6,1,1,8,1,1,10,1,1,11,1,0,12,1,0,13,1,3,14,1,1,15,1,4,16,1,0,17,1,0,19,1,0,21,1,0,22,1,0,23,1,0,24,1,0,25,1,0,26,1,0,27,1,0,28,1,0,29,1,0,30,1,0,31,1,0,32,4,0,0,0,10,34,1,0,35,1,0,36,1,0,37,1,0,38,1,0,39,1,0,40,1,0,41,1,9,42,1,5,43,1,0,44,1,9,45,1,5,46,1,0,47,1,4,48,1,3,51,1,1,54,1,1,57,1,0,59,1,4,60,4,0,0,0,0,61,4,0,0,0,0,62,4,0,0,0,0,64,1,4,65,4,0,0,0,0,66,4,0,0,0,0,67,4,0,0,0,0,68,1,0,69,1,2,70,1,1,71,1,1,73,1,0,75,1,0,76,1,0,78,1,1,80,1,2,81,1,3,82,1,0,83,1,1,84,1,0,85,1,0,86,1,0,87,1,0,88,1,80,89,1,12,91,1,2,92,1,12,94,1,0,95,1,1,96,1,0,97,1,0,98,1,0,99,1,0,102,1,8,103,1,3,104,1,0,105,1,0,106,1,1,107,1,0,108,1,1,109,1,0,111,1,8,112,1,0]
+
+changed color to flat from gopro (12, changed from 0 to 1)
+[18,0,1,1,0,2,1,9,3,1,5,4,1,3,5,1,0,6,1,1,8,1,1,10,1,1,11,1,0,12,1,1,13,1,3,14,1,1,15,1,4,16,1,0,17,1,0,19,1,0,21,1,0,22,1,0,23,1,0,24,1,0,25,1,0,26,1,0,27,1,0,28,1,0,29,1,0,30,1,0,31,1,0,32,4,0,0,0,10,34,1,0,35,1,0,36,1,0,37,1,0,38,1,0,39,1,0,40,1,0,41,1,9,42,1,5,43,1,0,44,1,9,45,1,5,46,1,0,47,1,4,48,1,3,51,1,1,54,1,1,57,1,0,59,1,4,60,4,0,0,0,0,61,4,0,0,0,0,62,4,0,0,0,0,64,1,4,65,4,0,0,0,0,66,4,0,0,0,0,67,4,0,0,0,0,68,1,0,69,1,2,70,1,1,71,1,1,73,1,0,75,1,0,76,1,0,78,1,1,80,1,2,81,1,3,82,1,0,83,1,1,84,1,0,85,1,0,86,1,0,87,1,0,88,1,80,89,1,12,91,1,2,92,1,12,94,1,0,95,1,1,96,1,0,97,1,0,98,1,0,99,1,0,102,1,8,103,1,3,104,1,0,105,1,0,106,1,1,107,1,0,108,1,1,109,1,0,111,1,8,112,1,0]
+reset
+changed sharpness from medium to low (14 changed from 1 to 2)
+[18,0,1,1,0,2,1,9,3,1,5,4,1,3,5,1,0,6,1,1,8,1,1,10,1,1,11,1,0,12,1,0,13,1,3,14,1,2,15,1,4,16,1,0,17,1,0,19,1,0,21,1,0,22,1,0,23,1,0,24,1,0,25,1,0,26,1,0,27,1,0,28,1,0,29,1,0,30,1,0,31,1,0,32,4,0,0,0,10,34,1,0,35,1,0,36,1,0,37,1,0,38,1,0,39,1,0,40,1,0,41,1,9,42,1,5,43,1,0,44,1,9,45,1,5,46,1,0,47,1,4,48,1,3,51,1,1,54,1,1,57,1,0,59,1,4,60,4,0,0,0,0,61,4,0,0,0,0,62,4,0,0,0,0,64,1,4,65,4,0,0,0,0,66,4,0,0,0,0,67,4,0,0,0,0,68,1,0,69,1,2,70,1,1,71,1,1,73,1,0,75,1,0,76,1,0,78,1,1,80,1,2,81,1,3,82,1,0,83,1,1,84,1,0,85,1,0,86,1,0,87,1,0,88,1,80,89,1,12,91,1,2,92,1,12,94,1,0,95,1,1,96,1,0,97,1,0,98,1,0,99,1,0,102,1,8,103,1,3,104,1,0,105,1,0,106,1,1,107,1,0,108,1,1,109,1,0,111,1,8,112,1,0]
+reset
+
+Going through settings one by one, enabling protune, changing setting values and all that jazz...
+These are some findings
+TODO proper formatting...
+
+
+If we join these with official table:
+https://gopro.github.io/OpenGoPro/ble_1_0#settings-quick-reference
+we'll have pretty good settings coverage.
+
+I'm guessing they are working on new versions of these settings that will be published to OpenGoPro.
+Current findings feel quite hacky and/or messy at times
+some of them are reused, while a lot of them have exact same values, but are saved in different setting.
+
+I am only sure that the following settings are available for HERO 7 Black, can't say anything regarding other devices.
+
+(Video single settings)
+video timer 107
+    off 0
+    15s 1
+    30s 2
+(Video single settings)
+microphone 80
+    auto 02
+    wind 01
+    stereo 00
+(Video single settings)
+raw audio 81
+    off 3
+    low 0
+    medium 1
+    high 2
+(Video single settings)
+sharpness 14
+    high 0
+    medium 1
+    low 2
+(Video single settings)
+iso max 13
+    6400 0
+    1600 1
+    3200 3
+    800 4
+(Video single settings)
+iso min 102
+    100 8
+    200 7
+    400 2
+    800 4
+    1600 1
+    3200 3
+    6400 0
+(Video single settings)
+white balance 11
+    auto 0
+    2300k 8
+    2800k 9
+    3200k 10
+    4000k 5
+    4500k 11
+    5000k 12
+    5500k 2
+    6000k 7
+    6500k 3
+    native 4
+(Video single settings)
+ev comp 15
+    +2.0 0
+    +1.5 1
+    +1.0 2
+    +0.5 3
+    0 4
+    -0.5 5
+    -1.0 6
+    -1.5 7
+    -2.0 8
+(Video single settings)
+shutter 73
+    auto 0
+    1/60 8
+    1/120 13
+    1/240 18
+    1/480 22
+    1/960 23
+(Video single settings)
+stabilization 78
+    auto 1
+    off 0
+(Video single settings)
+FOV 4
+    superview 3
+    wide 0
+    linear 4
+(Video single settings)
+resolution 2
+    1440 (4:3) 7
+    960 (4:3) 10
+    2.7K (4:3) 6
+    4K (4:3) 18
+    1080 9
+    2.7K 4
+    720 12
+FPS 3
+    24 10
+    30 8
+    60 5
+    120 1
+    240 0
+(Video single settings)
+resolution format 108
+    16:9 1
+    4:3 0
+(Video single settings)
+protune 10
+    on 1
+    off 0
+
+
+
+
+(General settings)
+beeps 87
+    mute 0
+    high 100
+    medium 70
+    low 40
+(General settings)
+default mode 89
+    video 12
+    looping 15
+    photo 17
+    night 18
+    burst 19
+    timewarp video 24
+    timelapse video 13
+    timelapse photo 20
+    nightlapse photo 21
+(General settings)
+LEDS 91
+    all on 2
+    all off 0
+    front off only 1
+(General settings)
+video compression 106
+    hevc 1
+    h264 0
+(Voice control settings)
+voice control 86
+    on 1
+    off 0
+(Voice control settings)
+wake on voice 104
+    on 1
+    off 0
+(Voice control settings)
+voice control language 85
+    english(us) 0
+    english(uk) 1
+    english(ind) 13
+    ... too many to write down
+(Touch display settings)
+touch display landscape lock 112
+    off 0
+    up 1
+    down 2
+(Touch display settings)
+touch display screen saver 51
+    1min 1
+    2min 2
+    3min 3
+    never 0
+(Touch display settings)
+touch display brightness 88
+    ...% ...
+    100% 100
+    80% 80
+    10% 10 (minimum settable in UI)
+(Regional settings)
+Regional GPS 83
+    on 1
+    off 0
+(Regional settings)
+Regional language 84
+    English 0
+    French 6
+    ... too many to write down
+(Regional settings)
+Regional Video format
+    NTSC
+    PAL
+    TODO CHANGED VALUES:
+        3 = 5 -> 6
+        42 = 5 -> 6
+        57 = 0 -> 1
+
+
+Different modes different settings values:
+video -> looping
+    68 = 0 -> 3
+    92 = 12 -> 15
+video -> timewarp
+    3 = 5 -> 8
+    68 = 0 -> 3
+    92 = 12 -> 24
+video -> timelapse video
+    3 = 5 -> 8
+    68 = 0 -> 1
+    92 = 12 -> 13
+video -> timelapse photo
+    3 = 5 -> 0
+    68 = 0 -> 1
+    92 = 12 -> 20
+video -> nightlapse photo
+    3 = 5 -> 0
+    68 = 0 -> 1
+    92 = 12 -> 21
+video -> photo night
+    3 = 5 -> 0
+    68 = 0 -> 1
+    92 = 12 -> 18
+video -> photo burst
+    3 = 5 -> 0
+    68 = 0 -> 1
+    92 = 12 -> 19
+video -> photo single
+    3 = 5 -> 0
+    68 = 0 -> 1
+    92 = 12 -> 17
+
+
+----- probably ----
+last active video mode 68
+    video 0
+    looping 3
+    timelapse video 1
+last active timelapse mode 70
+    timewarp 1
+    nightlapse photo 2
+although can't find ones for photo modes, wouldn't trust those
+-------------------
+
+
+
+(looping settings)
+Interval 6
+    MAX 0
+    5m 1
+    20m 2
+    60m 3
+    120m 4
+(looping settings)
+low light 8
+    auto 1
+    off 0
+(timewarp settings)
+Speed 111
+    5x 8
+    2x 7
+    10x 9
+    15x 0
+    30x 1
+(timelapse video settings)
+interval 5
+    0.5s 0
+    1s 1
+    2s 2
+    5s 3
+    10s 4
+    30s 5
+    60s 6
+(timelapse photo settings)
+interval 30
+    0.5s 0
+    1s 1
+    2s 2
+    5s 5
+    10s 10
+    30s 30
+    60s 60
+(timelapse photo settings)
+FOV 28
+    linear 10
+    wide 0
+(timelapse photo settings)
+EV Comp 39
+    +2.0 0
+    +1.5 1
+    +1.0 2
+    +0.5 3
+    0 4
+    -0.5 5
+    -1.0 6
+    -1.5 7
+    -2.0 8
+(timelapse photo settings)
+White balance 35
+    auto 0
+    2300k 8
+    2800k 9
+    3200k 10
+    4000k 5
+    4500k 11
+    5000k 12
+    5500k 2
+    6000k 7
+    6500k 3
+    native 4
+(timelapse photo settings)
+iso min 76
+    100 3
+    200 2
+    400 1
+    800 0
+    1600 4
+    3200 5
+(timelapse photo settings)
+iso max 37
+    1600 4
+    3200 5
+    800 0
+    400 1
+    200 2
+    100 3
+(timelapse photo settings)
+sharpness 38
+    high 0
+    medium 1
+    low 2
+(timelapse photo settings)
+color 36
+    gopro 0
+    flat 1
+(timelapse photo settings)
+protune 34
+    on 1
+    off 0
+(nightlapse photo settings)
+iso min 76 (same as timelapse photo settings, max allowed depends on other settings)
+(nightlapse photo settings)
+iso max 37 (same as timelapse photo settings, max allowed depends on other settings)
+(nightlapse photo settings)
+shutter 31
+    auto 0
+    30s 6
+    20s 5
+    15s 4
+    10s 3
+    5s 2
+    2s 1
+(nightlapse photo settings)
+interval 32
+    auto 0 0 14 17
+    4s 0 0 0 4
+    5s 0 0 0 5
+    10s 0 0 0 10
+    20s 0 0 0 20
+    1m 0 0 0 60
+    2m 0 0 0 120
+    5m 0 0 1 44
+    30m 0 0 7 8
+    60m 0 0 14 16
+(nightlapse photo settings)
+FOV 28 (same as timelapse photo settings)
+(nightlapse photo settings)
+protune 34 (same as timelapse photo settings)
+(nightlapse photo settings)
+White balance 35 (same as timelapse photo settings)
+(nightlapse photo settings)
+RAW 99
+    off 0
+    on 1
+(photo night settings)
+shutter 19
+    auto 0
+    30s 6
+    20s 5
+    15s 4
+    10s 3
+    5s 2
+    2s 1
+(photo night settings)
+FOV 17
+    linear 10
+    wide 0
+(photo night settings)
+EV Comp 26
+    +2.0 0
+    +1.5 1
+    +1.0 2
+    +0.5 3
+    0 4
+    -0.5 5
+    -1.0 6
+    -1.5 7
+    -2.0 8
+(photo night settings)
+white balance 22
+    auto 0
+    2300k 8
+    2800k 9
+    3200k 10
+    4000k 5
+    4500k 11
+    5000k 12
+    5500k 2
+    6000k 7
+    6500k 3
+    native 4
+(photo night settings)
+iso min 75
+    3200 5
+    1600 4
+    800 0
+    400 1
+    200 2
+    100 3
+(photo night settings)
+iso max 24
+    3200 5
+    1600 4
+    800 0
+    400 1
+    200 2
+    100 3
+(photo night settings)
+sharpness 25
+    high 0
+    medium 1
+    low 2
+(photo night settings)
+color 23
+    gopro 0
+    flat 1
+(photo night settings)
+protune 21
+    off 0
+    on 1
+(photo night settings)
+RAW 98
+    on 1
+    off 0
+(photo burst settings)
+burst rate 29
+    auto 9
+    30/6s 8
+    30/3s 7
+    30/2s 6
+    30/1s 5
+    10/3s 4
+    10/2s 3
+    10/1s 2
+    5/1s 1
+    3/1s 0
+(photo burst settings)
+FOV 28 (same as timelapse photo settings)
+(photo burst settings)
+protune 34 (same as timelapse photo settings)
+(photo burst settings)
+EV Comp 39 (same as timelapse photo settings)
+(photo burst settings)
+White balance 35 (same as timelapse photo settings)
+(photo burst settings)
+iso min 76 (same as timelapse photo settings)
+(photo burst settings)
+iso max 37 (same as timelapse photo settings)
+(photo burst settings)
+sharpness 38 (same as timelapse photo settings)
+(photo burst settings)
+color 36 (same as timelapse photo settings)
+
+(photo single settings)
+FOV 17 (same as photo night settings)
+(photo single settings)
+Super photo 109
+    off 0
+    HDR On 2
+    auto 1
+(photo single settings)
+protune 21 (same as photo night settings)
+(photo single settings)
+shutter 97
+    auto 0
+    1/125 1
+    1/250 2
+    1/500 3
+    1/1000 4
+    1/2000 5
+(photo single settings)
+ev comp 26 (same as photo night settings)
+(photo single settings)
+white balance 22 (same as photo night settings)
+(photo single settings)
+iso min 75 (same as photo night settings)
+(photo single settings)
+iso max 24 (same as photo night settings)
+(photo single settings)
+sharpness 25 (same as photo night settings)
+(photo single settings)
+color 23 (same as photo night settings)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
