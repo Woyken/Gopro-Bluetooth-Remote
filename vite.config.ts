@@ -10,8 +10,6 @@ import react from '@vitejs/plugin-react';
 
 const pwaOptions: Partial<VitePWAOptions> = {
     mode: 'development',
-    // includeAssets: ['favicon.svg'],
-    base: '/Gopro-Bluetooth-Remote/',
     includeAssets: ['camera.ico', 'robots.txt'],
     manifest: {
         name: 'Gopro web-bluetooth remote',
