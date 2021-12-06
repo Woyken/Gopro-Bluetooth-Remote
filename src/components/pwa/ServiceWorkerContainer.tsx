@@ -1,25 +1,35 @@
 import React, { useEffect } from 'react';
 import { toast } from 'react-toastify';
-// eslint-disable-next-line import/no-unresolved
-import { useRegisterSW } from 'virtual:pwa-register/react';
 
 import { ReloadToastContent } from './ReloadToastContent';
+import { ModuleVirtualPwaRegisterReact, useImportPwaRegisterModule } from './useImportPwaRegisterModule';
 
 // It's unlikely that someone will use this app for long periods, but just in case, let's check for updates once in a while.
 const updateCheckIntervalMS = 60 * 60 * 1000;
 
 export const ServiceWorkerContainer: React.FC = () => {
+    const pwaRegisterModule = useImportPwaRegisterModule();
+
+    if (!pwaRegisterModule) return null;
+    return <ServiceWorkerContainerSafe pwaRegisterModule={pwaRegisterModule} />;
+};
+
+interface IProps {
+    pwaRegisterModule: ModuleVirtualPwaRegisterReact;
+}
+
+export const ServiceWorkerContainerSafe: React.FC<IProps> = ({ pwaRegisterModule }) => {
     const {
         offlineReady: [offlineReady],
         needRefresh: [needRefresh],
         updateServiceWorker,
-    } = useRegisterSW({
+    } = pwaRegisterModule.useRegisterSW({
         immediate: true,
-        onRegistered(r) {
-            console.log('SW registered', r);
-            if (!r) return;
+        onRegistered(registration) {
+            console.log('SW registered', registration);
+            if (!registration) return;
             setInterval(() => {
-                r.update();
+                registration.update();
             }, updateCheckIntervalMS);
         },
         onRegisterError(error) {
