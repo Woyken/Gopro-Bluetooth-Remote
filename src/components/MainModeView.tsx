@@ -1,4 +1,4 @@
-import { statusApState69, statusInternalBatteryPercentage70 } from 'store/goproBluetoothServiceActions/goproStatusMetadata';
+import { statusApState69, statusEncodingActive10, statusInternalBatteryPercentage70, statusVideoProgressCounter13 } from 'store/goproBluetoothServiceActions/goproStatusMetadata';
 import {
     apControlWiFiApOff,
     apControlWiFiApOn,
@@ -6,10 +6,13 @@ import {
     goproLegacyPresetsLoadGroupMultishotCommand,
     goproLegacyPresetsLoadGroupVideoCommand,
     goproSleepCommand,
+    setShutterOffCommand,
+    setShutterOnCommand,
 } from 'store/goproBluetoothSlice';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { makeStyles } from 'theme/makeStyles';
 
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import RecordInactiveIcon from '@mui/icons-material/RadioButtonChecked';
@@ -79,6 +82,10 @@ const MainModeView: React.FC = () => {
     const deviceName = useAppSelector((state) => state.goproBluetoothReducer.deviceName);
     const isWifiApEnabled = statuses[statusApState69.id] === 1;
     const batteryPercentage = statuses[statusInternalBatteryPercentage70.id];
+    const isShutterActive = statuses[statusEncodingActive10.id] === 1;
+    const currentRecordingTime = statuses[statusVideoProgressCounter13.id] as number;
+    const currentRecordingMinutes = Math.floor(currentRecordingTime / 60);
+    const currentRecordingSeconds = currentRecordingTime % 60;
     const dispatch = useAppDispatch();
     const handlePowerButtonClick = () => {
         dispatch(goproSleepCommand());
@@ -98,6 +105,13 @@ const MainModeView: React.FC = () => {
     };
     const handleTimelapseModeButtonClick = () => {
         dispatch(goproLegacyPresetsLoadGroupMultishotCommand());
+    };
+    const handleShutterButtonClick = () => {
+        if (isShutterActive) {
+            dispatch(setShutterOffCommand());
+        } else {
+            dispatch(setShutterOnCommand());
+        }
     };
 
     return (
@@ -136,12 +150,17 @@ const MainModeView: React.FC = () => {
                         <div className={classes.alignLeftToRight}>
                             <div className={classes.floatLeft} />
                             <div className={classes.recordButton}>
-                                <IconButton aria-label="Record button" color="error">
-                                    <RecordInactiveIcon />
+                                <IconButton onClick={handleShutterButtonClick} aria-label="Record button" color="error">
+                                    {isShutterActive ? <FiberManualRecordIcon /> : <RecordInactiveIcon />}
                                 </IconButton>
                             </div>
                             <div className={classes.floatRight}>
-                                <Typography variant="h6">01:14</Typography>
+                                {isShutterActive && (
+                                    <Typography variant="h6">
+                                        {currentRecordingMinutes.toLocaleString(undefined, { minimumIntegerDigits: 2 })}:
+                                        {currentRecordingSeconds.toLocaleString(undefined, { minimumIntegerDigits: 2 })}
+                                    </Typography>
+                                )}
                             </div>
                         </div>
                     </div>
