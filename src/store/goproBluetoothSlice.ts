@@ -156,8 +156,7 @@ export const goproLegacyPresetsLoadGroupMultishotCommand = createAsyncThunk<void
     async (_, { dispatch }) => {
         // Load timelapse group for GoPro, not documented in OpenGoPro
         // Tested with Hero 7 Black
-        // await dispatch(sendCommandAction([0x02, 0x01, 0x02]));
-        await dispatch(sendCommandAction([0x03, 0x01, 0x00, 0x01, 0x06]));
+        await dispatch(sendCommandAction([0x02, 0x01, 0x02]));
     }
 );
 
