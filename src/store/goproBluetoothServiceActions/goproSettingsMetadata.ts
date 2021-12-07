@@ -1064,6 +1064,13 @@ export const settingLeds91: SettingMetadata = {
     ],
 };
 
+export const settingsCurrentMode92: SettingMetadata = {
+    id: 0x5c, // 92
+    label: 'Current Mode',
+    length: settingDefaultMode89.length,
+    values: settingDefaultMode89.values,
+};
+
 export const settingVideoCompression106: SettingMetadata = {
     id: 0x6a, // 106
     label: 'Video Compression',
