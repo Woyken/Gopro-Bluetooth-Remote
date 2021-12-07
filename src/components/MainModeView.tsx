@@ -3,7 +3,7 @@ import {
     apControlWiFiApOff,
     apControlWiFiApOn,
     goproLegacyPresetsLoadGroupPhotoCommand,
-    goproLegacyPresetsLoadGroupTimelapseCommand,
+    goproLegacyPresetsLoadGroupMultishotCommand,
     goproLegacyPresetsLoadGroupVideoCommand,
     goproSleepCommand,
 } from 'store/goproBluetoothSlice';
@@ -97,7 +97,7 @@ const MainModeView: React.FC = () => {
         dispatch(goproLegacyPresetsLoadGroupVideoCommand());
     };
     const handleTimelapseModeButtonClick = () => {
-        dispatch(goproLegacyPresetsLoadGroupTimelapseCommand());
+        dispatch(goproLegacyPresetsLoadGroupMultishotCommand());
     };
 
     return (
