@@ -240,6 +240,7 @@ video -> photo single
     68 = 0 -> 1
     92 = 12 -> 17
 
+92 = 255 when invalid mode is selected, like sending command to change video mode to (0x03,0x02,0x01,0x06), while 0x04 should be max, then UI breaks in video category, can't change mode until you change category and go back
 
 ----- probably ----
 last active video mode 68
