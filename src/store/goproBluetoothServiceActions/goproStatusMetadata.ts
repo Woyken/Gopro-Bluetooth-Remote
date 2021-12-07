@@ -345,6 +345,40 @@ export const statusDownloadCancelRequestPending42: StatusMetadata = {
     type: 'boolean',
     values: booleanValue,
 };
+export const statusLegacyCurrentPresetGroup43: StatusMetadata = {
+    id: 43,
+    label: 'Current open preset group',
+    description: 'Looks like legacy status, that represented UI group, doesnt match current UI, probably manually mapped to new UI...',
+    type: 'integer',
+    values: [
+        { id: 0, label: 'Legacy Video Group' },
+        { id: 1, label: 'Legacy Photo Group' },
+        { id: 2, label: 'Legacy Multishot Group' },
+    ],
+};
+export const statusLegacyCurrentPresetGroupChild44: StatusMetadata = {
+    id: 44,
+    label: 'Current open preset group child',
+    description: 'Looks like legacy status, that represented UI group child mode, doesnt match current UI, probably manually mapped to new UI...',
+    type: 'integer',
+    values: [
+        { id: 0, label: '1st child by group (group 0 - video, group 1 - ???, group 2 - burst photo)' },
+        { id: 1, label: '2nd child by group (group 0 - timelapse video, group 1 - photo, group 2 - timelapse photo)' },
+        { id: 2, label: '3rd child by group (group 0 - ???, group 1 - night photo, group 2 - nightlapse photo)' },
+        { id: 3, label: '4th child by group (group 0 - looping video)' },
+        { id: 4, label: '5th child by group (group 0 - timewarp)' },
+    ],
+};
+// status values when changing UI on device
+// photo            44 1 43 1 72 17
+// burst            44 0 43 2 72 19
+// night            44 2 43 1 72 18
+// video            44 0 43 0 71 12
+// looping          44 3 43 0 71 15
+// timewarp         44 4 43 0 73 24
+// timelapse video  44 1 43 0 73 13
+// timelapse photo  44 1 43 2 73 20
+// nightlapse photo 44 2 43 2 73 21
 
 /*
 when USB connected:
@@ -477,6 +511,39 @@ export const statusInternalBatteryPercentage70: StatusMetadata = {
     values: [
         { id: 0, label: '0%' },
         { id: 100, label: '100%' },
+    ],
+};
+export const statusLegacyLastPhotoMode72: StatusMetadata = {
+    id: 72,
+    label: 'Last photo mode',
+    description: 'Last photo mode in UI',
+    type: 'integer',
+    values: [
+        { id: 17, label: 'Photo' },
+        { id: 19, label: 'Burst' },
+        { id: 18, label: 'Night' },
+    ],
+};
+export const statusLegacyLastVideoMode71: StatusMetadata = {
+    id: 71,
+    label: 'Last video mode',
+    description: 'Last video mode in UI',
+    type: 'integer',
+    values: [
+        { id: 12, label: 'Video' },
+        { id: 15, label: 'Looping' },
+    ],
+};
+export const statusLegacyLastTimelapseMode73: StatusMetadata = {
+    id: 73,
+    label: 'Last timelapse mode',
+    description: 'Last timelapse mode in UI',
+    type: 'integer',
+    values: [
+        { id: 24, label: 'Timewarp' },
+        { id: 13, label: 'Timelapse Video' },
+        { id: 20, label: 'Timelapse Photo' },
+        { id: 21, label: 'Nightlapse Photo' },
     ],
 };
 export const statusAccMicStatus74: StatusMetadata = {

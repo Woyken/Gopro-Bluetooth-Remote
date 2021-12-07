@@ -151,12 +151,88 @@ export const goproLegacyPresetsLoadGroupPhotoCommand = createAsyncThunk<void, vo
     await dispatch(sendCommandAction([0x02, 0x01, 0x01]));
 });
 
-export const goproLegacyPresetsLoadGroupTimelapseCommand = createAsyncThunk<void, void, { state: RootState }>(
-    'bluetoothDevice/goproLegacyPresetsLoadGroupTimelapseCommand',
+export const goproLegacyPresetsLoadGroupMultishotCommand = createAsyncThunk<void, void, { state: RootState }>(
+    'bluetoothDevice/goproLegacyPresetsLoadGroupMultishotCommand',
     async (_, { dispatch }) => {
         // Load timelapse group for GoPro, not documented in OpenGoPro
         // Tested with Hero 7 Black
-        await dispatch(sendCommandAction([0x02, 0x01, 0x02]));
+        // await dispatch(sendCommandAction([0x02, 0x01, 0x02]));
+        await dispatch(sendCommandAction([0x03, 0x01, 0x00, 0x01, 0x06]));
+    }
+);
+
+export const goproLegacyPresetsLoadPresetVideoCommand = createAsyncThunk<void, void, { state: RootState }>('bluetoothDevice/goproLegacyPresetsLoadPresetVideoCommand', async (_, { dispatch }) => {
+    // Load timelapse group for GoPro, not documented in OpenGoPro
+    // Tested with Hero 7 Black
+    await dispatch(sendCommandAction([0x03, 0x01, 0x00, 0x01, 0x00]));
+});
+
+export const goproLegacyPresetsLoadPresetTimeLapseVideoCommand = createAsyncThunk<void, void, { state: RootState }>(
+    'bluetoothDevice/goproLegacyPresetsLoadPresetTimeLapseVideoCommand',
+    async (_, { dispatch }) => {
+        // Load timelapse group for GoPro, not documented in OpenGoPro
+        // Tested with Hero 7 Black
+        await dispatch(sendCommandAction([0x03, 0x01, 0x00, 0x01, 0x01]));
+    }
+);
+
+export const goproLegacyPresetsLoadPresetLoopingVideoCommand = createAsyncThunk<void, void, { state: RootState }>(
+    'bluetoothDevice/goproLegacyPresetsLoadPresetLoopingVideoCommand',
+    async (_, { dispatch }) => {
+        // Load timelapse group for GoPro, not documented in OpenGoPro
+        // Tested with Hero 7 Black
+        await dispatch(sendCommandAction([0x03, 0x01, 0x00, 0x01, 0x03]));
+    }
+);
+
+export const goproLegacyPresetsLoadPresetTimewarpCommand = createAsyncThunk<void, void, { state: RootState }>(
+    'bluetoothDevice/goproLegacyPresetsLoadPresetTimewarpCommand',
+    async (_, { dispatch }) => {
+        // Load timelapse group for GoPro, not documented in OpenGoPro
+        // Tested with Hero 7 Black
+        await dispatch(sendCommandAction([0x03, 0x01, 0x00, 0x01, 0x04]));
+    }
+);
+
+export const goproLegacyPresetsLoadPresetPhotoCommand = createAsyncThunk<void, void, { state: RootState }>('bluetoothDevice/goproLegacyPresetsLoadPresetPhotoCommand', async (_, { dispatch }) => {
+    // Load timelapse group for GoPro, not documented in OpenGoPro
+    // Tested with Hero 7 Black
+    await dispatch(sendCommandAction([0x03, 0x01, 0x01, 0x01, 0x01]));
+});
+
+export const goproLegacyPresetsLoadPresetNightPhotoCommand = createAsyncThunk<void, void, { state: RootState }>(
+    'bluetoothDevice/goproLegacyPresetsLoadPresetNightPhotoCommand',
+    async (_, { dispatch }) => {
+        // Load timelapse group for GoPro, not documented in OpenGoPro
+        // Tested with Hero 7 Black
+        await dispatch(sendCommandAction([0x03, 0x01, 0x01, 0x01, 0x02]));
+    }
+);
+
+export const goproLegacyPresetsLoadPresetBurstPhotoCommand = createAsyncThunk<void, void, { state: RootState }>(
+    'bluetoothDevice/goproLegacyPresetsLoadPresetBurstPhotoCommand',
+    async (_, { dispatch }) => {
+        // Load timelapse group for GoPro, not documented in OpenGoPro
+        // Tested with Hero 7 Black
+        await dispatch(sendCommandAction([0x03, 0x01, 0x02, 0x01, 0x00]));
+    }
+);
+
+export const goproLegacyPresetsLoadPresetTimeLapsePhotoCommand = createAsyncThunk<void, void, { state: RootState }>(
+    'bluetoothDevice/goproLegacyPresetsLoadPresetTimeLapsePhotoCommand',
+    async (_, { dispatch }) => {
+        // Load timelapse group for GoPro, not documented in OpenGoPro
+        // Tested with Hero 7 Black
+        await dispatch(sendCommandAction([0x03, 0x01, 0x02, 0x01, 0x01]));
+    }
+);
+
+export const goproLegacyPresetsLoadPresetNightLapsePhotoCommand = createAsyncThunk<void, void, { state: RootState }>(
+    'bluetoothDevice/goproLegacyPresetsLoadPresetNightLapsePhotoCommand',
+    async (_, { dispatch }) => {
+        // Load timelapse group for GoPro, not documented in OpenGoPro
+        // Tested with Hero 7 Black
+        await dispatch(sendCommandAction([0x03, 0x01, 0x02, 0x01, 0x02]));
     }
 );
 
