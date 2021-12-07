@@ -2,8 +2,8 @@ import { statusApState69, statusEncodingActive10, statusInternalBatteryPercentag
 import {
     apControlWiFiApOff,
     apControlWiFiApOn,
-    goproLegacyPresetsLoadGroupPhotoCommand,
     goproLegacyPresetsLoadGroupMultishotCommand,
+    goproLegacyPresetsLoadGroupPhotoCommand,
     goproLegacyPresetsLoadGroupVideoCommand,
     goproSleepCommand,
     setShutterOffCommand,
