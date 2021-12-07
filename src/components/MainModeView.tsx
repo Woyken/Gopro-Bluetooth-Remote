@@ -1,3 +1,4 @@
+import { settingsCurrentMode92 } from 'store/goproBluetoothServiceActions/goproSettingsMetadata';
 import { statusApState69, statusEncodingActive10, statusInternalBatteryPercentage70, statusVideoProgressCounter13 } from 'store/goproBluetoothServiceActions/goproStatusMetadata';
 import {
     apControlWiFiApOff,
@@ -9,6 +10,7 @@ import {
     setShutterOffCommand,
     setShutterOnCommand,
 } from 'store/goproBluetoothSlice';
+import { SettingValue } from 'store/goproSettingsSlice';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { makeStyles } from 'theme/makeStyles';
 
@@ -75,10 +77,38 @@ const useStyles = makeStyles()({
     },
 });
 
-// Material ui button with camera icon in it
+enum DisplayModeGroup {
+    video,
+    photo,
+    timeLapse,
+}
+
+function getCurrentModeGroup(settingCurrentMode: SettingValue) {
+    if (!settingCurrentMode) return DisplayModeGroup.video;
+    switch (settingCurrentMode.value) {
+        case 0xc:
+        case 0xf:
+            return DisplayModeGroup.video;
+        case 0x11:
+        case 0x12:
+        case 0x13:
+            return DisplayModeGroup.photo;
+        case 0x18:
+        case 0xd:
+        case 0x14:
+        case 0x15:
+            return DisplayModeGroup.timeLapse;
+        default:
+            return DisplayModeGroup.video;
+    }
+}
+
+// TODO split this component
 const MainModeView: React.FC = () => {
     const { classes } = useStyles();
     const statuses = useAppSelector((state) => state.goproSettingsReducer.statuses);
+    const settingCurrentMode = useAppSelector((state) => state.goproSettingsReducer.settings[settingsCurrentMode92.id]);
+    const settingCurrentCategory = getCurrentModeGroup(settingCurrentMode);
     const deviceName = useAppSelector((state) => state.goproBluetoothReducer.deviceName);
     const isWifiApEnabled = statuses[statusApState69.id] === 1;
     const batteryPercentage = statuses[statusInternalBatteryPercentage70.id];
@@ -136,14 +166,32 @@ const MainModeView: React.FC = () => {
                     <div className={classes.bottomControls}>
                         <SettingsPreview />
                         <div className={classes.bottomCenteredButtons}>
-                            <Button onClick={handleTimelapseModeButtonClick} className={classes.button} aria-label="Timelapse mode" color="primary" variant="contained">
+                            <Button
+                                onClick={handleTimelapseModeButtonClick}
+                                className={classes.button}
+                                aria-label="Timelapse mode"
+                                color={settingCurrentCategory === DisplayModeGroup.timeLapse ? 'secondary' : 'primary'}
+                                variant="contained"
+                            >
                                 <TimelapseVideoIcon />
                             </Button>
 
-                            <Button onClick={handleVideoModeButtonClick} className={classes.button} aria-label="Video mode" color="primary" variant="contained">
+                            <Button
+                                onClick={handleVideoModeButtonClick}
+                                className={classes.button}
+                                aria-label="Video mode"
+                                color={settingCurrentCategory === DisplayModeGroup.video ? 'secondary' : 'primary'}
+                                variant="contained"
+                            >
                                 <VideocamIcon />
                             </Button>
-                            <Button onClick={handlePhotoModeButtonClick} className={classes.button} aria-label="Photo mode" color="primary" variant="contained">
+                            <Button
+                                onClick={handlePhotoModeButtonClick}
+                                className={classes.button}
+                                aria-label="Photo mode"
+                                color={settingCurrentCategory === DisplayModeGroup.photo ? 'secondary' : 'primary'}
+                                variant="contained"
+                            >
                                 <PhotoCameraIcon />
                             </Button>
                         </div>
