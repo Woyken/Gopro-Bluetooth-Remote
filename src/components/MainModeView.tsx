@@ -29,10 +29,12 @@ import SettingsPreview from './SettingsPreview';
 const useStyles = makeStyles()({
     pageWrapper: {
         display: 'flex',
-        height: '100%',
+        flexGrow: 1,
         flexDirection: 'column',
         justifyContent: 'space-between',
         alignItems: 'center',
+        marginTop: '1rem',
+        marginBottom: '1rem',
     },
     topControls: {
         width: '100%',
@@ -100,49 +102,51 @@ const MainModeView: React.FC = () => {
 
     return (
         <>
-            <div className={classes.pageWrapper}>
-                <div className={classes.topControls}>
-                    <br />
-                    <Container sx={{ width: 'fit-content' }}>
-                        <Paper sx={{ padding: '0.4em' }} elevation={2}>
-                            <Typography variant="h4">{deviceName}</Typography>
-                        </Paper>
-                        <IconButton onClick={handlePowerButtonClick}>
-                            <PowerSettingsNewIcon />
-                        </IconButton>
-                        <IconButton onClick={handleWiFiButtonClick}>{isWifiApEnabled ? <WifiIcon /> : <SignalWifiOffIcon />}</IconButton>
-                        <p>Mode: Video</p>
-                        <p>Storage left: 07:23</p>
-                        <p>Battery: {batteryPercentage}%</p>
-                    </Container>
-                </div>
-                <div className={classes.bottomControls}>
-                    <SettingsPreview />
-                    <div className={classes.bottomCenteredButtons}>
-                        <Button onClick={handleTimelapseModeButtonClick} className={classes.button} aria-label="Timelapse mode" color="primary" variant="contained">
-                            <TimelapseVideoIcon />
-                        </Button>
-
-                        <Button onClick={handleVideoModeButtonClick} className={classes.button} aria-label="Video mode" color="primary" variant="contained">
-                            <VideocamIcon />
-                        </Button>
-                        <Button onClick={handlePhotoModeButtonClick} className={classes.button} aria-label="Photo mode" color="primary" variant="contained">
-                            <PhotoCameraIcon />
-                        </Button>
-                    </div>
-                    <div className={classes.alignLeftToRight}>
-                        <div className={classes.floatLeft} />
-                        <div className={classes.recordButton}>
-                            <IconButton aria-label="Record button" color="error">
-                                <RecordInactiveIcon />
+            <Container maxWidth="sm" sx={{ display: 'flex', flexGrow: 1 }}>
+                <Paper className={classes.pageWrapper}>
+                    <div className={classes.topControls}>
+                        <br />
+                        <Container sx={{ width: 'fit-content' }}>
+                            <Paper sx={{ padding: '0.4em' }} elevation={2}>
+                                <Typography variant="h4">{deviceName}</Typography>
+                            </Paper>
+                            <IconButton onClick={handlePowerButtonClick}>
+                                <PowerSettingsNewIcon />
                             </IconButton>
+                            <IconButton onClick={handleWiFiButtonClick}>{isWifiApEnabled ? <WifiIcon /> : <SignalWifiOffIcon />}</IconButton>
+                            <p>Mode: Video</p>
+                            <p>Storage left: 07:23</p>
+                            <p>Battery: {batteryPercentage}%</p>
+                        </Container>
+                    </div>
+                    <div className={classes.bottomControls}>
+                        <SettingsPreview />
+                        <div className={classes.bottomCenteredButtons}>
+                            <Button onClick={handleTimelapseModeButtonClick} className={classes.button} aria-label="Timelapse mode" color="primary" variant="contained">
+                                <TimelapseVideoIcon />
+                            </Button>
+
+                            <Button onClick={handleVideoModeButtonClick} className={classes.button} aria-label="Video mode" color="primary" variant="contained">
+                                <VideocamIcon />
+                            </Button>
+                            <Button onClick={handlePhotoModeButtonClick} className={classes.button} aria-label="Photo mode" color="primary" variant="contained">
+                                <PhotoCameraIcon />
+                            </Button>
                         </div>
-                        <div className={classes.floatRight}>
-                            <Typography variant="h6">01:14</Typography>
+                        <div className={classes.alignLeftToRight}>
+                            <div className={classes.floatLeft} />
+                            <div className={classes.recordButton}>
+                                <IconButton aria-label="Record button" color="error">
+                                    <RecordInactiveIcon />
+                                </IconButton>
+                            </div>
+                            <div className={classes.floatRight}>
+                                <Typography variant="h6">01:14</Typography>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </Paper>
+            </Container>
         </>
     );
 };
