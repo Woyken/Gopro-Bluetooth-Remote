@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { gattConnect, requestDevice, writeGoProPacketData } from './goproBluetoothServiceActions/goproBluetoothServiceActions';
+import { statusSystemReady82 } from './goproBluetoothServiceActions/goproStatusMetadata';
 import { bluetoothDeviceState } from './goproBleServiceState';
 import { RootState, store } from './store';
-import { statusEncodingActive10, statusSystemBusy8, statusSystemReady82 } from './goproBluetoothServiceActions/goproStatusMetadata';
 
 export const tempSettingsDump = createAsyncThunk('bluetoothDevice/tempSettingsDump', async () => {
     const { characteristics } = bluetoothDeviceState;
@@ -78,10 +78,7 @@ export async function functionQueue(func: () => Promise<void>, context: unknown)
 
 function isDeviceReady() {
     const { statuses } = store.getState().goproSettingsReducer;
-    const systemBusy = statuses[statusSystemBusy8.id];
-    const encodingActive = statuses[statusEncodingActive10.id];
-    const systemReady = statuses[statusSystemReady82.id];
-    const canSendCommand = !systemBusy && !encodingActive && systemReady;
+    const canSendCommand = statuses[statusSystemReady82.id];
     return canSendCommand;
 }
 
