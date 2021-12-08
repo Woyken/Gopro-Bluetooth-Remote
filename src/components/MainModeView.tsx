@@ -78,9 +78,9 @@ const useStyles = makeStyles()({
 });
 
 enum DisplayModeGroup {
-    video,
-    photo,
-    timeLapse,
+    video = 'Video',
+    photo = 'Photo',
+    timeLapse = 'Time Lapse',
 }
 
 function getCurrentModeGroup(settingCurrentMode: SettingValue) {
@@ -158,7 +158,7 @@ const MainModeView: React.FC = () => {
                                 <PowerSettingsNewIcon />
                             </IconButton>
                             <IconButton onClick={handleWiFiButtonClick}>{isWifiApEnabled ? <WifiIcon /> : <SignalWifiOffIcon />}</IconButton>
-                            <p>Mode: Video</p>
+                            <p>Mode: {settingCurrentCategory}</p>
                             <p>Storage left: 07:23</p>
                             <p>Battery: {batteryPercentage}%</p>
                         </Container>
