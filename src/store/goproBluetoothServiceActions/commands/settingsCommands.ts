@@ -4,7 +4,7 @@ import { functionQueue } from 'utilities/functionQueue';
 
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { SettingMetadata } from './goproSettingsMetadata';
+import { SettingMetadata } from '../goproSettingsMetadata';
 
 type CommandData = number[];
 export async function sendSettingCommand(commandData: CommandData) {
@@ -16,7 +16,7 @@ export async function sendSettingCommand(commandData: CommandData) {
     }, sendSettingCommand);
 }
 
-export const setSettingValue = createAsyncThunk<void, { setting: SettingMetadata; valueId: number }, { state: RootState }>('goproSettings/setSettingValue', async (props) => {
+export const setSettingValueCommand = createAsyncThunk<void, { setting: SettingMetadata; valueId: number }, { state: RootState }>('settingsCommands/setSettingValue', async (props) => {
     const commandData: number[] = [];
     commandData.push(props.setting.length + 2);
     commandData.push(props.setting.id);

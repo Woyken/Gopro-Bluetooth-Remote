@@ -11,7 +11,8 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { goproBlePacketDataReaderProvider } from '../packetParsing/goproPacketReader';
 
-import { goproGetHardwareInfoCommand, openGoProGetVersion } from './goproCommands';
+import { getHardwareInfoCommand, openGoProGetVersionCommand } from './commands/commands';
+import { subscribeToSettingsChangesCommand, subscribeToStatusChangesCommand } from './commands/queryCommands';
 import { statusEncodingActive10, statusSystemBusy8, statusSystemReady82 } from './goproStatusMetadata';
 
 interface SelectDeviceResult {
@@ -82,14 +83,14 @@ export const gattConnect = createAsyncThunk<GattConnectResult, void, { state: Ro
     await bluetoothDeviceState.characteristics.settingsResponseCharacteristic.startNotifications();
 
     // Explicitly first subscribe to ones needed to know of we can send commands
-    await dispatch(subscribeToStatusChanges([statusSystemReady82.id, statusEncodingActive10.id, statusSystemBusy8.id]));
+    await dispatch(subscribeToStatusChangesCommand([statusSystemReady82.id, statusEncodingActive10.id, statusSystemBusy8.id]));
 
     // Subscribe to status and setting changes, will be useful to know when the device is ready to receive commands
-    await dispatch(subscribeToStatusChanges([...new Array(88).keys()]));
-    await dispatch(subscribeToSettingsChanges([...new Array(112).keys()]));
+    await dispatch(subscribeToStatusChangesCommand([...new Array(88).keys()]));
+    await dispatch(subscribeToSettingsChangesCommand([...new Array(112).keys()]));
 
-    await dispatch(openGoProGetVersion());
-    await dispatch(goproGetHardwareInfoCommand());
+    await dispatch(openGoProGetVersionCommand());
+    await dispatch(getHardwareInfoCommand());
     // TODO maybe subscribe only when UI requires it? With current interface we literally always need it...
     // For now subscribe to all known settings, last setting ID is 112, last status id is 88
 });
@@ -123,17 +124,3 @@ export async function writeGoProPacketData(characteristic: BluetoothRemoteGATTCh
     }
     return undefined;
 }
-
-export const subscribeToSettingsChanges = createAsyncThunk<void, number[], { state: RootState }>('bluetoothDevice/subscribeToSettingsChanges', async (settingsIds) => {
-    const { characteristics } = bluetoothDeviceState;
-    if (!characteristics) throw new Error('no characteristics');
-    const { queryCharacteristic } = characteristics;
-    await writeGoProPacketData(queryCharacteristic, [0x52, ...settingsIds]);
-});
-
-export const subscribeToStatusChanges = createAsyncThunk<void, number[], { state: RootState }>('bluetoothDevice/subscribeToStatusChanges', async (statusIds) => {
-    const { characteristics } = bluetoothDeviceState;
-    if (!characteristics) throw new Error('no characteristics');
-    const { queryCharacteristic } = characteristics;
-    await writeGoProPacketData(queryCharacteristic, [0x53, ...statusIds]);
-});

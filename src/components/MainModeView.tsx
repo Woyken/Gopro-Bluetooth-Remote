@@ -1,13 +1,13 @@
 import {
-    apControlWiFiApOff,
-    apControlWiFiApOn,
-    goproLegacyPresetsLoadGroupMultishotCommand,
-    goproLegacyPresetsLoadGroupPhotoCommand,
-    goproLegacyPresetsLoadGroupVideoCommand,
-    goproSleepCommand,
+    apControlWiFiApOffCommand,
+    apControlWiFiApOnCommand,
+    legacyPresetsLoadGroupMultishotCommand,
+    legacyPresetsLoadGroupPhotoCommand,
+    legacyPresetsLoadGroupVideoCommand,
     setShutterOffCommand,
     setShutterOnCommand,
-} from 'store/goproBluetoothServiceActions/goproCommands';
+    sleepCommand,
+} from 'store/goproBluetoothServiceActions/commands/commands';
 import { settingsCurrentMode92 } from 'store/goproBluetoothServiceActions/goproSettingsMetadata';
 import { statusApState69, statusEncodingActive10, statusInternalBatteryPercentage70, statusVideoProgressCounter13 } from 'store/goproBluetoothServiceActions/goproStatusMetadata';
 import { SettingValue } from 'store/goproSettingsSlice';
@@ -118,23 +118,23 @@ const MainModeView: React.FC = () => {
     const currentRecordingSeconds = currentRecordingTime % 60;
     const dispatch = useAppDispatch();
     const handlePowerButtonClick = () => {
-        dispatch(goproSleepCommand());
+        dispatch(sleepCommand());
     };
     const handleWiFiButtonClick = () => {
         if (isWifiApEnabled) {
-            dispatch(apControlWiFiApOff());
+            dispatch(apControlWiFiApOffCommand());
         } else {
-            dispatch(apControlWiFiApOn());
+            dispatch(apControlWiFiApOnCommand());
         }
     };
     const handlePhotoModeButtonClick = () => {
-        dispatch(goproLegacyPresetsLoadGroupPhotoCommand());
+        dispatch(legacyPresetsLoadGroupPhotoCommand());
     };
     const handleVideoModeButtonClick = () => {
-        dispatch(goproLegacyPresetsLoadGroupVideoCommand());
+        dispatch(legacyPresetsLoadGroupVideoCommand());
     };
     const handleTimelapseModeButtonClick = () => {
-        dispatch(goproLegacyPresetsLoadGroupMultishotCommand());
+        dispatch(legacyPresetsLoadGroupMultishotCommand());
     };
     const handleShutterButtonClick = () => {
         if (isShutterActive) {

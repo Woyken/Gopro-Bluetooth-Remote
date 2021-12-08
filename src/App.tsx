@@ -1,7 +1,7 @@
 import MainModeView from 'components/MainModeView';
 import React from 'react';
+import { getSettingsCommand, getStatusesCommand } from 'store/goproBluetoothServiceActions/commands/queryCommands';
 import { gattConnect, requestDevice } from 'store/goproBluetoothServiceActions/goproBluetoothServiceActions';
-import { tempSettingsDump, tempStatusesDump } from 'store/goproBluetoothSlice';
 import { makeStyles } from 'theme/makeStyles';
 
 import { Box, Button, Container, Typography } from '@mui/material';
@@ -76,8 +76,8 @@ const App: React.FC = () => {
                     <Typography variant="h4" component="h1" gutterBottom>
                         Connected to &quot;{goproBluetooth.deviceName}&quot;
                     </Typography>
-                    <Button onClick={() => dispatch(tempSettingsDump())}>settings dump</Button>
-                    <Button onClick={() => dispatch(tempStatusesDump())}>statuses dump</Button>
+                    <Button onClick={() => dispatch(getSettingsCommand())}>settings dump</Button>
+                    <Button onClick={() => dispatch(getStatusesCommand())}>statuses dump</Button>
                     {(window as unknown as { allButtons: boolean }).allButtons ? <AllCommandsButtons /> : null}
                 </Box>
             </Container>

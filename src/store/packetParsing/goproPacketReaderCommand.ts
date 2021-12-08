@@ -1,4 +1,4 @@
-import { goproGetHardwareInfoCommand, openGoProGetVersion } from 'store/goproBluetoothServiceActions/goproCommands';
+import { getHardwareInfoCommand, openGoProGetVersionCommand } from 'store/goproBluetoothServiceActions/commands/commands';
 import { GetHardwareInfoState, goproBluetoothSlice, OpenGoProVersionState } from 'store/goproBluetoothSlice';
 import { RootState } from 'store/store';
 
@@ -70,7 +70,7 @@ function dispatchCommandResponse(dispatch: ThunkDispatch<RootState, unknown, Any
         case CommandId.GetHardwareInfo: {
             if (commandResponse.errorCode === CommandResponseCode.error) {
                 // Error occured during get hardware info? Sometimes this happens while GoPro is in the middle of booting up.
-                dispatch(goproGetHardwareInfoCommand());
+                dispatch(getHardwareInfoCommand());
                 break;
             }
             dispatch(goproBluetoothSlice.actions.getHardwareInfoResponse(parseGetHardwareInfoResponse(commandResponse)));
@@ -79,7 +79,7 @@ function dispatchCommandResponse(dispatch: ThunkDispatch<RootState, unknown, Any
         case CommandId.OpenGoProGetVersion: {
             if (commandResponse.errorCode === CommandResponseCode.error) {
                 // Error occured during open GoPro? Sometimes this happens while GoPro is in the middle of booting up.
-                dispatch(openGoProGetVersion());
+                dispatch(openGoProGetVersionCommand());
                 break;
             }
             if (commandResponse.errorCode === CommandResponseCode.invalidParameter) {

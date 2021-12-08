@@ -1,21 +1,7 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { gattConnect, requestDevice } from './goproBluetoothServiceActions/goproBluetoothServiceActions';
 import { bluetoothDeviceState } from './goproBleServiceState';
-
-export const tempSettingsDump = createAsyncThunk('bluetoothDevice/tempSettingsDump', async () => {
-    const { characteristics } = bluetoothDeviceState;
-    if (!characteristics) throw new Error('no characteristics');
-    const { queryCharacteristic } = characteristics;
-    await queryCharacteristic.writeValue(new Uint8Array([0x01, 0x12]));
-});
-
-export const tempStatusesDump = createAsyncThunk('bluetoothDevice/tempStatusesDump', async () => {
-    const { characteristics } = bluetoothDeviceState;
-    if (!characteristics) throw new Error('no characteristics');
-    const { queryCharacteristic } = characteristics;
-    await queryCharacteristic.writeValue(new Uint8Array([0x01, 0x13]));
-});
 
 export interface OpenGoProVersionState {
     majorVersion: number;

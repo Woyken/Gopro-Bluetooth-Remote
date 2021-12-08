@@ -1,10 +1,10 @@
 import { useState } from 'react';
+import { setSettingValueCommand } from 'store/goproBluetoothServiceActions/commands/settingsCommands';
 import { SettingMetadata, videoModeKnownSettings } from 'store/goproBluetoothServiceActions/goproSettingsMetadata';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { makeStyles } from 'theme/makeStyles';
 
 import { Container, Dialog, DialogTitle, FormControl, InputLabel, MenuItem, Paper, Select, SelectChangeEvent } from '@mui/material';
-import { setSettingValue } from 'store/goproBluetoothServiceActions/goproSettingsActions';
 
 const useStyles = makeStyles()({
     temp: {
@@ -71,7 +71,7 @@ const SingleSetting: React.FC<IProps> = (props) => {
 
     const handleChange = (event: SelectChangeEvent) => {
         const selectedSettingValue = parseInt(event.target.value, 10);
-        dispatch(setSettingValue({ setting, valueId: selectedSettingValue }));
+        dispatch(setSettingValueCommand({ setting, valueId: selectedSettingValue }));
         // TODO redux state update
         // setAge(event.target.value);
         // TODO this is on click setting change
