@@ -1,4 +1,5 @@
-import { GetHardwareInfoState, goproBluetoothSlice, goproGetHardwareInfoCommand, openGoProGetVersion, OpenGoProVersionState } from 'store/goproBluetoothSlice';
+import { goproGetHardwareInfoCommand, openGoProGetVersion } from 'store/goproBluetoothServiceActions/goproCommands';
+import { GetHardwareInfoState, goproBluetoothSlice, OpenGoProVersionState } from 'store/goproBluetoothSlice';
 import { RootState } from 'store/store';
 
 import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';

@@ -1,9 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { gattConnect, requestDevice, writeGoProPacketData } from './goproBluetoothServiceActions/goproBluetoothServiceActions';
-import { statusSystemReady82 } from './goproBluetoothServiceActions/goproStatusMetadata';
+import { gattConnect, requestDevice } from './goproBluetoothServiceActions/goproBluetoothServiceActions';
 import { bluetoothDeviceState } from './goproBleServiceState';
-import { RootState, store } from './store';
 
 export const tempSettingsDump = createAsyncThunk('bluetoothDevice/tempSettingsDump', async () => {
     const { characteristics } = bluetoothDeviceState;
@@ -18,49 +16,6 @@ export const tempStatusesDump = createAsyncThunk('bluetoothDevice/tempStatusesDu
     const { queryCharacteristic } = characteristics;
     await queryCharacteristic.writeValue(new Uint8Array([0x01, 0x13]));
 });
-
-// async function listenForResponse(characteristic: BluetoothRemoteGATTCharacteristic) {
-//     let resolvePromise: (value: PacketResponse | PromiseLike<PacketResponse>) => void;
-//     let rejectPromise: (reason: Error) => void;
-//     const promise = new Promise<PacketResponse>((resolve, reject) => {
-//         resolvePromise = resolve;
-//         rejectPromise = reject;
-//     });
-//     const timeoutHandle = setTimeout(() => {
-//         rejectPromise(new Error('Timeout'));
-//     }, 1000);
-//     let responseDataAccumulator: number[] = [];
-//     let messageLengthLeft = 0;
-//     const onCharacteristicValueChanged = async () => {
-//         const { value } = characteristic;
-//         if (!value) {
-//             // Should not be possible...
-//             rejectPromise(new Error('This should not be possible, empty response value'));
-//             return;
-//         }
-//         const packetHeader = parsePacketHeader(value);
-//         if (packetHeader.isStart) {
-//             responseDataAccumulator = Array.from(new Uint8Array(value.buffer)).slice(packetHeader.headerSizeBytes);
-//             messageLengthLeft = packetHeader.messageLength;
-//             messageLengthLeft -= responseDataAccumulator.length;
-//         } else {
-//             // TODO consider using continuationIndex
-//             const continuationData = Array.from(new Uint8Array(value.buffer)).slice(packetHeader.headerSizeBytes);
-//             messageLengthLeft -= continuationData.length;
-//             responseDataAccumulator.push(...continuationData);
-//         }
-//         if (messageLengthLeft === 0) {
-//             resolvePromise(responseDataAccumulator);
-//         }
-//         if (messageLengthLeft < 0) rejectPromise(new Error('Did response messages get out of sync?'));
-//     };
-//     promise.finally(() => {
-//         characteristic.removeEventListener('characteristicvaluechanged', onCharacteristicValueChanged);
-//         clearTimeout(timeoutHandle);
-//     });
-//     characteristic.addEventListener('characteristicvaluechanged', onCharacteristicValueChanged);
-//     return promise;
-// }
 
 export interface OpenGoProVersionState {
     majorVersion: number;

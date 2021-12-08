@@ -1,7 +1,7 @@
 /* eslint-disable no-bitwise */
 import { toast } from 'react-toastify';
 import { bluetoothDeviceState } from 'store/goproBleServiceState';
-import { goproBluetoothSlice, goproGetHardwareInfoCommand, openGoProGetVersion } from 'store/goproBluetoothSlice';
+import { goproBluetoothSlice } from 'store/goproBluetoothSlice';
 import { commandResponseReceiverProvider } from 'store/packetParsing/goproPacketReaderCommand';
 import { queryResponseReceiverProvider } from 'store/packetParsing/goproPacketReaderQuery';
 import { settingsResponseReceiverProvider } from 'store/packetParsing/goproPacketReaderSetting';
@@ -11,6 +11,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { goproBlePacketDataReaderProvider } from '../packetParsing/goproPacketReader';
 
+import { goproGetHardwareInfoCommand, openGoProGetVersion } from './goproCommands';
 import { statusEncodingActive10, statusSystemBusy8, statusSystemReady82 } from './goproStatusMetadata';
 
 interface SelectDeviceResult {

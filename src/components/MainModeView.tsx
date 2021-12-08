@@ -1,5 +1,3 @@
-import { settingsCurrentMode92 } from 'store/goproBluetoothServiceActions/goproSettingsMetadata';
-import { statusApState69, statusEncodingActive10, statusInternalBatteryPercentage70, statusVideoProgressCounter13 } from 'store/goproBluetoothServiceActions/goproStatusMetadata';
 import {
     apControlWiFiApOff,
     apControlWiFiApOn,
@@ -9,7 +7,9 @@ import {
     goproSleepCommand,
     setShutterOffCommand,
     setShutterOnCommand,
-} from 'store/goproBluetoothSlice';
+} from 'store/goproBluetoothServiceActions/goproCommands';
+import { settingsCurrentMode92 } from 'store/goproBluetoothServiceActions/goproSettingsMetadata';
+import { statusApState69, statusEncodingActive10, statusInternalBatteryPercentage70, statusVideoProgressCounter13 } from 'store/goproBluetoothServiceActions/goproStatusMetadata';
 import { SettingValue } from 'store/goproSettingsSlice';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { makeStyles } from 'theme/makeStyles';

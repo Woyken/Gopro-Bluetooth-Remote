@@ -1,5 +1,3 @@
-import { Button } from '@mui/material';
-
 import {
     analyticsSetThirdPartyClient,
     apControlWiFiApOff,
@@ -34,7 +32,10 @@ import {
     presetsLoadUltraSloMo,
     setShutterOffCommand,
     setShutterOnCommand,
-} from '../store/goproBluetoothSlice';
+} from 'store/goproBluetoothServiceActions/goproCommands';
+
+import { Button } from '@mui/material';
+
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 
 const AllCommandsButtons: React.FC = () => {
