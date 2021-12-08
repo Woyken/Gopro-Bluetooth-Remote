@@ -96,17 +96,17 @@ define(['./workbox-a51b997a'], (function (workbox) { 'use strict';
     "url": "assets/index.5561b2f0.css",
     "revision": null
   }, {
-    "url": "assets/index.b5da8b3a.js",
+    "url": "assets/index.6bc6b832.js",
     "revision": null
   }, {
-    "url": "assets/react.42d8619f.js",
+    "url": "assets/react.58b5f2ed.js",
     "revision": null
   }, {
-    "url": "assets/vendor.701cf9bd.js",
+    "url": "assets/vendor.d712088e.js",
     "revision": null
   }, {
     "url": "index.html",
-    "revision": "37f5f80255935eb443ac523defea6da1"
+    "revision": "e6225f7a6e36c8f3bc3d784188bd0a0c"
   }, {
     "url": "camera.ico",
     "revision": "043eb22b6e8605bbceb61cf021c602a8"
