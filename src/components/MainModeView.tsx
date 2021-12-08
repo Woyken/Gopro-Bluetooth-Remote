@@ -170,8 +170,8 @@ const MainModeView: React.FC = () => {
                                 onClick={handleTimelapseModeButtonClick}
                                 className={classes.button}
                                 aria-label="Timelapse mode"
-                                color={settingCurrentCategory === DisplayModeGroup.timeLapse ? 'secondary' : 'primary'}
-                                variant="contained"
+                                color="primary"
+                                variant={settingCurrentCategory === DisplayModeGroup.timeLapse ? 'text' : 'outlined'}
                             >
                                 <TimelapseVideoIcon />
                             </Button>
@@ -180,8 +180,8 @@ const MainModeView: React.FC = () => {
                                 onClick={handleVideoModeButtonClick}
                                 className={classes.button}
                                 aria-label="Video mode"
-                                color={settingCurrentCategory === DisplayModeGroup.video ? 'secondary' : 'primary'}
-                                variant="contained"
+                                color="primary"
+                                variant={settingCurrentCategory === DisplayModeGroup.video ? 'text' : 'outlined'}
                             >
                                 <VideocamIcon />
                             </Button>
@@ -189,8 +189,8 @@ const MainModeView: React.FC = () => {
                                 onClick={handlePhotoModeButtonClick}
                                 className={classes.button}
                                 aria-label="Photo mode"
-                                color={settingCurrentCategory === DisplayModeGroup.photo ? 'secondary' : 'primary'}
-                                variant="contained"
+                                color="primary"
+                                variant={settingCurrentCategory === DisplayModeGroup.photo ? 'text' : 'outlined'}
                             >
                                 <PhotoCameraIcon />
                             </Button>
