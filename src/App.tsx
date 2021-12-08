@@ -1,4 +1,4 @@
-import { Header } from 'components/Header/Header';
+import { Header } from 'components/Header';
 import MainModeView from 'components/MainModeView';
 import React from 'react';
 import { getSettingsCommand, getStatusesCommand } from 'store/goproBluetoothServiceActions/commands/queryCommands';
