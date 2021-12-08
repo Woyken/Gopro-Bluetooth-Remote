@@ -1,6 +1,6 @@
 import { bluetoothDeviceState } from 'store/goproBleServiceState';
-import { functionQueue } from 'store/goproBluetoothSlice';
 import { RootState } from 'store/store';
+import { functionQueue } from 'utilities/functionQueue';
 
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
