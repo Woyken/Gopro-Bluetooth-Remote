@@ -86,6 +86,7 @@ export const gattConnect = createAsyncThunk<GattConnectResult, void, { state: Ro
     await dispatch(subscribeToStatusChangesCommand([statusSystemReady82.id, statusEncodingActive10.id, statusSystemBusy8.id]));
 
     // Subscribe to status and setting changes, will be useful to know when the device is ready to receive commands
+    // TODO Reconsider this subscribing logic
     await dispatch(subscribeToStatusChangesCommand([...new Array(88).keys()]));
     await dispatch(subscribeToSettingsChangesCommand([...new Array(112).keys()]));
 
