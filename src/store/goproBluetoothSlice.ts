@@ -30,14 +30,14 @@ interface GoproBluetoothDeviceState {
     deviceName: string;
     error?: string;
     isGattConnecting: boolean;
-    gattConnected: boolean;
+    isGattConnected: boolean;
     goproBluetoothDeviceCommandsState: GoproBluetoothDeviceCommandsState;
 }
 
 export const initialState: GoproBluetoothDeviceState = {
     isRequestingDevice: false,
     isDeviceSelected: false,
-    gattConnected: false,
+    isGattConnected: false,
     isGattConnecting: false,
     deviceName: 'unknown',
     goproBluetoothDeviceCommandsState: {
@@ -50,7 +50,7 @@ export const goproBluetoothSlice = createSlice({
     initialState,
     reducers: {
         gattDisconnected: (state, action: PayloadAction<string | undefined>) => {
-            state.gattConnected = false;
+            state.isGattConnected = false;
             state.error = action.payload;
         },
         getHardwareInfoResponse: (state, action: PayloadAction<GetHardwareInfoState>) => {
@@ -83,15 +83,15 @@ export const goproBluetoothSlice = createSlice({
         });
         builder.addCase(gattConnect.pending, (state) => {
             state.isGattConnecting = true;
-            state.gattConnected = false;
+            state.isGattConnected = false;
         });
         builder.addCase(gattConnect.fulfilled, (state) => {
             state.isGattConnecting = false;
-            state.gattConnected = true;
+            state.isGattConnected = true;
         });
         builder.addCase(gattConnect.rejected, (state, action) => {
             state.isGattConnecting = false;
-            state.gattConnected = false;
+            state.isGattConnected = false;
             state.error = action.error.message ?? 'unknown error';
         });
     },

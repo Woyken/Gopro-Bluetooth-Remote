@@ -1,14 +1,12 @@
+import { ConnectToGoProView } from 'components/contentPages/ConnectToGoProPage';
+import { ErrorPage } from 'components/contentPages/ErrorPage';
+import { SearchForGoProView } from 'components/contentPages/SearchForGoProPage';
 import { Header } from 'components/Header';
 import MainModeView from 'components/MainModeView';
 import React from 'react';
-import { getSettingsCommand, getStatusesCommand } from 'store/goproBluetoothServiceActions/commands/queryCommands';
-import { gattConnect, requestDevice } from 'store/goproBluetoothServiceActions/goproBluetoothServiceActions';
 import { makeStyles } from 'theme/makeStyles';
 
-import { Box, Button, Container, Typography } from '@mui/material';
-
-import AllCommandsButtons from './components/AllCommandsButtons';
-import { useAppDispatch, useAppSelector } from './store/hooks';
+import { useAppSelector } from './store/hooks';
 
 const useStyles = makeStyles()({
     flexContent: {
@@ -21,81 +19,22 @@ const useStyles = makeStyles()({
     },
 });
 
+const RenderContent: React.FC = () => {
+    const isDeviceSelected = useAppSelector((state) => state.goproBluetoothReducer.isDeviceSelected);
+    const isGattConnected = useAppSelector((state) => state.goproBluetoothReducer.isGattConnected);
+    if (window.location.protocol !== 'https:') return <ErrorPage errorTitle="Bluetooth requires https" errorDescription="Web Bluetooth will only work on https pages" />;
+    if (!('bluetooth' in navigator)) return <ErrorPage errorTitle="Bluetooth not supported" errorDescription="Your browser does not support bluetooth. https://caniuse.com/web-bluetooth" />;
+    if (!isDeviceSelected) return <SearchForGoProView />;
+    if (!isGattConnected) return <ConnectToGoProView />;
+    return <MainModeView />;
+};
+
 const App: React.FC = () => {
     const { classes } = useStyles();
-    const goproBluetooth = useAppSelector((state) => state.goproBluetoothReducer);
-    const dispatch = useAppDispatch();
-    if (window.location.protocol === 'http:') {
-        return <div>Bluetooth is not supported for http pages</div>;
-    }
-    if (typeof navigator.bluetooth === 'undefined') {
-        return <div>bluetooth not found for this browser</div>;
-    }
-    if (!goproBluetooth.isDeviceSelected) {
-        if (goproBluetooth.isRequestingDevice) {
-            return <div>Select Gopro bluetooth device from prompt</div>;
-        }
-        return (
-            <>
-                <div className={classes.flexContent}>
-                    <Header />
-                    <Container maxWidth="sm">
-                        <Box sx={{ my: 4 }}>
-                            <Typography variant="h4" component="h1" gutterBottom>
-                                Search for GoPro
-                            </Typography>
-                            <Button onClick={() => dispatch(requestDevice())}>Search</Button>
-                            {goproBluetooth.error ? <div>{goproBluetooth.error}</div> : null}
-                        </Box>
-                    </Container>
-                    <MainModeView />
-                </div>
-            </>
-        );
-    }
-    if (!goproBluetooth.gattConnected) {
-        if (goproBluetooth.isGattConnecting) {
-            return <div>Connecting to bluetooth device</div>;
-        }
-        return (
-            <div>
-                <Container maxWidth="sm">
-                    <Box sx={{ my: 4 }}>
-                        <Typography variant="h4" component="h1" gutterBottom>
-                            Connect to {goproBluetooth.deviceName}
-                        </Typography>
-                        <Button onClick={() => dispatch(gattConnect())}>Connect</Button>
-                        {goproBluetooth.error ? <div>{goproBluetooth.error}</div> : null}
-                    </Box>
-                </Container>
-            </div>
-        );
-    }
-    // TODO need a concept how could switching between modes look
-    // Imitating Gopro UI doesn't really work, since we don't have preview here
     return (
         <div className={classes.flexContent}>
-            <Container maxWidth="sm">
-                <Box sx={{ my: 4 }}>
-                    <Typography variant="h4" component="h1" gutterBottom>
-                        Connected to &quot;{goproBluetooth.deviceName}&quot;
-                    </Typography>
-                    <Button onClick={() => dispatch(getSettingsCommand())}>settings dump</Button>
-                    <Button onClick={() => dispatch(getStatusesCommand())}>statuses dump</Button>
-                    {(window as unknown as { allButtons: boolean }).allButtons ? <AllCommandsButtons /> : null}
-                </Box>
-            </Container>
-            <MainModeView />
-            {/* <div columns="1fr" rows="65px 1fr 45px" areas={['header', 'content', 'footer']}>
-                <div area="header">
-                    <Header />
-                </div>
-                <div area="content">
-                    <Content />
-                    <FindCamera />
-                </div>
-                <div area="footer">Footer</div>
-            </div> */}
+            <Header />
+            <RenderContent />
         </div>
     );
 };

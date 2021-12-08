@@ -8,6 +8,7 @@ import {
     setShutterOnCommand,
     sleepCommand,
 } from 'store/goproBluetoothServiceActions/commands/commands';
+import { getSettingsCommand, getStatusesCommand } from 'store/goproBluetoothServiceActions/commands/queryCommands';
 import { settingsCurrentMode92 } from 'store/goproBluetoothServiceActions/goproSettingsMetadata';
 import { statusApState69, statusEncodingActive10, statusInternalBatteryPercentage70, statusVideoProgressCounter13 } from 'store/goproBluetoothServiceActions/goproStatusMetadata';
 import { SettingValue } from 'store/goproSettingsSlice';
@@ -158,6 +159,8 @@ const MainModeView: React.FC = () => {
                                 <PowerSettingsNewIcon />
                             </IconButton>
                             <IconButton onClick={handleWiFiButtonClick}>{isWifiApEnabled ? <WifiIcon /> : <SignalWifiOffIcon />}</IconButton>
+                            <Button onClick={() => dispatch(getSettingsCommand())}>settings dump</Button>
+                            <Button onClick={() => dispatch(getStatusesCommand())}>statuses dump</Button>
                             <p>Mode: {settingCurrentCategory}</p>
                             <p>Storage left: 07:23</p>
                             <p>Battery: {batteryPercentage}%</p>
