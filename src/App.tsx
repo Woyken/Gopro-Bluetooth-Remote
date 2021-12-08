@@ -1,3 +1,4 @@
+import { Header } from 'components/Header/Header';
 import MainModeView from 'components/MainModeView';
 import React from 'react';
 import { getSettingsCommand, getStatusesCommand } from 'store/goproBluetoothServiceActions/commands/queryCommands';
@@ -35,18 +36,21 @@ const App: React.FC = () => {
             return <div>Select Gopro bluetooth device from prompt</div>;
         }
         return (
-            <div className={classes.flexContent}>
-                <Container maxWidth="sm">
-                    <Box sx={{ my: 4 }}>
-                        <Typography variant="h4" component="h1" gutterBottom>
-                            Search for GoPro
-                        </Typography>
-                        <Button onClick={() => dispatch(requestDevice())}>Search</Button>
-                        {goproBluetooth.error ? <div>{goproBluetooth.error}</div> : null}
-                    </Box>
-                </Container>
-                <MainModeView />
-            </div>
+            <>
+                <div className={classes.flexContent}>
+                    <Header />
+                    <Container maxWidth="sm">
+                        <Box sx={{ my: 4 }}>
+                            <Typography variant="h4" component="h1" gutterBottom>
+                                Search for GoPro
+                            </Typography>
+                            <Button onClick={() => dispatch(requestDevice())}>Search</Button>
+                            {goproBluetooth.error ? <div>{goproBluetooth.error}</div> : null}
+                        </Box>
+                    </Container>
+                    <MainModeView />
+                </div>
+            </>
         );
     }
     if (!goproBluetooth.gattConnected) {
