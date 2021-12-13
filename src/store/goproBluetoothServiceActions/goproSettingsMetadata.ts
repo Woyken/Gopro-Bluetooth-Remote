@@ -976,6 +976,22 @@ export const photoSingleModeKnownSettings: SettingMetadata[] = [
     settingColor23,
 ];
 
+export const settingQuickCapture54: SettingMetadata = {
+    id: 0x36, // 54
+    label: 'Quick Capture',
+    length: 1,
+    values: [
+        {
+            id: 0x0,
+            label: 'Off',
+        },
+        {
+            id: 0x1,
+            label: 'On',
+        },
+    ],
+};
+
 export const settingBeeps87: SettingMetadata = {
     id: 0x57, // 87
     label: 'Beeps',
@@ -1250,6 +1266,7 @@ Regional Video format
 */
 
 export const generalSettings: SettingMetadata[] = [
+    settingQuickCapture54,
     settingBeeps87,
     settingDefaultMode89,
     settingLeds91,
