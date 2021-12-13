@@ -64,20 +64,12 @@ interface IProps {
 const SingleSetting: React.FC<IProps> = (props) => {
     const dispatch = useAppDispatch();
     const { settings } = useAppSelector((state) => state.goproSettingsReducer);
-    // goproBluetooth.goproBluetoothDeviceCommandsState
-
     const { setting } = props;
     const currentSettingValue = settings[setting.id];
 
     const handleChange = (event: SelectChangeEvent) => {
         const selectedSettingValue = parseInt(event.target.value, 10);
         dispatch(setSettingValueCommand({ setting, valueId: selectedSettingValue }));
-        // TODO redux state update
-        // setAge(event.target.value);
-        // TODO this is on click setting change
-        // dispatch setting change, input setting and value
-
-        // TODO subscribe to settings changes
     };
     useStyles();
 
@@ -92,9 +84,6 @@ const SingleSetting: React.FC<IProps> = (props) => {
                             {value.label}
                         </MenuItem>
                     ))}
-                    {/* <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem> */}
                 </Select>
             </FormControl>
         </>
