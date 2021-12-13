@@ -10,7 +10,15 @@ import {
 } from 'store/goproBluetoothServiceActions/commands/commands';
 import { getSettingsCommand, getStatusesCommand } from 'store/goproBluetoothServiceActions/commands/queryCommands';
 import { settingsCurrentMode92 } from 'store/goproBluetoothServiceActions/goproSettingsMetadata';
-import { statusApState69, statusEncodingActive10, statusInternalBatteryPercentage70, statusVideoProgressCounter13 } from 'store/goproBluetoothServiceActions/goproStatusMetadata';
+import {
+    statusApState69,
+    statusEncodingActive10,
+    statusInternalBatteryLevel2,
+    statusInternalBatteryPercentage70,
+    statusRemainingPhotos34,
+    statusRemainingVideoTime35,
+    statusVideoProgressCounter13,
+} from 'store/goproBluetoothServiceActions/goproStatusMetadata';
 import { SettingValue } from 'store/goproSettingsSlice';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { makeStyles } from 'theme/makeStyles';
@@ -19,6 +27,7 @@ import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import RecordInactiveIcon from '@mui/icons-material/RadioButtonChecked';
+import SdStorageIcon from '@mui/icons-material/SdStorage';
 // import SignalWifi0BarIcon from '@mui/icons-material/SignalWifi0Bar';
 // import SignalWifi1BarIcon from '@mui/icons-material/SignalWifi1Bar';
 // import SignalWifi2BarIcon from '@mui/icons-material/SignalWifi2Bar';
@@ -30,6 +39,7 @@ import VideocamIcon from '@mui/icons-material/Videocam';
 import WifiIcon from '@mui/icons-material/Wifi';
 import { Button, Container, IconButton, Paper, Typography } from '@mui/material';
 
+import BatteryPercentageIcon from './BatteryPercentageIcon';
 import SettingsPreview from './SettingsPreview';
 
 const useStyles = makeStyles()({
@@ -112,7 +122,16 @@ const MainModeView: React.FC = () => {
     const settingCurrentCategory = getCurrentModeGroup(settingCurrentMode);
     const deviceName = useAppSelector((state) => state.goproBluetoothReducer.deviceName);
     const isWifiApEnabled = statuses[statusApState69.id] === 1;
-    const batteryPercentage = statuses[statusInternalBatteryPercentage70.id];
+    const batteryPercentage = statuses[statusInternalBatteryPercentage70.id] as number;
+    const batteryLevelBars = statuses[statusInternalBatteryLevel2.id] as number;
+    // TODO sd card icon, display it's status statusSdStatus33
+    // TODO remaining space KB in sd card statusRemainingSpace54
+    const videoRemainingTime = statuses[statusRemainingVideoTime35.id] as number;
+    const photoRemainingTime = statuses[statusRemainingPhotos34.id] as number;
+    const isVideoMode = settingCurrentCategory !== DisplayModeGroup.photo;
+    const videoRemainingMinutes = Math.floor(videoRemainingTime / 60) % 60;
+    const videoRemainingHours = Math.floor(videoRemainingTime / 60 / 60);
+    const storageRemainingTimeText = isVideoMode ? `${videoRemainingHours}:${videoRemainingMinutes}` : `${photoRemainingTime <= 999 ? photoRemainingTime : '999+'}`;
     const isShutterActive = statuses[statusEncodingActive10.id] === 1;
     const currentRecordingTime = statuses[statusVideoProgressCounter13.id] as number;
     const currentRecordingMinutes = Math.floor(currentRecordingTime / 60);
@@ -159,11 +178,14 @@ const MainModeView: React.FC = () => {
                                 <PowerSettingsNewIcon />
                             </IconButton>
                             <IconButton onClick={handleWiFiButtonClick}>{isWifiApEnabled ? <WifiIcon /> : <SignalWifiOffIcon />}</IconButton>
+                            <IconButton>
+                                <SdStorageIcon />
+                                <Typography variant="body1">{storageRemainingTimeText}</Typography>
+                            </IconButton>
+                            <BatteryPercentageIcon batteryPercentage={batteryPercentage} batteryLevelBars={batteryLevelBars} />
                             <Button onClick={() => dispatch(getSettingsCommand())}>settings dump</Button>
                             <Button onClick={() => dispatch(getStatusesCommand())}>statuses dump</Button>
                             <p>Mode: {settingCurrentCategory}</p>
-                            <p>Storage left: 07:23</p>
-                            <p>Battery: {batteryPercentage}%</p>
                         </Container>
                     </div>
                     <div className={classes.bottomControls}>
