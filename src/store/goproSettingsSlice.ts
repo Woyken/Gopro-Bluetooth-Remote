@@ -13,7 +13,7 @@ interface Settings {
 }
 
 interface Statuses {
-    [key: number]: number | string;
+    [key: number]: number | string | undefined;
 }
 
 export interface GoproSettingsState {
