@@ -63,11 +63,11 @@ interface IProps {
 
 const SingleSetting: React.FC<IProps> = (props) => {
     const dispatch = useAppDispatch();
-    const { settings: settings2 } = useAppSelector((state) => state.goproSettingsReducer);
+    const { settings } = useAppSelector((state) => state.goproSettingsReducer);
     // goproBluetooth.goproBluetoothDeviceCommandsState
 
     const { setting } = props;
-    const currentSettingValue = settings2[setting.id];
+    const currentSettingValue = settings[setting.id];
 
     const handleChange = (event: SelectChangeEvent) => {
         const selectedSettingValue = parseInt(event.target.value, 10);
