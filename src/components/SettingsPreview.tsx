@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { setSettingValueCommand } from 'store/goproBluetoothServiceActions/commands/settingsCommands';
-import { SettingMetadata, videoModeKnownSettings } from 'store/goproBluetoothServiceActions/goproSettingsMetadata';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { selectCurrentModeSettings } from 'store/selectors/settingsSelectors';
 import { makeStyles } from 'theme/makeStyles';
 
 import { Container, Dialog, DialogTitle, FormControl, InputLabel, MenuItem, Paper, Select, SelectChangeEvent } from '@mui/material';
@@ -20,7 +20,7 @@ const SettingsPreview: React.FC = () => {
     useStyles();
     return (
         <>
-            <SettingsPreviewModal isOpen={isModalOpen} onClose={handleCloseModal} settings={videoModeKnownSettings} />
+            <SettingsPreviewModal isOpen={isModalOpen} onClose={handleCloseModal} />
             <Container maxWidth="sm" sx={{ width: 'fit-content', minWidth: '40vw' }}>
                 <Paper elevation={previewElevation} onMouseOver={() => setPreviewElevation(3)} onMouseOut={() => setPreviewElevation(1)} onClick={handleOpenModal}>
                     <p style={{ textAlign: 'center' }}>
@@ -37,17 +37,17 @@ const SettingsPreview: React.FC = () => {
 interface IPropss {
     isOpen: boolean;
     onClose: () => void;
-    settings: SettingMetadata[];
 }
 
 const SettingsPreviewModal: React.FC<IPropss> = (props) => {
-    const { isOpen, onClose, settings } = props;
+    const { isOpen, onClose } = props;
+    const currentModeSettings = useAppSelector(selectCurrentModeSettings);
     return (
         <>
             <Dialog open={isOpen} onClose={onClose}>
                 <DialogTitle>Change current mode settings</DialogTitle>
-                {settings.map((setting) => (
-                    <SingleSetting key={setting.id} setting={setting} />
+                {currentModeSettings.map((setting) => (
+                    <SingleSetting key={setting.settingId} setting={setting} />
                 ))}
                 <div>actual view todo</div>
             </Dialog>
@@ -58,17 +58,17 @@ const SettingsPreviewModal: React.FC<IPropss> = (props) => {
 export default SettingsPreview;
 
 interface IProps {
-    setting: SettingMetadata;
+    setting: ReturnType<typeof selectCurrentModeSettings>[0];
 }
 
 const SingleSetting: React.FC<IProps> = (props) => {
     const dispatch = useAppDispatch();
     const { setting } = props;
-    const currentSettingValue = useAppSelector((state) => state.goproSettingsReducer.settings[setting.id]);
+    const currentSettingValue = useAppSelector((state) => state.goproSettingsReducer.settings[setting.settingId]);
 
     const handleChange = (event: SelectChangeEvent) => {
         const selectedSettingValue = parseInt(event.target.value, 10);
-        dispatch(setSettingValueCommand({ setting, valueId: selectedSettingValue }));
+        dispatch(setSettingValueCommand({ settingId: setting.settingId, valueId: selectedSettingValue }));
     };
     useStyles();
 
@@ -76,11 +76,11 @@ const SingleSetting: React.FC<IProps> = (props) => {
     return (
         <>
             <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-                <InputLabel id="demo-simple-select-standard-label">{setting.label}</InputLabel>
-                <Select labelId="demo-simple-select-standard-label" id="demo-simple-select-standard" value={currentSettingValue.value.toString()} onChange={handleChange} label={setting.label}>
-                    {setting.values.map((value) => (
-                        <MenuItem key={value.id} value={value.id}>
-                            {value.label}
+                <InputLabel id="demo-simple-select-standard-label">{setting.settingLabel}</InputLabel>
+                <Select labelId="demo-simple-select-standard-label" id="demo-simple-select-standard" value={currentSettingValue.value.toString()} onChange={handleChange} label={setting.settingLabel}>
+                    {setting.possibleValues.map((possibleValue) => (
+                        <MenuItem key={possibleValue.id} value={possibleValue.id}>
+                            {possibleValue.label}
                         </MenuItem>
                     ))}
                 </Select>

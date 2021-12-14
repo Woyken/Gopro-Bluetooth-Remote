@@ -4,7 +4,7 @@ import { functionQueue } from 'utilities/functionQueue';
 
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { SettingMetadata } from '../goproSettingsMetadata';
+import { allKnownSettings } from '../goproSettingsMetadata';
 
 type CommandData = number[];
 export async function sendSettingCommand(commandData: CommandData) {
@@ -16,12 +16,22 @@ export async function sendSettingCommand(commandData: CommandData) {
     }, sendSettingCommand);
 }
 
-export const setSettingValueCommand = createAsyncThunk<void, { setting: SettingMetadata; valueId: number }, { state: RootState }>('settingsCommands/setSettingValue', async (props) => {
+function getByteLength(data: number) {
+    let i = 0;
+    while (data > 0) {
+        i++;
+        data /= 0x100;
+    }
+    return i;
+}
+
+export const setSettingValueCommand = createAsyncThunk<void, { settingId: number; valueId: number }, { state: RootState }>('settingsCommands/setSettingValue', async (props) => {
+    const settingLength = allKnownSettings.find((setting) => setting.id === props.settingId)?.length ?? getByteLength(props.valueId);
     const commandData: number[] = [];
-    commandData.push(props.setting.length + 2);
-    commandData.push(props.setting.id);
-    commandData.push(props.setting.length);
-    for (let i = 0; i < props.setting.length; i++) {
+    commandData.push(settingLength + 2);
+    commandData.push(props.settingId);
+    commandData.push(settingLength);
+    for (let i = 0; i < settingLength; i++) {
         // eslint-disable-next-line no-bitwise
         commandData.push((props.valueId >> (i * 8)) & 0xff);
     }
