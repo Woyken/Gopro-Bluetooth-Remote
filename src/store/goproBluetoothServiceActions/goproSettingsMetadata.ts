@@ -99,6 +99,71 @@ export const settingFov4: SettingMetadata = {
     ],
 };
 
+export const settingInterval5: SettingMetadata = {
+    id: 0x5,
+    label: 'Interval',
+    length: 1,
+    values: [
+        {
+            id: 0x0,
+            label: '0.5s',
+        },
+        {
+            id: 0x1,
+            label: '1s',
+        },
+        {
+            id: 0x2,
+            label: '2s',
+        },
+
+        {
+            id: 0x3,
+            label: '5s',
+        },
+        {
+            id: 0x4,
+            label: '10s',
+        },
+        {
+            id: 0x5,
+            label: '30s',
+        },
+        {
+            id: 0x6,
+            label: '60s',
+        },
+    ],
+};
+
+export const settingInterval6: SettingMetadata = {
+    id: 0x6,
+    label: 'Interval',
+    length: 1,
+    values: [
+        {
+            id: 0x0,
+            label: 'MAX',
+        },
+        {
+            id: 0x1,
+            label: '5m',
+        },
+        {
+            id: 0x2,
+            label: '20m',
+        },
+        {
+            id: 0x3,
+            label: '60m',
+        },
+        {
+            id: 0x4,
+            label: '120m',
+        },
+    ],
+};
+
 export const settingLowLight8: SettingMetadata = {
     id: 0x8,
     label: 'Low light',
@@ -275,6 +340,353 @@ export const settingEvComp15: SettingMetadata = {
     ],
 };
 
+export const settingPhotoFov17: SettingMetadata = {
+    id: 0x11, // 17
+    label: 'FOV',
+    length: 1,
+    values: [
+        {
+            id: 0x0,
+            label: 'Wide',
+        },
+        {
+            id: 0xa, // 10
+            label: 'Linear',
+        },
+    ],
+};
+
+export const settingPhotoShutter19: SettingMetadata = {
+    id: 0x13, // 19
+    label: 'Shutter',
+    length: 1,
+    values: [
+        {
+            id: 0x0,
+            label: 'Auto',
+        },
+        {
+            id: 0x6,
+            label: '30s',
+        },
+        {
+            id: 0x5,
+            label: '20s',
+        },
+        {
+            id: 0x4,
+            label: '15s',
+        },
+        {
+            id: 0x3,
+            label: '10s',
+        },
+        {
+            id: 0x2,
+            label: '5s',
+        },
+        {
+            id: 0x1,
+            label: '2s',
+        },
+    ],
+};
+
+export const settingPhotoProtune21: SettingMetadata = {
+    id: 0x15, // 21
+    label: settingProtune10.label,
+    length: settingProtune10.length,
+    values: settingProtune10.values,
+};
+
+export const settingPhotoWhiteBalance22: SettingMetadata = {
+    id: 0x16, // 22
+    label: settingWhiteBalance11.label,
+    length: settingWhiteBalance11.length,
+    values: settingWhiteBalance11.values,
+};
+
+export const settingPhotoColor23: SettingMetadata = {
+    id: 0x17, // 23
+    label: settingColor12.label,
+    length: settingColor12.length,
+    values: settingColor12.values,
+};
+
+export const settingPhotoIsoMax24: SettingMetadata = {
+    id: 0x18, // 24
+    label: settingIsoMax13.label,
+    length: 1,
+    values: [
+        {
+            id: 0x0,
+            label: '800',
+        },
+        {
+            id: 0x1,
+            label: '400',
+        },
+        {
+            id: 0x2,
+            label: '200',
+        },
+        {
+            id: 0x3,
+            label: '100',
+        },
+        {
+            id: 0x4,
+            label: '1600',
+        },
+        {
+            id: 0x5,
+            label: '3200',
+        },
+    ],
+};
+
+export const settingPhotoSharpness25: SettingMetadata = {
+    id: 0x19, // 25
+    label: settingSharpness14.label,
+    length: settingSharpness14.length,
+    values: settingSharpness14.values,
+};
+
+export const settingPhotoEvComp26: SettingMetadata = {
+    id: 0x1a, // 26
+    label: settingEvComp15.label,
+    length: settingEvComp15.length,
+    values: settingEvComp15.values,
+};
+
+export const settingMultishotFov28: SettingMetadata = {
+    id: 0x1c, // 28
+    label: settingPhotoFov17.label,
+    length: settingPhotoFov17.length,
+    values: settingPhotoFov17.values,
+};
+
+const settingMultishotBurstRate29: SettingMetadata = {
+    id: 0x1d, // 29
+    label: 'Burst Rate',
+    length: 1,
+    values: [
+        {
+            id: 0x9,
+            label: 'Auto',
+        },
+        {
+            id: 0x8,
+            label: '30/6s',
+        },
+        {
+            id: 0x7,
+            label: '30/3s',
+        },
+        {
+            id: 0x6,
+            label: '30/2s',
+        },
+        {
+            id: 0x5,
+            label: '30/1s',
+        },
+        {
+            id: 0x4,
+            label: '10/3s',
+        },
+        {
+            id: 0x3,
+            label: '10/2s',
+        },
+        {
+            id: 0x2,
+            label: '10/1s',
+        },
+        {
+            id: 0x1,
+            label: '5/1s',
+        },
+        {
+            id: 0x0,
+            label: '3/1s',
+        },
+    ],
+};
+
+export const settingMultishotInterval30: SettingMetadata = {
+    id: 0x1e, // 30
+    label: 'Interval',
+    length: 1,
+    values: [
+        {
+            id: 0x0,
+            label: '0.5s',
+        },
+        {
+            id: 0x1,
+            label: '1s',
+        },
+        {
+            id: 0x2,
+            label: '2s',
+        },
+        {
+            id: 0x5,
+            label: '5s',
+        },
+        {
+            id: 0xa, // 10
+            label: '10s',
+        },
+        {
+            id: 0x1e, // 30
+            label: '30s',
+        },
+        {
+            id: 0x3c, // 60
+            label: '60s',
+        },
+    ],
+};
+
+export const settingMultishotShutter31: SettingMetadata = {
+    id: 0x1f, // 31
+    label: settingPhotoShutter19.label,
+    length: settingPhotoShutter19.length,
+    values: settingPhotoShutter19.values,
+};
+
+export const settingMultishotInterval32: SettingMetadata = {
+    id: 0x20, // 32
+    label: 'Interval',
+    length: 4,
+    values: [
+        {
+            id: (0xe << 8) + 0x11,
+            label: 'Auto',
+        },
+        {
+            id: (0x0 << 8) + 0x4,
+            label: '4s',
+        },
+        {
+            id: (0x0 << 8) + 0x5,
+            label: '5s',
+        },
+        {
+            id: (0x0 << 8) + 0xa,
+            label: '10s',
+        },
+        {
+            id: (0x0 << 8) + 0x14,
+            label: '20s',
+        },
+        {
+            id: (0x0 << 8) + 0x3c,
+            label: '1m',
+        },
+        {
+            id: (0x0 << 8) + 0x78,
+            label: '2m',
+        },
+        {
+            id: (0x1 << 8) + 0x2c,
+            label: '5m',
+        },
+        {
+            id: (0x7 << 8) + 0x8,
+            label: '30m',
+        },
+        {
+            id: (0xe << 8) + 0x10,
+            label: '60m',
+        },
+    ],
+};
+
+export const settingMultishotProtune34: SettingMetadata = {
+    id: 0x22, // 34
+    label: settingProtune10.label,
+    length: settingProtune10.length,
+    values: settingProtune10.values,
+};
+
+export const settingMultishotWhiteBalance35: SettingMetadata = {
+    id: 0x23, // 35
+    label: settingWhiteBalance11.label,
+    length: settingWhiteBalance11.length,
+    values: settingWhiteBalance11.values,
+};
+
+export const settingMultishotColor36: SettingMetadata = {
+    id: 0x24, // 36
+    label: settingColor12.label,
+    length: settingColor12.length,
+    values: settingColor12.values,
+};
+
+export const settingMultishotIsoMax37: SettingMetadata = {
+    id: 0x25, // 37
+    label: settingIsoMax13.label,
+    length: settingPhotoIsoMax24.length,
+    values: settingPhotoIsoMax24.values,
+};
+
+export const settingMultishotSharpness38: SettingMetadata = {
+    id: 0x26, // 38
+    label: settingSharpness14.label,
+    length: settingSharpness14.length,
+    values: settingSharpness14.values,
+};
+
+export const settingMultishotEvComp39: SettingMetadata = {
+    id: 0x27, // 39
+    label: settingEvComp15.label,
+    length: settingEvComp15.length,
+    values: settingEvComp15.values,
+};
+
+export const settingTouchDisplayScreenSaver51: SettingMetadata = {
+    id: 0x33, // 51
+    label: 'Touch Display Screen Saver',
+    length: 1,
+    values: [
+        {
+            id: 0x1,
+            label: '1min',
+        },
+        {
+            id: 0x2,
+            label: '2min',
+        },
+        {
+            id: 0x3,
+            label: '3min',
+        },
+        {
+            id: 0x0,
+            label: 'Never',
+        },
+    ],
+};
+
+export const settingQuickCapture54: SettingMetadata = {
+    id: 0x36, // 54
+    label: 'Quick Capture',
+    length: 1,
+    values: [
+        {
+            id: 0x0,
+            label: 'Off',
+        },
+        {
+            id: 0x1,
+            label: 'On',
+        },
+    ],
+};
+
 export const settingShutter73: SettingMetadata = {
     id: 0x49, // 73
     label: 'Shutter',
@@ -305,6 +717,20 @@ export const settingShutter73: SettingMetadata = {
             label: '1/960',
         },
     ],
+};
+
+export const settingPhotoIsoMin75: SettingMetadata = {
+    id: 0x4b, // 75
+    label: 'ISO min',
+    length: settingPhotoIsoMax24.length,
+    values: settingPhotoIsoMax24.values,
+};
+
+export const settingMultishotIsoMin76: SettingMetadata = {
+    id: 0x4c, // 76
+    label: settingPhotoIsoMin75.label,
+    length: settingPhotoIsoMax24.length,
+    values: settingPhotoIsoMax24.values,
 };
 
 export const settingStabilization78: SettingMetadata = {
@@ -361,389 +787,9 @@ export const settingRawAudio81: SettingMetadata = {
     ],
 };
 
-export const settingIsoMin102: SettingMetadata = {
-    id: 0x66, // 102
-    label: 'ISO min',
-    length: settingIsoMax13.length,
-    values: settingIsoMax13.values,
-};
-
-export const settingVideoTimer107: SettingMetadata = {
-    id: 0x6b, // 107
-    label: 'Video Timer',
-    length: 1,
-    values: [
-        { id: 0x0, label: 'Off' },
-        { id: 0x1, label: '15s' },
-        { id: 0x2, label: '30s' },
-    ],
-};
-
-export const settingResolutionFormat108: SettingMetadata = {
-    id: 0x6c, // 108
-    label: 'Resolution format',
-    length: 1,
-    values: [
-        {
-            id: 0x0,
-            label: '4:3',
-        },
-        {
-            id: 0x1,
-            label: '16:9',
-        },
-    ],
-};
-
-export const videoModeKnownSettings: SettingMetadata[] = [
-    settingResolution2,
-    settingFps3,
-    settingFov4,
-    settingLowLight8,
-    settingStabilization78,
-    settingProtune10,
-    settingShutter73,
-    settingEvComp15,
-    settingWhiteBalance11,
-    settingIsoMin102,
-    settingIsoMax13,
-    settingSharpness14,
-    settingColor12,
-    settingRawAudio81,
-    settingMicrophone80,
-    settingVideoTimer107,
-    settingResolutionFormat108,
-];
-
-export const settingInterval6: SettingMetadata = {
-    id: 0x6,
-    label: 'Interval',
-    length: 1,
-    values: [
-        {
-            id: 0x0,
-            label: 'MAX',
-        },
-        {
-            id: 0x1,
-            label: '5m',
-        },
-        {
-            id: 0x2,
-            label: '20m',
-        },
-        {
-            id: 0x3,
-            label: '60m',
-        },
-        {
-            id: 0x4,
-            label: '120m',
-        },
-    ],
-};
-
-export const loopingModeKnownSettings: SettingMetadata[] = [settingResolution2, settingFps3, settingFov4, settingInterval6, settingLowLight8, settingStabilization78];
-
-export const settingSpeed111: SettingMetadata = {
-    id: 0x6f, // 111
-    label: 'Speed',
-    length: 1,
-    values: [
-        {
-            id: 0x0,
-            label: '15x',
-        },
-        {
-            id: 0x1,
-            label: '30x',
-        },
-        {
-            id: 0x7,
-            label: '2x',
-        },
-        {
-            id: 0x8,
-            label: '5x',
-        },
-        {
-            id: 0x9,
-            label: '10x',
-        },
-    ],
-};
-
-export const timewarpModeKnownSettings: SettingMetadata[] = [
-    settingResolution2,
-    settingSpeed111,
-    // But limited to "Wide" only
-    settingFov4,
-];
-
-export const settingInterval5: SettingMetadata = {
-    id: 0x5,
-    label: 'Interval',
-    length: 1,
-    values: [
-        {
-            id: 0x0,
-            label: '0.5s',
-        },
-        {
-            id: 0x1,
-            label: '1s',
-        },
-        {
-            id: 0x2,
-            label: '2s',
-        },
-
-        {
-            id: 0x3,
-            label: '5s',
-        },
-        {
-            id: 0x4,
-            label: '10s',
-        },
-        {
-            id: 0x5,
-            label: '30s',
-        },
-        {
-            id: 0x6,
-            label: '60s',
-        },
-    ],
-};
-
-export const timelapseVideoModeKnownSettings: SettingMetadata[] = [settingResolution2, settingFov4, settingInterval5];
-
-export const settingMultishotInterval30: SettingMetadata = {
-    id: 0x1e, // 30
-    label: 'Interval',
-    length: 1,
-    values: [
-        {
-            id: 0x0,
-            label: '0.5s',
-        },
-        {
-            id: 0x1,
-            label: '1s',
-        },
-        {
-            id: 0x2,
-            label: '2s',
-        },
-        {
-            id: 0x5,
-            label: '5s',
-        },
-        {
-            id: 0xa, // 10
-            label: '10s',
-        },
-        {
-            id: 0x1e, // 30
-            label: '30s',
-        },
-        {
-            id: 0x3c, // 60
-            label: '60s',
-        },
-    ],
-};
-
-export const settingMultishotFov28: SettingMetadata = {
-    id: 0x1c,
-    label: 'FOV',
-    length: 1,
-    values: [
-        {
-            id: 0x0,
-            label: 'Wide',
-        },
-        {
-            id: 0xa, // 10
-            label: 'Linear',
-        },
-    ],
-};
-
-export const settingMultishotEvComp39: SettingMetadata = {
-    id: 0x27, // 39
-    label: settingEvComp15.label,
-    length: settingEvComp15.length,
-    values: settingEvComp15.values,
-};
-
-export const settingMultishotWhiteBalance35: SettingMetadata = {
-    id: 0x23, // 35
-    label: settingWhiteBalance11.label,
-    length: settingWhiteBalance11.length,
-    values: settingWhiteBalance11.values,
-};
-
-export const settingMultishotIsoMin76: SettingMetadata = {
-    id: 0x4c, // 76
-    label: settingIsoMin102.label,
-    length: 1,
-    values: [
-        {
-            id: 0x0,
-            label: '800',
-        },
-        {
-            id: 0x1,
-            label: '400',
-        },
-        {
-            id: 0x2,
-            label: '200',
-        },
-        {
-            id: 0x3,
-            label: '100',
-        },
-        {
-            id: 0x4,
-            label: '1600',
-        },
-        {
-            id: 0x5,
-            label: '3200',
-        },
-    ],
-};
-
-export const settingMultishotIsoMax37: SettingMetadata = {
-    id: 0x25, // 37
-    label: settingIsoMax13.label,
-    length: settingMultishotIsoMin76.length,
-    values: settingMultishotIsoMin76.values,
-};
-
-export const settingMultishotSharpness38: SettingMetadata = {
-    id: 0x26, // 38
-    label: settingSharpness14.label,
-    length: settingSharpness14.length,
-    values: settingSharpness14.values,
-};
-
-export const settingMultishotColor36: SettingMetadata = {
-    id: 0x24, // 36
-    label: settingColor12.label,
-    length: settingColor12.length,
-    values: settingColor12.values,
-};
-
-export const settingMultishotProtune34: SettingMetadata = {
-    id: 0x22, // 34
-    label: settingProtune10.label,
-    length: settingProtune10.length,
-    values: settingProtune10.values,
-};
-
-export const timelapsePhotoModeKnownSettings: SettingMetadata[] = [
-    settingMultishotInterval30,
-    settingMultishotFov28,
-    settingMultishotEvComp39,
-    settingMultishotWhiteBalance35,
-    settingMultishotIsoMin76,
-    settingMultishotIsoMax37,
-    settingMultishotSharpness38,
-    settingMultishotColor36,
-    settingMultishotProtune34,
-];
-
-export const settingMultishotShutter31: SettingMetadata = {
-    id: 0x1f, // 31
-    label: 'Shutter',
-    length: 1,
-    values: [
-        {
-            id: 0x0,
-            label: 'Auto',
-        },
-        {
-            id: 0x6,
-            label: '30s',
-        },
-        {
-            id: 0x5,
-            label: '20s',
-        },
-        {
-            id: 0x4,
-            label: '15s',
-        },
-        {
-            id: 0x3,
-            label: '10s',
-        },
-        {
-            id: 0x2,
-            label: '5s',
-        },
-        {
-            id: 0x1,
-            label: '2s',
-        },
-    ],
-};
-
-export const settingMultishotInterval32: SettingMetadata = {
-    id: 0x20, // 32
-    label: 'Interval',
-    length: 4,
-    values: [
-        {
-            id: (0xe << 8) + 0x11,
-            label: 'Auto',
-        },
-        {
-            id: (0x0 << 8) + 0x4,
-            label: '4s',
-        },
-        {
-            id: (0x0 << 8) + 0x5,
-            label: '5s',
-        },
-        {
-            id: (0x0 << 8) + 0xa,
-            label: '10s',
-        },
-        {
-            id: (0x0 << 8) + 0x14,
-            label: '20s',
-        },
-        {
-            id: (0x0 << 8) + 0x3c,
-            label: '1m',
-        },
-        {
-            id: (0x0 << 8) + 0x78,
-            label: '2m',
-        },
-        {
-            id: (0x1 << 8) + 0x2c,
-            label: '5m',
-        },
-        {
-            id: (0x7 << 8) + 0x8,
-            label: '30m',
-        },
-        {
-            id: (0xe << 8) + 0x10,
-            label: '60m',
-        },
-    ],
-};
-
-export const settingMultishotRaw99: SettingMetadata = {
-    id: 0x63, // 99
-    label: 'RAW',
+export const settingRegionalGps83: SettingMetadata = {
+    id: 0x53, // 83
+    label: 'Regional GPS',
     length: 1,
     values: [
         {
@@ -757,228 +803,47 @@ export const settingMultishotRaw99: SettingMetadata = {
     ],
 };
 
-export const nightlapseModeKnownSettings: SettingMetadata[] = [
-    settingMultishotIsoMin76,
-    settingMultishotIsoMax37,
-    settingMultishotShutter31,
-    settingMultishotInterval32,
-    settingMultishotFov28,
-    settingMultishotProtune34,
-    settingMultishotWhiteBalance35,
-    settingMultishotRaw99,
-];
-
-export const settingPhotoShutter19: SettingMetadata = {
-    id: 0x13, // 19
-    label: settingMultishotShutter31.label,
-    length: settingMultishotShutter31.length,
-    values: settingMultishotShutter31.values,
-};
-
-export const settingPhotoFov17: SettingMetadata = {
-    id: 0x11, // 17
-    label: settingMultishotFov28.label,
-    length: settingMultishotFov28.length,
-    values: settingMultishotFov28.values,
-};
-
-export const settingPhotoEvComp26: SettingMetadata = {
-    id: 0x1a, // 26
-    label: settingEvComp15.label,
-    length: settingEvComp15.length,
-    values: settingEvComp15.values,
-};
-
-export const settingPhotoWhiteBalance22: SettingMetadata = {
-    id: 0x16, // 22
-    label: settingWhiteBalance11.label,
-    length: settingWhiteBalance11.length,
-    values: settingWhiteBalance11.values,
-};
-
-export const settingPhotoIsoMin75: SettingMetadata = {
-    id: 0x4b, // 75
-    label: settingMultishotIsoMin76.label,
-    length: settingMultishotIsoMin76.length,
-    values: settingMultishotIsoMin76.values,
-};
-
-export const settingPhotoIsoMax24: SettingMetadata = {
-    id: 0x18, // 24
-    label: settingMultishotIsoMax37.label,
-    length: settingMultishotIsoMax37.length,
-    values: settingMultishotIsoMax37.values,
-};
-
-export const settingPhotoSharpness25: SettingMetadata = {
-    id: 0x19, // 25
-    label: settingSharpness14.label,
-    length: settingSharpness14.length,
-    values: settingSharpness14.values,
-};
-
-export const settingPhotoColor23: SettingMetadata = {
-    id: 0x17, // 23
-    label: settingMultishotColor36.label,
-    length: settingMultishotColor36.length,
-    values: settingMultishotColor36.values,
-};
-
-export const settingPhotoProtune21: SettingMetadata = {
-    id: 0x15, // 21
-    label: settingProtune10.label,
-    length: settingProtune10.length,
-    values: settingProtune10.values,
-};
-
-export const settingPhotoRaw98: SettingMetadata = {
-    id: 0x62, // 98
-    label: settingMultishotRaw99.label,
-    length: settingMultishotRaw99.length,
-    values: settingMultishotRaw99.values,
-};
-
-export const photoNightModeKnownSettings: SettingMetadata[] = [
-    settingPhotoShutter19,
-    settingPhotoFov17,
-    settingPhotoEvComp26,
-    settingPhotoWhiteBalance22,
-    settingPhotoIsoMin75,
-    settingPhotoIsoMax24,
-    settingPhotoSharpness25,
-    settingPhotoColor23,
-    settingPhotoProtune21,
-    settingPhotoRaw98,
-];
-
-const settingMultishotBurstRate29: SettingMetadata = {
-    id: 0x1d, // 29
-    label: 'Burst Rate',
+export const settingRegionalLanguage84: SettingMetadata = {
+    id: 0x54, // 84
+    label: 'Regional Language',
     length: 1,
     values: [
         {
-            id: 0x9,
-            label: 'Auto',
-        },
-        {
-            id: 0x8,
-            label: '30/6s',
-        },
-        {
-            id: 0x7,
-            label: '30/3s',
+            id: 0x0,
+            label: 'English',
         },
         {
             id: 0x6,
-            label: '30/2s',
+            label: 'French',
         },
-        {
-            id: 0x5,
-            label: '30/1s',
-        },
-        {
-            id: 0x4,
-            label: '10/3s',
-        },
-        {
-            id: 0x3,
-            label: '10/2s',
-        },
-        {
-            id: 0x2,
-            label: '10/1s',
-        },
-        {
-            id: 0x1,
-            label: '5/1s',
-        },
-        {
-            id: 0x0,
-            label: '3/1s',
-        },
+        // TODO
     ],
 };
 
-export const photoBurstModeKnownSettings: SettingMetadata[] = [
-    settingMultishotBurstRate29,
-    settingMultishotFov28,
-    settingMultishotProtune34,
-    settingMultishotEvComp39,
-    settingMultishotWhiteBalance35,
-    settingMultishotIsoMin76,
-    settingMultishotIsoMax37,
-    settingMultishotSharpness38,
-    settingMultishotColor36,
-];
-
-export const settingPhotoSuperPhoto109: SettingMetadata = {
-    id: 0x6d, // 109
-    label: 'Super Photo',
+export const settingVoiceControlLanguage85: SettingMetadata = {
+    id: 0x55, // 85
+    label: 'Voice Control Language',
     length: 1,
     values: [
         {
             id: 0x0,
-            label: 'Off',
+            label: 'English (US)',
         },
         {
             id: 0x1,
-            label: 'Auto',
+            label: 'English (UK)',
         },
         {
-            id: 0x2,
-            label: 'HDR On',
+            id: 0xd,
+            label: 'English (India)',
         },
+        // TODO
     ],
 };
 
-export const settingPhotoShutter97: SettingMetadata = {
-    id: 0x61, // 97
-    label: 'Shutter',
-    length: 1,
-    values: [
-        {
-            id: 0x0,
-            label: 'Auto',
-        },
-        {
-            id: 0x1,
-            label: '1/125',
-        },
-        {
-            id: 0x2,
-            label: '1/250',
-        },
-        {
-            id: 0x3,
-            label: '1/500',
-        },
-        {
-            id: 0x4,
-            label: '1/1000',
-        },
-        {
-            id: 0x5,
-            label: '1/2000',
-        },
-    ],
-};
-
-export const photoSingleModeKnownSettings: SettingMetadata[] = [
-    settingPhotoFov17,
-    settingPhotoSuperPhoto109,
-    settingPhotoProtune21,
-    settingPhotoShutter97,
-    settingPhotoEvComp26,
-    settingPhotoWhiteBalance22,
-    settingPhotoIsoMin75,
-    settingPhotoIsoMax24,
-    settingPhotoSharpness25,
-    settingPhotoColor23,
-];
-
-export const settingQuickCapture54: SettingMetadata = {
-    id: 0x36, // 54
-    label: 'Quick Capture',
+export const settingVoiceControl86: SettingMetadata = {
+    id: 0x56, // 86
+    label: 'Voice Control',
     length: 1,
     values: [
         {
@@ -1013,6 +878,27 @@ export const settingBeeps87: SettingMetadata = {
             id: 0x28, // 40
             label: 'Low',
         },
+    ],
+};
+
+export const settingTouchDisplayBrightness88: SettingMetadata = {
+    id: 0x58, // 88
+    label: 'Touch Display Brightness',
+    length: 1,
+    values: [
+        {
+            id: 0x64, // 100
+            label: '100%',
+        },
+        {
+            id: 0x50, // 80
+            label: '80%',
+        },
+        {
+            id: 0xa,
+            label: '10%',
+        },
+        // TODO This is supposed to be slider
     ],
 };
 
@@ -1087,25 +973,41 @@ export const settingsCurrentMode92: SettingMetadata = {
     values: settingDefaultMode89.values,
 };
 
-export const settingVideoCompression106: SettingMetadata = {
-    id: 0x6a, // 106
-    label: 'Video Compression',
+export const settingPhotoShutter97: SettingMetadata = {
+    id: 0x61, // 97
+    label: 'Shutter',
     length: 1,
     values: [
         {
             id: 0x0,
-            label: 'H264',
+            label: 'Auto',
         },
         {
             id: 0x1,
-            label: 'HEVC',
+            label: '1/125',
+        },
+        {
+            id: 0x2,
+            label: '1/250',
+        },
+        {
+            id: 0x3,
+            label: '1/500',
+        },
+        {
+            id: 0x4,
+            label: '1/1000',
+        },
+        {
+            id: 0x5,
+            label: '1/2000',
         },
     ],
 };
 
-export const settingVoiceControl86: SettingMetadata = {
-    id: 0x56, // 86
-    label: 'Voice Control',
+export const settingPhotoRaw98: SettingMetadata = {
+    id: 0x62, // 98
+    label: 'RAW',
     length: 1,
     values: [
         {
@@ -1117,6 +1019,20 @@ export const settingVoiceControl86: SettingMetadata = {
             label: 'On',
         },
     ],
+};
+
+export const settingMultishotRaw99: SettingMetadata = {
+    id: 0x63, // 99
+    label: settingPhotoRaw98.label,
+    length: settingPhotoRaw98.length,
+    values: settingPhotoRaw98.values,
+};
+
+export const settingIsoMin102: SettingMetadata = {
+    id: 0x66, // 102
+    label: settingPhotoIsoMin75.label,
+    length: settingIsoMax13.length,
+    values: settingIsoMax13.values,
 };
 
 export const settingWakeOnVoice104: SettingMetadata = {
@@ -1135,24 +1051,94 @@ export const settingWakeOnVoice104: SettingMetadata = {
     ],
 };
 
-export const settingVoiceControlLanguage85: SettingMetadata = {
-    id: 0x55, // 85
-    label: 'Voice Control Language',
+export const settingVideoCompression106: SettingMetadata = {
+    id: 0x6a, // 106
+    label: 'Video Compression',
     length: 1,
     values: [
         {
             id: 0x0,
-            label: 'English (US)',
+            label: 'H264',
         },
         {
             id: 0x1,
-            label: 'English (UK)',
+            label: 'HEVC',
+        },
+    ],
+};
+
+export const settingVideoTimer107: SettingMetadata = {
+    id: 0x6b, // 107
+    label: 'Video Timer',
+    length: 1,
+    values: [
+        { id: 0x0, label: 'Off' },
+        { id: 0x1, label: '15s' },
+        { id: 0x2, label: '30s' },
+    ],
+};
+
+export const settingResolutionFormat108: SettingMetadata = {
+    id: 0x6c, // 108
+    label: 'Resolution format',
+    length: 1,
+    values: [
+        {
+            id: 0x0,
+            label: '4:3',
         },
         {
-            id: 0xd,
-            label: 'English (India)',
+            id: 0x1,
+            label: '16:9',
         },
-        // TODO
+    ],
+};
+
+export const settingPhotoSuperPhoto109: SettingMetadata = {
+    id: 0x6d, // 109
+    label: 'Super Photo',
+    length: 1,
+    values: [
+        {
+            id: 0x0,
+            label: 'Off',
+        },
+        {
+            id: 0x1,
+            label: 'Auto',
+        },
+        {
+            id: 0x2,
+            label: 'HDR On',
+        },
+    ],
+};
+
+export const settingSpeed111: SettingMetadata = {
+    id: 0x6f, // 111
+    label: 'Speed',
+    length: 1,
+    values: [
+        {
+            id: 0x0,
+            label: '15x',
+        },
+        {
+            id: 0x1,
+            label: '30x',
+        },
+        {
+            id: 0x7,
+            label: '2x',
+        },
+        {
+            id: 0x8,
+            label: '5x',
+        },
+        {
+            id: 0x9,
+            label: '10x',
+        },
     ],
 };
 
@@ -1176,84 +1162,6 @@ export const settingTouchDisplayLandscapeLock112: SettingMetadata = {
     ],
 };
 
-export const settingTouchDisplayScreenSaver51: SettingMetadata = {
-    id: 0x33, // 51
-    label: 'Touch Display Screen Saver',
-    length: 1,
-    values: [
-        {
-            id: 0x1,
-            label: '1min',
-        },
-        {
-            id: 0x2,
-            label: '2min',
-        },
-        {
-            id: 0x3,
-            label: '3min',
-        },
-        {
-            id: 0x0,
-            label: 'Never',
-        },
-    ],
-};
-
-export const settingTouchDisplayBrightness88: SettingMetadata = {
-    id: 0x58, // 88
-    label: 'Touch Display Brightness',
-    length: 1,
-    values: [
-        {
-            id: 0x64, // 100
-            label: '100%',
-        },
-        {
-            id: 0x50, // 80
-            label: '80%',
-        },
-        {
-            id: 0xa,
-            label: '10%',
-        },
-        // TODO This is supposed to be slider
-    ],
-};
-
-export const settingRegionalGps83: SettingMetadata = {
-    id: 0x53, // 83
-    label: 'Regional GPS',
-    length: 1,
-    values: [
-        {
-            id: 0x0,
-            label: 'Off',
-        },
-        {
-            id: 0x1,
-            label: 'On',
-        },
-    ],
-};
-
-export const settingRegionalLanguage84: SettingMetadata = {
-    id: 0x54, // 84
-    label: 'Regional Language',
-    length: 1,
-    values: [
-        {
-            id: 0x0,
-            label: 'English',
-        },
-        {
-            id: 0x6,
-            label: 'French',
-        },
-        // TODO
-    ],
-};
-
 /*
 Regional Video format
     NTSC
@@ -1264,6 +1172,98 @@ Regional Video format
         57 = 0 -> 1
 
 */
+
+export const videoModeKnownSettings: SettingMetadata[] = [
+    settingResolution2,
+    settingFps3,
+    settingFov4,
+    settingLowLight8,
+    settingStabilization78,
+    settingProtune10,
+    settingShutter73,
+    settingEvComp15,
+    settingWhiteBalance11,
+    settingIsoMin102,
+    settingIsoMax13,
+    settingSharpness14,
+    settingColor12,
+    settingRawAudio81,
+    settingMicrophone80,
+    settingVideoTimer107,
+    settingResolutionFormat108,
+];
+
+export const loopingModeKnownSettings: SettingMetadata[] = [settingResolution2, settingFps3, settingFov4, settingInterval6, settingLowLight8, settingStabilization78];
+
+export const timewarpModeKnownSettings: SettingMetadata[] = [
+    settingResolution2,
+    settingSpeed111,
+    // But limited to "Wide" only
+    settingFov4,
+];
+
+export const timelapseVideoModeKnownSettings: SettingMetadata[] = [settingResolution2, settingFov4, settingInterval5];
+
+export const timelapsePhotoModeKnownSettings: SettingMetadata[] = [
+    settingMultishotInterval30,
+    settingMultishotFov28,
+    settingMultishotEvComp39,
+    settingMultishotWhiteBalance35,
+    settingMultishotIsoMin76,
+    settingMultishotIsoMax37,
+    settingMultishotSharpness38,
+    settingMultishotColor36,
+    settingMultishotProtune34,
+];
+
+export const nightlapseModeKnownSettings: SettingMetadata[] = [
+    settingMultishotIsoMin76,
+    settingMultishotIsoMax37,
+    settingMultishotShutter31,
+    settingMultishotInterval32,
+    settingMultishotFov28,
+    settingMultishotProtune34,
+    settingMultishotWhiteBalance35,
+    settingMultishotRaw99,
+];
+
+export const photoNightModeKnownSettings: SettingMetadata[] = [
+    settingPhotoShutter19,
+    settingPhotoFov17,
+    settingPhotoEvComp26,
+    settingPhotoWhiteBalance22,
+    settingPhotoIsoMin75,
+    settingPhotoIsoMax24,
+    settingPhotoSharpness25,
+    settingPhotoColor23,
+    settingPhotoProtune21,
+    settingPhotoRaw98,
+];
+
+export const photoBurstModeKnownSettings: SettingMetadata[] = [
+    settingMultishotBurstRate29,
+    settingMultishotFov28,
+    settingMultishotProtune34,
+    settingMultishotEvComp39,
+    settingMultishotWhiteBalance35,
+    settingMultishotIsoMin76,
+    settingMultishotIsoMax37,
+    settingMultishotSharpness38,
+    settingMultishotColor36,
+];
+
+export const photoSingleModeKnownSettings: SettingMetadata[] = [
+    settingPhotoFov17,
+    settingPhotoSuperPhoto109,
+    settingPhotoProtune21,
+    settingPhotoShutter97,
+    settingPhotoEvComp26,
+    settingPhotoWhiteBalance22,
+    settingPhotoIsoMin75,
+    settingPhotoIsoMax24,
+    settingPhotoSharpness25,
+    settingPhotoColor23,
+];
 
 export const generalSettings: SettingMetadata[] = [
     settingQuickCapture54,
