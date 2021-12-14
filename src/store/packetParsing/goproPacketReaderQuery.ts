@@ -22,8 +22,10 @@ export interface QueryResponse {
 
 function parseQueryResponse(packetData: PacketData): QueryResponse {
     if (packetData.length < 2) throw new Error('command response too short');
-    const queryId = packetData[0];
-    const errorCode = parseQueryResponseCode(packetData[1]);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const queryId = packetData[0]!;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const errorCode = parseQueryResponseCode(packetData[1]!);
     const statusesOrSettings = parseStatusesOrSettingsFromData(packetData.slice(2));
     return {
         queryId,
@@ -51,8 +53,8 @@ export interface StatusOrSetting {
 }
 
 function readOneStatusOrSetting(data: number[]): StatusOrSetting {
-    const settingId = data[0];
-    const dataLength = data[1];
+    const settingId = data[0] ?? 0;
+    const dataLength = data[1] ?? 0;
     const settingValue = data.slice(2, dataLength + 2);
     return {
         id: settingId,

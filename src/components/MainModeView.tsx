@@ -94,7 +94,7 @@ enum DisplayModeGroup {
     timeLapse = 'Time Lapse',
 }
 
-function getCurrentModeGroup(settingCurrentMode: SettingValue) {
+function getCurrentModeGroup(settingCurrentMode?: SettingValue) {
     if (!settingCurrentMode) return DisplayModeGroup.video;
     switch (settingCurrentMode.value) {
         case 0xc:

@@ -42,8 +42,10 @@ interface CommandResponse {
 
 function parseCommandResponse(response: PacketData): CommandResponse {
     if (response.length < 2) throw new Error('command response too short');
-    const commandId = response[0];
-    const errorCode = parseCommandResponseCode(response[1]);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const commandId = response[0]!;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const errorCode = parseCommandResponseCode(response[1]!);
     const data = response.slice(2);
     return {
         commandId,
@@ -100,43 +102,43 @@ function parseGetHardwareInfoResponse(commandResponse: CommandResponse): GetHard
     const { data } = commandResponse;
     let dataIndex = 0;
     // model number
-    const lengthOfModelNumber = data[dataIndex++];
-    const modelNumber = new Array(lengthOfModelNumber).fill(0).map(() => data[dataIndex++]);
+    const lengthOfModelNumber = data[dataIndex++] ?? 0;
+    const modelNumber = new Array(lengthOfModelNumber).fill(0).map(() => data[dataIndex++] ?? 0);
     // model name
-    const lengthOfModelName = data[dataIndex++];
+    const lengthOfModelName = data[dataIndex++] ?? 0;
     const modelName = new Array(lengthOfModelName)
         .fill(0)
-        .map(() => String.fromCharCode(data[dataIndex++]))
+        .map(() => String.fromCharCode(data[dataIndex++] ?? 0))
         .join('');
     // board type
-    const lengthOfBoardType = data[dataIndex++];
+    const lengthOfBoardType = data[dataIndex++] ?? 0;
     const boardType = new Array(lengthOfBoardType)
         .fill(0)
-        .map(() => String.fromCharCode(data[dataIndex++]))
+        .map(() => String.fromCharCode(data[dataIndex++] ?? 0))
         .join('');
     // firmware version
-    const lengthOfFirmwareVersion = data[dataIndex++];
+    const lengthOfFirmwareVersion = data[dataIndex++] ?? 0;
     const firmwareVersion = new Array(lengthOfFirmwareVersion)
         .fill(0)
-        .map(() => String.fromCharCode(data[dataIndex++]))
+        .map(() => String.fromCharCode(data[dataIndex++] ?? 0))
         .join('');
     // serial number
-    const lengthOfSerialNumber = data[dataIndex++];
+    const lengthOfSerialNumber = data[dataIndex++] ?? 0;
     const serialNumber = new Array(lengthOfSerialNumber)
         .fill(0)
-        .map(() => String.fromCharCode(data[dataIndex++]))
+        .map(() => String.fromCharCode(data[dataIndex++] ?? 0))
         .join('');
     // AP SSID
-    const lengthOfApSsid = data[dataIndex++];
+    const lengthOfApSsid = data[dataIndex++] ?? 0;
     const apSsid = new Array(lengthOfApSsid)
         .fill(0)
-        .map(() => String.fromCharCode(data[dataIndex++]))
+        .map(() => String.fromCharCode(data[dataIndex++] ?? 0))
         .join('');
     // AP MAC Address
-    const lengthOfApMacAddress = data[dataIndex++];
+    const lengthOfApMacAddress = data[dataIndex++] ?? 0;
     const apMacAddress = new Array(lengthOfApMacAddress)
         .fill(0)
-        .map(() => String.fromCharCode(data[dataIndex++]))
+        .map(() => String.fromCharCode(data[dataIndex++] ?? 0))
         .join('');
     return {
         modelNumber,
@@ -156,14 +158,14 @@ function parseOpenGoProGetVersionResponse(commandResponse: CommandResponse): Ope
     const lengthOfMajorVersion = data[dataIndex++];
     const majorVersion = new Array(lengthOfMajorVersion)
         .fill(0)
-        .map(() => data[dataIndex++])
+        .map(() => data[dataIndex++] ?? 0)
         // eslint-disable-next-line no-bitwise
         .reduce((acc, cur) => (acc << 8) + cur);
     // Minor version
     const lengthOfMinorVersion = data[dataIndex++];
     const minorVersion = new Array(lengthOfMinorVersion)
         .fill(0)
-        .map(() => data[dataIndex++])
+        .map(() => data[dataIndex++] ?? 0)
         // eslint-disable-next-line no-bitwise
         .reduce((acc, cur) => (acc << 8) + cur);
     return {
