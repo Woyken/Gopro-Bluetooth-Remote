@@ -11,7 +11,7 @@ export interface SettingMetadata {
     values: SettingValueMetadata[];
 }
 
-export const settingResolution2: SettingMetadata = {
+export const settingVideoResolution2: SettingMetadata = {
     id: 0x2,
     label: 'Resolution',
     length: 1,
@@ -51,7 +51,7 @@ export const settingResolution2: SettingMetadata = {
     ],
 };
 
-export const settingFps3: SettingMetadata = {
+export const settingVideoFps3: SettingMetadata = {
     id: 0x3,
     label: 'FPS',
     length: 1,
@@ -79,7 +79,7 @@ export const settingFps3: SettingMetadata = {
     ],
 };
 
-export const settingFov4: SettingMetadata = {
+export const settingVideoFov4: SettingMetadata = {
     id: 0x4,
     label: 'FOV',
     length: 1,
@@ -99,7 +99,7 @@ export const settingFov4: SettingMetadata = {
     ],
 };
 
-export const settingInterval5: SettingMetadata = {
+export const settingVideoInterval5: SettingMetadata = {
     id: 0x5,
     label: 'Interval',
     length: 1,
@@ -136,7 +136,7 @@ export const settingInterval5: SettingMetadata = {
     ],
 };
 
-export const settingInterval6: SettingMetadata = {
+export const settingVideoInterval6: SettingMetadata = {
     id: 0x6,
     label: 'Interval',
     length: 1,
@@ -164,7 +164,7 @@ export const settingInterval6: SettingMetadata = {
     ],
 };
 
-export const settingLowLight8: SettingMetadata = {
+export const settingVideoLowLight8: SettingMetadata = {
     id: 0x8,
     label: 'Low light',
     length: 1,
@@ -180,7 +180,7 @@ export const settingLowLight8: SettingMetadata = {
     ],
 };
 
-export const settingProtune10: SettingMetadata = {
+export const settingVideoProtune10: SettingMetadata = {
     id: 0xa, // 10
     label: 'Protune',
     length: 1,
@@ -196,7 +196,7 @@ export const settingProtune10: SettingMetadata = {
     ],
 };
 
-export const settingWhiteBalance11: SettingMetadata = {
+export const settingVideoWhiteBalance11: SettingMetadata = {
     id: 0xb, // 11
     label: 'White Balance',
     length: 1,
@@ -224,7 +224,7 @@ export const settingWhiteBalance11: SettingMetadata = {
     ],
 };
 
-export const settingColor12: SettingMetadata = {
+export const settingVideoColor12: SettingMetadata = {
     id: 0xc, // 12
     label: 'Color',
     length: 1,
@@ -240,7 +240,7 @@ export const settingColor12: SettingMetadata = {
     ],
 };
 
-export const settingIsoMax13: SettingMetadata = {
+export const settingVideoIsoMax13: SettingMetadata = {
     id: 0xd, // 13
     label: 'ISO max',
     length: 1,
@@ -276,7 +276,7 @@ export const settingIsoMax13: SettingMetadata = {
     ],
 };
 
-export const settingSharpness14: SettingMetadata = {
+export const settingVideoSharpness14: SettingMetadata = {
     id: 0xe, // 14
     label: 'Sharpness',
     length: 1,
@@ -296,7 +296,7 @@ export const settingSharpness14: SettingMetadata = {
     ],
 };
 
-export const settingEvComp15: SettingMetadata = {
+export const settingVideoEvComp15: SettingMetadata = {
     id: 0xf, // 15
     label: 'EV comp',
     length: 1,
@@ -394,28 +394,28 @@ export const settingPhotoShutter19: SettingMetadata = {
 
 export const settingPhotoProtune21: SettingMetadata = {
     id: 0x15, // 21
-    label: settingProtune10.label,
-    length: settingProtune10.length,
-    values: settingProtune10.values,
+    label: settingVideoProtune10.label,
+    length: settingVideoProtune10.length,
+    values: settingVideoProtune10.values,
 };
 
 export const settingPhotoWhiteBalance22: SettingMetadata = {
     id: 0x16, // 22
-    label: settingWhiteBalance11.label,
-    length: settingWhiteBalance11.length,
-    values: settingWhiteBalance11.values,
+    label: settingVideoWhiteBalance11.label,
+    length: settingVideoWhiteBalance11.length,
+    values: settingVideoWhiteBalance11.values,
 };
 
 export const settingPhotoColor23: SettingMetadata = {
     id: 0x17, // 23
-    label: settingColor12.label,
-    length: settingColor12.length,
-    values: settingColor12.values,
+    label: settingVideoColor12.label,
+    length: settingVideoColor12.length,
+    values: settingVideoColor12.values,
 };
 
 export const settingPhotoIsoMax24: SettingMetadata = {
     id: 0x18, // 24
-    label: settingIsoMax13.label,
+    label: settingVideoIsoMax13.label,
     length: 1,
     values: [
         {
@@ -447,16 +447,16 @@ export const settingPhotoIsoMax24: SettingMetadata = {
 
 export const settingPhotoSharpness25: SettingMetadata = {
     id: 0x19, // 25
-    label: settingSharpness14.label,
-    length: settingSharpness14.length,
-    values: settingSharpness14.values,
+    label: settingVideoSharpness14.label,
+    length: settingVideoSharpness14.length,
+    values: settingVideoSharpness14.values,
 };
 
 export const settingPhotoEvComp26: SettingMetadata = {
     id: 0x1a, // 26
-    label: settingEvComp15.label,
-    length: settingEvComp15.length,
-    values: settingEvComp15.values,
+    label: settingVideoEvComp15.label,
+    length: settingVideoEvComp15.length,
+    values: settingVideoEvComp15.values,
 };
 
 export const settingMultishotFov28: SettingMetadata = {
@@ -466,7 +466,7 @@ export const settingMultishotFov28: SettingMetadata = {
     values: settingPhotoFov17.values,
 };
 
-const settingMultishotBurstRate29: SettingMetadata = {
+export const settingMultishotBurstRate29: SettingMetadata = {
     id: 0x1d, // 29
     label: 'Burst Rate',
     length: 1,
@@ -607,47 +607,47 @@ export const settingMultishotInterval32: SettingMetadata = {
 
 export const settingMultishotProtune34: SettingMetadata = {
     id: 0x22, // 34
-    label: settingProtune10.label,
-    length: settingProtune10.length,
-    values: settingProtune10.values,
+    label: settingVideoProtune10.label,
+    length: settingVideoProtune10.length,
+    values: settingVideoProtune10.values,
 };
 
 export const settingMultishotWhiteBalance35: SettingMetadata = {
     id: 0x23, // 35
-    label: settingWhiteBalance11.label,
-    length: settingWhiteBalance11.length,
-    values: settingWhiteBalance11.values,
+    label: settingVideoWhiteBalance11.label,
+    length: settingVideoWhiteBalance11.length,
+    values: settingVideoWhiteBalance11.values,
 };
 
 export const settingMultishotColor36: SettingMetadata = {
     id: 0x24, // 36
-    label: settingColor12.label,
-    length: settingColor12.length,
-    values: settingColor12.values,
+    label: settingVideoColor12.label,
+    length: settingVideoColor12.length,
+    values: settingVideoColor12.values,
 };
 
 export const settingMultishotIsoMax37: SettingMetadata = {
     id: 0x25, // 37
-    label: settingIsoMax13.label,
+    label: settingVideoIsoMax13.label,
     length: settingPhotoIsoMax24.length,
     values: settingPhotoIsoMax24.values,
 };
 
 export const settingMultishotSharpness38: SettingMetadata = {
     id: 0x26, // 38
-    label: settingSharpness14.label,
-    length: settingSharpness14.length,
-    values: settingSharpness14.values,
+    label: settingVideoSharpness14.label,
+    length: settingVideoSharpness14.length,
+    values: settingVideoSharpness14.values,
 };
 
 export const settingMultishotEvComp39: SettingMetadata = {
     id: 0x27, // 39
-    label: settingEvComp15.label,
-    length: settingEvComp15.length,
-    values: settingEvComp15.values,
+    label: settingVideoEvComp15.label,
+    length: settingVideoEvComp15.length,
+    values: settingVideoEvComp15.values,
 };
 
-export const settingTouchDisplayScreenSaver51: SettingMetadata = {
+export const settingGeneralTouchDisplayScreenSaver51: SettingMetadata = {
     id: 0x33, // 51
     label: 'Touch Display Screen Saver',
     length: 1,
@@ -671,7 +671,7 @@ export const settingTouchDisplayScreenSaver51: SettingMetadata = {
     ],
 };
 
-export const settingQuickCapture54: SettingMetadata = {
+export const settingGeneralQuickCapture54: SettingMetadata = {
     id: 0x36, // 54
     label: 'Quick Capture',
     length: 1,
@@ -687,7 +687,7 @@ export const settingQuickCapture54: SettingMetadata = {
     ],
 };
 
-export const settingShutter73: SettingMetadata = {
+export const settingVideoShutter73: SettingMetadata = {
     id: 0x49, // 73
     label: 'Shutter',
     length: 1,
@@ -733,7 +733,7 @@ export const settingMultishotIsoMin76: SettingMetadata = {
     values: settingPhotoIsoMax24.values,
 };
 
-export const settingStabilization78: SettingMetadata = {
+export const settingVideoStabilization78: SettingMetadata = {
     id: 0x4e, // 78
     label: 'Stabilization',
     length: 1,
@@ -743,7 +743,7 @@ export const settingStabilization78: SettingMetadata = {
     ],
 };
 
-export const settingMicrophone80: SettingMetadata = {
+export const settingVideoMicrophone80: SettingMetadata = {
     id: 0x50, // 80
     label: 'Microphone',
     length: 1,
@@ -763,7 +763,7 @@ export const settingMicrophone80: SettingMetadata = {
     ],
 };
 
-export const settingRawAudio81: SettingMetadata = {
+export const settingVideoRawAudio81: SettingMetadata = {
     id: 0x51, // 81
     label: 'Raw audio',
     length: 1,
@@ -787,7 +787,7 @@ export const settingRawAudio81: SettingMetadata = {
     ],
 };
 
-export const settingRegionalGps83: SettingMetadata = {
+export const settingGeneralRegionalGps83: SettingMetadata = {
     id: 0x53, // 83
     label: 'Regional GPS',
     length: 1,
@@ -803,7 +803,7 @@ export const settingRegionalGps83: SettingMetadata = {
     ],
 };
 
-export const settingRegionalLanguage84: SettingMetadata = {
+export const settingGeneralRegionalLanguage84: SettingMetadata = {
     id: 0x54, // 84
     label: 'Regional Language',
     length: 1,
@@ -820,7 +820,7 @@ export const settingRegionalLanguage84: SettingMetadata = {
     ],
 };
 
-export const settingVoiceControlLanguage85: SettingMetadata = {
+export const settingGeneralVoiceControlLanguage85: SettingMetadata = {
     id: 0x55, // 85
     label: 'Voice Control Language',
     length: 1,
@@ -841,7 +841,7 @@ export const settingVoiceControlLanguage85: SettingMetadata = {
     ],
 };
 
-export const settingVoiceControl86: SettingMetadata = {
+export const settingGeneralVoiceControl86: SettingMetadata = {
     id: 0x56, // 86
     label: 'Voice Control',
     length: 1,
@@ -857,7 +857,7 @@ export const settingVoiceControl86: SettingMetadata = {
     ],
 };
 
-export const settingBeeps87: SettingMetadata = {
+export const settingGeneralBeeps87: SettingMetadata = {
     id: 0x57, // 87
     label: 'Beeps',
     length: 1,
@@ -881,7 +881,7 @@ export const settingBeeps87: SettingMetadata = {
     ],
 };
 
-export const settingTouchDisplayBrightness88: SettingMetadata = {
+export const settingGeneralTouchDisplayBrightness88: SettingMetadata = {
     id: 0x58, // 88
     label: 'Touch Display Brightness',
     length: 1,
@@ -902,7 +902,7 @@ export const settingTouchDisplayBrightness88: SettingMetadata = {
     ],
 };
 
-export const settingDefaultMode89: SettingMetadata = {
+export const settingGeneralDefaultMode89: SettingMetadata = {
     id: 0x59, // 89
     label: 'Default Mode',
     length: 1,
@@ -946,7 +946,7 @@ export const settingDefaultMode89: SettingMetadata = {
     ],
 };
 
-export const settingLeds91: SettingMetadata = {
+export const settingGeneralLeds91: SettingMetadata = {
     id: 0x5b, // 91
     label: 'LEDs',
     length: 1,
@@ -969,8 +969,8 @@ export const settingLeds91: SettingMetadata = {
 export const settingsCurrentMode92: SettingMetadata = {
     id: 0x5c, // 92
     label: 'Current Mode',
-    length: settingDefaultMode89.length,
-    values: settingDefaultMode89.values,
+    length: settingGeneralDefaultMode89.length,
+    values: settingGeneralDefaultMode89.values,
 };
 
 export const settingPhotoShutter97: SettingMetadata = {
@@ -1028,14 +1028,14 @@ export const settingMultishotRaw99: SettingMetadata = {
     values: settingPhotoRaw98.values,
 };
 
-export const settingIsoMin102: SettingMetadata = {
+export const settingVideoIsoMin102: SettingMetadata = {
     id: 0x66, // 102
     label: settingPhotoIsoMin75.label,
-    length: settingIsoMax13.length,
-    values: settingIsoMax13.values,
+    length: settingVideoIsoMax13.length,
+    values: settingVideoIsoMax13.values,
 };
 
-export const settingWakeOnVoice104: SettingMetadata = {
+export const settingGeneralWakeOnVoice104: SettingMetadata = {
     id: 0x68, // 104
     label: 'Wake On Voice',
     length: 1,
@@ -1051,7 +1051,7 @@ export const settingWakeOnVoice104: SettingMetadata = {
     ],
 };
 
-export const settingVideoCompression106: SettingMetadata = {
+export const settingGeneralVideoCompression106: SettingMetadata = {
     id: 0x6a, // 106
     label: 'Video Compression',
     length: 1,
@@ -1067,7 +1067,7 @@ export const settingVideoCompression106: SettingMetadata = {
     ],
 };
 
-export const settingVideoTimer107: SettingMetadata = {
+export const settingVideoVideoTimer107: SettingMetadata = {
     id: 0x6b, // 107
     label: 'Video Timer',
     length: 1,
@@ -1078,7 +1078,7 @@ export const settingVideoTimer107: SettingMetadata = {
     ],
 };
 
-export const settingResolutionFormat108: SettingMetadata = {
+export const settingVideoResolutionFormat108: SettingMetadata = {
     id: 0x6c, // 108
     label: 'Resolution format',
     length: 1,
@@ -1114,7 +1114,7 @@ export const settingPhotoSuperPhoto109: SettingMetadata = {
     ],
 };
 
-export const settingSpeed111: SettingMetadata = {
+export const settingVideoSpeed111: SettingMetadata = {
     id: 0x6f, // 111
     label: 'Speed',
     length: 1,
@@ -1142,7 +1142,7 @@ export const settingSpeed111: SettingMetadata = {
     ],
 };
 
-export const settingTouchDisplayLandscapeLock112: SettingMetadata = {
+export const settingGeneralTouchDisplayLandscapeLock112: SettingMetadata = {
     id: 0x70, // 112
     label: 'Touch Display Landscape Lock',
     length: 1,
@@ -1174,35 +1174,35 @@ Regional Video format
 */
 
 export const videoModeKnownSettings: SettingMetadata[] = [
-    settingResolution2,
-    settingFps3,
-    settingFov4,
-    settingLowLight8,
-    settingStabilization78,
-    settingProtune10,
-    settingShutter73,
-    settingEvComp15,
-    settingWhiteBalance11,
-    settingIsoMin102,
-    settingIsoMax13,
-    settingSharpness14,
-    settingColor12,
-    settingRawAudio81,
-    settingMicrophone80,
-    settingVideoTimer107,
-    settingResolutionFormat108,
+    settingVideoResolution2,
+    settingVideoFps3,
+    settingVideoFov4,
+    settingVideoLowLight8,
+    settingVideoStabilization78,
+    settingVideoProtune10,
+    settingVideoShutter73,
+    settingVideoEvComp15,
+    settingVideoWhiteBalance11,
+    settingVideoIsoMin102,
+    settingVideoIsoMax13,
+    settingVideoSharpness14,
+    settingVideoColor12,
+    settingVideoRawAudio81,
+    settingVideoMicrophone80,
+    settingVideoVideoTimer107,
+    settingVideoResolutionFormat108,
 ];
 
-export const loopingModeKnownSettings: SettingMetadata[] = [settingResolution2, settingFps3, settingFov4, settingInterval6, settingLowLight8, settingStabilization78];
+export const loopingModeKnownSettings: SettingMetadata[] = [settingVideoResolution2, settingVideoFps3, settingVideoFov4, settingVideoInterval6, settingVideoLowLight8, settingVideoStabilization78];
 
 export const timewarpModeKnownSettings: SettingMetadata[] = [
-    settingResolution2,
-    settingSpeed111,
+    settingVideoResolution2,
+    settingVideoSpeed111,
     // But limited to "Wide" only
-    settingFov4,
+    settingVideoFov4,
 ];
 
-export const timelapseVideoModeKnownSettings: SettingMetadata[] = [settingResolution2, settingFov4, settingInterval5];
+export const timelapseVideoModeKnownSettings: SettingMetadata[] = [settingVideoResolution2, settingVideoFov4, settingVideoInterval5];
 
 export const timelapsePhotoModeKnownSettings: SettingMetadata[] = [
     settingMultishotInterval30,
@@ -1266,19 +1266,19 @@ export const photoSingleModeKnownSettings: SettingMetadata[] = [
 ];
 
 export const generalSettings: SettingMetadata[] = [
-    settingQuickCapture54,
-    settingBeeps87,
-    settingDefaultMode89,
-    settingLeds91,
-    settingVideoCompression106,
-    settingVoiceControl86,
-    settingWakeOnVoice104,
-    settingVoiceControlLanguage85,
-    settingTouchDisplayLandscapeLock112,
-    settingTouchDisplayScreenSaver51,
-    settingTouchDisplayBrightness88,
-    settingRegionalGps83,
-    settingRegionalLanguage84,
+    settingGeneralQuickCapture54,
+    settingGeneralBeeps87,
+    settingGeneralDefaultMode89,
+    settingGeneralLeds91,
+    settingGeneralVideoCompression106,
+    settingGeneralVoiceControl86,
+    settingGeneralWakeOnVoice104,
+    settingGeneralVoiceControlLanguage85,
+    settingGeneralTouchDisplayLandscapeLock112,
+    settingGeneralTouchDisplayScreenSaver51,
+    settingGeneralTouchDisplayBrightness88,
+    settingGeneralRegionalGps83,
+    settingGeneralRegionalLanguage84,
 ];
 
 export const allKnownSettings: SettingMetadata[] = [
