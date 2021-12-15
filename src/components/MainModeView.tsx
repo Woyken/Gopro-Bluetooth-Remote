@@ -13,7 +13,6 @@ import { settingsCurrentMode92 } from 'store/goproBluetoothServiceActions/goproS
 import {
     statusApState69,
     statusEncodingActive10,
-    statusInternalBatteryLevel2,
     statusInternalBatteryPercentage70,
     statusRemainingPhotos34,
     statusRemainingVideoTime35,
