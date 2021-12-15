@@ -46,6 +46,10 @@ export const statusInternalBatteryLevel2: StatusMetadata = {
             id: 3,
             label: 'Three',
         },
+        {
+            id: 4,
+            label: 'Charging',
+        },
     ],
 };
 
