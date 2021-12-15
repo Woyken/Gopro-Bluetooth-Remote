@@ -1,33 +1,29 @@
 import Battery20Icon from '@mui/icons-material/Battery20';
-import Battery60Icon from '@mui/icons-material/Battery60';
-import BatteryAlertIcon from '@mui/icons-material/BatteryAlert';
+import Battery50Icon from '@mui/icons-material/Battery50';
+import Battery80Icon from '@mui/icons-material/Battery80';
+import BatteryCharging20Icon from '@mui/icons-material/BatteryCharging20';
+import BatteryCharging50Icon from '@mui/icons-material/BatteryCharging50';
+import BatteryCharging80Icon from '@mui/icons-material/BatteryCharging80';
+import BatteryChargingFullIcon from '@mui/icons-material/BatteryChargingFull';
 import BatteryFullIcon from '@mui/icons-material/BatteryFull';
 import { IconButton, Typography } from '@mui/material';
 
 interface IProps {
     batteryPercentage: number;
-    batteryLevelBars: number;
+    isCharging: boolean;
 }
 
-function getIconByLevelBar(levelBar: number): JSX.Element {
+function getIconByLevelBar(batteryPercentage: number, isCharging: boolean): JSX.Element {
     // camera returned values defined in statusInternalBatteryLevel2
-    switch (levelBar) {
-        case 0:
-            return <BatteryAlertIcon />;
-        case 1:
-            return <Battery20Icon />;
-        case 2:
-            return <Battery60Icon />;
-        case 3:
-            return <BatteryFullIcon />;
-        default:
-            return <BatteryAlertIcon />;
-    }
+    if (batteryPercentage > 80) return isCharging ? <BatteryChargingFullIcon /> : <BatteryFullIcon />;
+    if (batteryPercentage > 50) return isCharging ? <BatteryCharging80Icon /> : <Battery80Icon />;
+    if (batteryPercentage > 20) return isCharging ? <BatteryCharging50Icon /> : <Battery50Icon />;
+    return isCharging ? <BatteryCharging20Icon /> : <Battery20Icon />;
 }
 
 const BatteryPercentageIcon: React.FC<IProps> = (props) => {
-    const { batteryPercentage, batteryLevelBars } = props;
-    const icon = getIconByLevelBar(batteryLevelBars);
+    const { batteryPercentage, isCharging } = props;
+    const icon = getIconByLevelBar(batteryPercentage, isCharging);
 
     return (
         <IconButton>

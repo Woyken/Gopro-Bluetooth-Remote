@@ -21,6 +21,7 @@ import {
 } from 'store/goproBluetoothServiceActions/goproStatusMetadata';
 import { SettingValue } from 'store/goproSettingsSlice';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { selectIsBatteryCharging } from 'store/selectors/statusSelectors';
 import { makeStyles } from 'theme/makeStyles';
 
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
@@ -123,7 +124,7 @@ const MainModeView: React.FC = () => {
     const deviceName = useAppSelector((state) => state.goproBluetoothReducer.deviceName);
     const isWifiApEnabled = statuses[statusApState69.id] === 1;
     const batteryPercentage = statuses[statusInternalBatteryPercentage70.id] as number;
-    const batteryLevelBars = statuses[statusInternalBatteryLevel2.id] as number;
+    const isCharging = useAppSelector(selectIsBatteryCharging);
     // TODO sd card icon, display it's status statusSdStatus33
     // TODO remaining space KB in sd card statusRemainingSpace54
     const videoRemainingTime = statuses[statusRemainingVideoTime35.id] as number;
@@ -182,7 +183,7 @@ const MainModeView: React.FC = () => {
                                 <SdStorageIcon />
                                 <Typography variant="body1">{storageRemainingTimeText}</Typography>
                             </IconButton>
-                            <BatteryPercentageIcon batteryPercentage={batteryPercentage} batteryLevelBars={batteryLevelBars} />
+                            <BatteryPercentageIcon batteryPercentage={batteryPercentage} isCharging={isCharging} />
                             <Button onClick={() => dispatch(getSettingsCommand())}>settings dump</Button>
                             <Button onClick={() => dispatch(getStatusesCommand())}>statuses dump</Button>
                             <p>Mode: {settingCurrentCategory}</p>
