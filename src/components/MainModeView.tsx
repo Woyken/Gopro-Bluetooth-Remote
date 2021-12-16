@@ -20,7 +20,7 @@ import {
 } from 'store/goproBluetoothServiceActions/goproStatusMetadata';
 import { SettingValue } from 'store/goproSettingsSlice';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { selectIsBatteryCharging } from 'store/selectors/statusSelectors';
+import { selectBatteryPercentage, selectIsBatteryCharging } from 'store/selectors/statusSelectors';
 import { makeStyles } from 'theme/makeStyles';
 
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
@@ -122,7 +122,7 @@ const MainModeView: React.FC = () => {
     const settingCurrentCategory = getCurrentModeGroup(settingCurrentMode);
     const deviceName = useAppSelector((state) => state.goproBluetoothReducer.deviceName);
     const isWifiApEnabled = statuses[statusApState69.id] === 1;
-    const batteryPercentage = statuses[statusInternalBatteryPercentage70.id] as number;
+    const batteryPercentage = useAppSelector(selectBatteryPercentage);
     const isCharging = useAppSelector(selectIsBatteryCharging);
     // TODO sd card icon, display it's status statusSdStatus33
     // TODO remaining space KB in sd card statusRemainingSpace54

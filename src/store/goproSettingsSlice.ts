@@ -12,8 +12,10 @@ interface Settings {
     [key: number]: SettingValue;
 }
 
+export type StatusValue = number | string | undefined;
+
 interface Statuses {
-    [key: number]: number | string | undefined;
+    [key: number]: StatusValue;
 }
 
 export interface GoproSettingsState {
