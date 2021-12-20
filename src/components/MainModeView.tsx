@@ -11,6 +11,7 @@ import {
 import { getSettingsCommand, getStatusesCommand } from 'store/goproBluetoothServiceActions/commands/queryCommands';
 import { statusApState69, statusEncodingActive10 } from 'store/goproBluetoothServiceActions/goproStatusMetadata';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { selectDeviceName } from 'store/selectors/bluetoothStateSelectors';
 import { selectCurrentModeGroup, SettingsModesGroups } from 'store/selectors/settingsSelectors';
 import { selectBatteryPercentage, selectCurrentRecordingTimeText, selectIsBatteryCharging, selectStorageRemainingTimeText } from 'store/selectors/statusSelectors';
 import { makeStyles } from 'theme/makeStyles';
@@ -84,7 +85,7 @@ const useStyles = makeStyles()({
 const MainModeView: React.FC = () => {
     const { classes } = useStyles();
     const settingCurrentCategory = useAppSelector(selectCurrentModeGroup);
-    const deviceName = useAppSelector((state) => state.goproBluetoothReducer.deviceName);
+    const deviceName = useAppSelector(selectDeviceName);
     const isWifiApEnabled = useAppSelector((state) => state.goproSettingsReducer.statuses[statusApState69.id]) === 1;
     const batteryPercentage = useAppSelector(selectBatteryPercentage);
     const isCharging = useAppSelector(selectIsBatteryCharging);
