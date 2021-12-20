@@ -95,7 +95,6 @@ import {
 } from 'store/goproBluetoothServiceActions/goproStatusMetadata';
 import { StatusValue } from 'store/goproSettingsSlice';
 import { RootState } from 'store/store';
-import { pad } from 'utilities/stringUtilities';
 
 import { createSelector } from '@reduxjs/toolkit';
 
@@ -222,10 +221,10 @@ export const selectStorageRemainingTimeText = createSelector(
             const videoRemainingSeconds = statusAsNumber(videoRemainingTime?.statusValue);
             const videoRemainingMinutes = Math.floor(videoRemainingSeconds / 60) % 60;
             const videoRemainingHours = Math.floor(videoRemainingSeconds / 60 / 60);
-            return `${pad(videoRemainingHours, 2)}:${pad(videoRemainingMinutes, 2)}`;
+            return `${videoRemainingHours.toString().padStart(2, '0')}:${videoRemainingMinutes.toString().padStart(2, '0')}`;
         }
         const photos = statusAsNumber(photosRemaining?.statusValue);
-        const storageRemainingTimeText = `${photos <= 999 ? pad(photos, 3) : '999+'}`;
+        const storageRemainingTimeText = `${photos <= 999 ? photos.toString().padStart(3, '0') : '999+'}`;
         return storageRemainingTimeText;
     }
 );
