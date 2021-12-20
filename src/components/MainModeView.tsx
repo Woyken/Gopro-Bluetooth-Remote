@@ -9,10 +9,10 @@ import {
     sleepCommand,
 } from 'store/goproBluetoothServiceActions/commands/commands';
 import { getSettingsCommand, getStatusesCommand } from 'store/goproBluetoothServiceActions/commands/queryCommands';
-import { statusApState69, statusEncodingActive10, statusVideoProgressCounter13 } from 'store/goproBluetoothServiceActions/goproStatusMetadata';
+import { statusApState69, statusEncodingActive10 } from 'store/goproBluetoothServiceActions/goproStatusMetadata';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { selectCurrentModeGroup, SettingsModesGroups } from 'store/selectors/settingsSelectors';
-import { selectBatteryPercentage, selectIsBatteryCharging, selectStorageRemainingTimeText } from 'store/selectors/statusSelectors';
+import { selectBatteryPercentage, selectCurrentRecordingTimeText, selectIsBatteryCharging, selectStorageRemainingTimeText } from 'store/selectors/statusSelectors';
 import { makeStyles } from 'theme/makeStyles';
 
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
@@ -83,20 +83,17 @@ const useStyles = makeStyles()({
 // TODO split this component
 const MainModeView: React.FC = () => {
     const { classes } = useStyles();
-    const statuses = useAppSelector((state) => state.goproSettingsReducer.statuses);
     const settingCurrentCategory = useAppSelector(selectCurrentModeGroup);
     const deviceName = useAppSelector((state) => state.goproBluetoothReducer.deviceName);
-    const isWifiApEnabled = statuses[statusApState69.id] === 1;
+    const isWifiApEnabled = useAppSelector((state) => state.goproSettingsReducer.statuses[statusApState69.id]) === 1;
     const batteryPercentage = useAppSelector(selectBatteryPercentage);
     const isCharging = useAppSelector(selectIsBatteryCharging);
     // TODO sd card icon, display it's status statusSdStatus33
     // TODO remaining space KB in sd card statusRemainingSpace54
     const storageRemainingTimeText = useAppSelector(selectStorageRemainingTimeText);
 
-    const isShutterActive = statuses[statusEncodingActive10.id] === 1;
-    const currentRecordingTime = statuses[statusVideoProgressCounter13.id] as number;
-    const currentRecordingMinutes = Math.floor(currentRecordingTime / 60);
-    const currentRecordingSeconds = currentRecordingTime % 60;
+    const isShutterActive = useAppSelector((state) => state.goproSettingsReducer.statuses[statusEncodingActive10.id]) === 1;
+    const currentRecordingTimeText = useAppSelector(selectCurrentRecordingTimeText);
     const dispatch = useAppDispatch();
     const handlePowerButtonClick = () => {
         dispatch(sleepCommand());
@@ -188,14 +185,7 @@ const MainModeView: React.FC = () => {
                                     {isShutterActive ? <FiberManualRecordIcon /> : <RecordInactiveIcon />}
                                 </IconButton>
                             </div>
-                            <div className={classes.floatRight}>
-                                {isShutterActive && (
-                                    <Typography variant="h6">
-                                        {currentRecordingMinutes.toLocaleString(undefined, { minimumIntegerDigits: 2 })}:
-                                        {currentRecordingSeconds.toLocaleString(undefined, { minimumIntegerDigits: 2 })}
-                                    </Typography>
-                                )}
-                            </div>
+                            <div className={classes.floatRight}>{isShutterActive && <Typography variant="h6">{currentRecordingTimeText}</Typography>}</div>
                         </div>
                     </div>
                 </Paper>

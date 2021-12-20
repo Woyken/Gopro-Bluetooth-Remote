@@ -228,3 +228,10 @@ export const selectStorageRemainingTimeText = createSelector(
         return storageRemainingTimeText;
     }
 );
+
+export const selectCurrentRecordingTimeText = createSelector(selectStatusVideoProgressCounter13, (currentRecordingTime) => {
+    const currentRecordingTotalSeconds = statusAsNumber(currentRecordingTime?.statusValue);
+    const currentRecordingMinutes = Math.floor(currentRecordingTotalSeconds / 60);
+    const currentRecordingSeconds = currentRecordingTotalSeconds % 60;
+    return `${currentRecordingMinutes.toLocaleString(undefined, { minimumIntegerDigits: 2 })}:${currentRecordingSeconds.toLocaleString(undefined, { minimumIntegerDigits: 2 })}`;
+});
