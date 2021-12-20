@@ -9,17 +9,9 @@ import {
     sleepCommand,
 } from 'store/goproBluetoothServiceActions/commands/commands';
 import { getSettingsCommand, getStatusesCommand } from 'store/goproBluetoothServiceActions/commands/queryCommands';
-import { settingsCurrentMode92 } from 'store/goproBluetoothServiceActions/goproSettingsMetadata';
-import {
-    statusApState69,
-    statusEncodingActive10,
-    statusInternalBatteryPercentage70,
-    statusRemainingPhotos34,
-    statusRemainingVideoTime35,
-    statusVideoProgressCounter13,
-} from 'store/goproBluetoothServiceActions/goproStatusMetadata';
-import { SettingValue } from 'store/goproSettingsSlice';
+import { statusApState69, statusEncodingActive10, statusVideoProgressCounter13 } from 'store/goproBluetoothServiceActions/goproStatusMetadata';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { selectCurrentModeGroup, SettingsModesGroups } from 'store/selectors/settingsSelectors';
 import { selectBatteryPercentage, selectIsBatteryCharging, selectStorageRemainingTimeText } from 'store/selectors/statusSelectors';
 import { makeStyles } from 'theme/makeStyles';
 
@@ -88,38 +80,11 @@ const useStyles = makeStyles()({
     },
 });
 
-enum DisplayModeGroup {
-    video = 'Video',
-    photo = 'Photo',
-    timeLapse = 'Time Lapse',
-}
-
-function getCurrentModeGroup(settingCurrentMode?: SettingValue) {
-    if (!settingCurrentMode) return DisplayModeGroup.video;
-    switch (settingCurrentMode.value) {
-        case 0xc:
-        case 0xf:
-            return DisplayModeGroup.video;
-        case 0x11:
-        case 0x12:
-        case 0x13:
-            return DisplayModeGroup.photo;
-        case 0x18:
-        case 0xd:
-        case 0x14:
-        case 0x15:
-            return DisplayModeGroup.timeLapse;
-        default:
-            return DisplayModeGroup.video;
-    }
-}
-
 // TODO split this component
 const MainModeView: React.FC = () => {
     const { classes } = useStyles();
     const statuses = useAppSelector((state) => state.goproSettingsReducer.statuses);
-    const settingCurrentMode = useAppSelector((state) => state.goproSettingsReducer.settings[settingsCurrentMode92.id]);
-    const settingCurrentCategory = getCurrentModeGroup(settingCurrentMode);
+    const settingCurrentCategory = useAppSelector(selectCurrentModeGroup);
     const deviceName = useAppSelector((state) => state.goproBluetoothReducer.deviceName);
     const isWifiApEnabled = statuses[statusApState69.id] === 1;
     const batteryPercentage = useAppSelector(selectBatteryPercentage);
@@ -192,7 +157,7 @@ const MainModeView: React.FC = () => {
                                 className={classes.button}
                                 aria-label="Timelapse mode"
                                 color="primary"
-                                variant={settingCurrentCategory === DisplayModeGroup.timeLapse ? 'text' : 'outlined'}
+                                variant={settingCurrentCategory === SettingsModesGroups.timelapse ? 'text' : 'outlined'}
                             >
                                 <TimelapseVideoIcon />
                             </Button>
@@ -202,7 +167,7 @@ const MainModeView: React.FC = () => {
                                 className={classes.button}
                                 aria-label="Video mode"
                                 color="primary"
-                                variant={settingCurrentCategory === DisplayModeGroup.video ? 'text' : 'outlined'}
+                                variant={settingCurrentCategory === SettingsModesGroups.video ? 'text' : 'outlined'}
                             >
                                 <VideocamIcon />
                             </Button>
@@ -211,7 +176,7 @@ const MainModeView: React.FC = () => {
                                 className={classes.button}
                                 aria-label="Photo mode"
                                 color="primary"
-                                variant={settingCurrentCategory === DisplayModeGroup.photo ? 'text' : 'outlined'}
+                                variant={settingCurrentCategory === SettingsModesGroups.photo ? 'text' : 'outlined'}
                             >
                                 <PhotoCameraIcon />
                             </Button>
