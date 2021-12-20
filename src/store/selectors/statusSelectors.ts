@@ -221,10 +221,10 @@ export const selectStorageRemainingTimeText = createSelector(
             const videoRemainingSeconds = statusAsNumber(videoRemainingTime?.statusValue);
             const videoRemainingMinutes = Math.floor(videoRemainingSeconds / 60) % 60;
             const videoRemainingHours = Math.floor(videoRemainingSeconds / 60 / 60);
-            return `${videoRemainingHours.toString().padStart(2, '0')}:${videoRemainingMinutes.toString().padStart(2, '0')}`;
+            return `${videoRemainingHours.toLocaleString(undefined, { minimumIntegerDigits: 2 })}:${videoRemainingMinutes.toLocaleString(undefined, { minimumIntegerDigits: 2 })}`;
         }
         const photos = statusAsNumber(photosRemaining?.statusValue);
-        const storageRemainingTimeText = `${photos <= 999 ? photos.toString().padStart(3, '0') : '999+'}`;
+        const storageRemainingTimeText = `${photos <= 999 ? photos.toLocaleString(undefined, { minimumIntegerDigits: 3 }) : '999+'}`;
         return storageRemainingTimeText;
     }
 );
