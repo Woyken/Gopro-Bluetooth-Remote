@@ -9,11 +9,11 @@ import {
     sleepCommand,
 } from 'store/goproBluetoothServiceActions/commands/commands';
 import { getSettingsCommand, getStatusesCommand } from 'store/goproBluetoothServiceActions/commands/queryCommands';
-import { statusApState69, statusEncodingActive10 } from 'store/goproBluetoothServiceActions/goproStatusMetadata';
+import { statusApState69 } from 'store/goproBluetoothServiceActions/goproStatusMetadata';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { selectDeviceName } from 'store/selectors/bluetoothStateSelectors';
 import { selectCurrentModeGroup, SettingsModesGroups } from 'store/selectors/settingsSelectors';
-import { selectBatteryPercentage, selectCurrentRecordingTimeText, selectIsBatteryCharging, selectStorageRemainingTimeText } from 'store/selectors/statusSelectors';
+import { selectBatteryPercentage, selectCurrentRecordingTimeText, selectIsBatteryCharging, selectIsShutterActive, selectStorageRemainingTimeText } from 'store/selectors/statusSelectors';
 import { makeStyles } from 'theme/makeStyles';
 
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
@@ -93,7 +93,7 @@ const MainModeView: React.FC = () => {
     // TODO remaining space KB in sd card statusRemainingSpace54
     const storageRemainingTimeText = useAppSelector(selectStorageRemainingTimeText);
 
-    const isShutterActive = useAppSelector((state) => state.goproSettingsReducer.statuses[statusEncodingActive10.id]) === 1;
+    const isShutterActive = useAppSelector(selectIsShutterActive);
     const currentRecordingTimeText = useAppSelector(selectCurrentRecordingTimeText);
     const dispatch = useAppDispatch();
     const handlePowerButtonClick = () => {

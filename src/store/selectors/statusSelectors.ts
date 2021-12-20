@@ -235,3 +235,5 @@ export const selectCurrentRecordingTimeText = createSelector(selectStatusVideoPr
     const currentRecordingSeconds = currentRecordingTotalSeconds % 60;
     return `${currentRecordingMinutes.toLocaleString(undefined, { minimumIntegerDigits: 2 })}:${currentRecordingSeconds.toLocaleString(undefined, { minimumIntegerDigits: 2 })}`;
 });
+
+export const selectIsShutterActive = createSelector(selectStatusEncodingActive10, (encodingActive) => statusAsNumber(encodingActive?.statusValue) === 1);
