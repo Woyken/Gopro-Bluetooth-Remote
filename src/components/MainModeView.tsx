@@ -20,7 +20,7 @@ import {
 } from 'store/goproBluetoothServiceActions/goproStatusMetadata';
 import { SettingValue } from 'store/goproSettingsSlice';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { selectBatteryPercentage, selectIsBatteryCharging } from 'store/selectors/statusSelectors';
+import { selectBatteryPercentage, selectIsBatteryCharging, selectStorageRemainingTimeText } from 'store/selectors/statusSelectors';
 import { makeStyles } from 'theme/makeStyles';
 
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
@@ -126,12 +126,8 @@ const MainModeView: React.FC = () => {
     const isCharging = useAppSelector(selectIsBatteryCharging);
     // TODO sd card icon, display it's status statusSdStatus33
     // TODO remaining space KB in sd card statusRemainingSpace54
-    const videoRemainingTime = statuses[statusRemainingVideoTime35.id] as number;
-    const photoRemainingTime = statuses[statusRemainingPhotos34.id] as number;
-    const isVideoMode = settingCurrentCategory !== DisplayModeGroup.photo;
-    const videoRemainingMinutes = Math.floor(videoRemainingTime / 60) % 60;
-    const videoRemainingHours = Math.floor(videoRemainingTime / 60 / 60);
-    const storageRemainingTimeText = isVideoMode ? `${videoRemainingHours}:${videoRemainingMinutes}` : `${photoRemainingTime <= 999 ? photoRemainingTime : '999+'}`;
+    const storageRemainingTimeText = useAppSelector(selectStorageRemainingTimeText);
+
     const isShutterActive = statuses[statusEncodingActive10.id] === 1;
     const currentRecordingTime = statuses[statusVideoProgressCounter13.id] as number;
     const currentRecordingMinutes = Math.floor(currentRecordingTime / 60);

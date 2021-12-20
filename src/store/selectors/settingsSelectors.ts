@@ -465,23 +465,23 @@ export const selectCurrentModeSettings = createSelector(
         nightlapseModeSettings
     ) => {
         switch (currentMode?.value) {
-            case 0xc:
+            case SettingsModes.video:
                 return videoModeSettings;
-            case 0xf:
+            case SettingsModes.videoLooping:
                 return loopingModeSettings;
-            case 0x11:
+            case SettingsModes.photoSingle:
                 return photoSingleModeSettings;
-            case 0x12:
+            case SettingsModes.photoNight:
                 return photoNightModeSettings;
-            case 0x13:
+            case SettingsModes.photoBurst:
                 return photoBurstModeSettings;
-            case 0x18:
+            case SettingsModes.timelapseTimewarp:
                 return timewarpModeSettings;
-            case 0xd:
+            case SettingsModes.timelapseVideo:
                 return timelapseVideoModeSettings;
-            case 0x14:
+            case SettingsModes.timelapsePhoto:
                 return timelapsePhotoModeSettings;
-            case 0x15:
+            case SettingsModes.nightlapse:
                 return nightlapseModeSettings;
             default:
                 return [];
@@ -536,3 +536,46 @@ export const selectGeneralSettings = createSelector(
         return settings.filter((setting) => setting !== undefined).map((x) => x as NonNullable<typeof x>);
     }
 );
+
+export const selectCurrentModeGroup = createSelector(selectSettingsCurrentMode92, (currentMode) => {
+    switch (currentMode?.value) {
+        case SettingsModes.video:
+            return SettingsModesGroups.video;
+        case SettingsModes.videoLooping:
+            return SettingsModesGroups.video;
+        case SettingsModes.photoSingle:
+            return SettingsModesGroups.photo;
+        case SettingsModes.photoNight:
+            return SettingsModesGroups.photo;
+        case SettingsModes.photoBurst:
+            return SettingsModesGroups.photo;
+        case SettingsModes.timelapseTimewarp:
+            return SettingsModesGroups.timelapse;
+        case SettingsModes.timelapseVideo:
+            return SettingsModesGroups.timelapse;
+        case SettingsModes.timelapsePhoto:
+            return SettingsModesGroups.photo;
+        case SettingsModes.nightlapse:
+            return SettingsModesGroups.photo;
+        default:
+            return SettingsModesGroups.video;
+    }
+});
+
+export enum SettingsModesGroups {
+    video,
+    photo,
+    timelapse,
+}
+
+export enum SettingsModes {
+    video = 0xc,
+    videoLooping = 0xf,
+    photoSingle = 0x11,
+    photoNight = 0x12,
+    photoBurst = 0x13,
+    timelapseTimewarp = 0x18,
+    timelapseVideo = 0xd,
+    timelapsePhoto = 0x14,
+    nightlapse = 0x15,
+}
