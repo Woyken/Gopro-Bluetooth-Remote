@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Button } from '@mui/material';
 
 const InstallPwaButton: React.FC = () => {
-    const [shouldShowPrompt, _userAccepted, userDismissed, _isInstalled, promptToInstall] = usePwaInstallPrompt();
+    const [shouldShowPrompt, _userAccepted, userDismissed, isInstalled, promptToInstall] = usePwaInstallPrompt();
     const [showSad, setShowSad] = useState(false);
     const [dismissedInstall, setDismissedInstall] = useState(false);
 
@@ -25,7 +25,7 @@ const InstallPwaButton: React.FC = () => {
     const handleInstallClick = () => {
         promptToInstall();
     };
-    if (!shouldShowPrompt || dismissedInstall) {
+    if (!shouldShowPrompt || dismissedInstall || isInstalled) {
         return null;
     }
     return (
