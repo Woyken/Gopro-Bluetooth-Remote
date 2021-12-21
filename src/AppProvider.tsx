@@ -4,7 +4,7 @@ import { ToastContainer } from 'react-toastify';
 import { useAppTheme } from 'theme/makeStyles';
 import { GlobalStyles } from 'tss-react';
 
-import { ThemeProvider, useTheme } from '@mui/material';
+import { CssBaseline, ThemeProvider } from '@mui/material';
 
 import { store } from './store/store';
 import App from './App';
@@ -26,6 +26,7 @@ export const AppProvider: React.FC = () => {
             <ThemeProvider theme={theme}>
                 <ServiceWorkerContainer />
                 <ToastContainer />
+                <CssBaseline />
                 <App />
             </ThemeProvider>
         </Provider>
