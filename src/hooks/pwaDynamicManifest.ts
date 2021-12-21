@@ -34,6 +34,8 @@ export const useDynamicManifest = () => {
         const reader = new FileReader();
         reader.readAsDataURL(blob);
         reader.onload = () => {
+            // If using URL.createObjectURL, it creates unique guid url each time and it fails to install pwa on android
+            // manifest href will be full file in base64
             manifestElement.href = reader.result as string;
         };
     }, [manifestTemplate, theme]);
