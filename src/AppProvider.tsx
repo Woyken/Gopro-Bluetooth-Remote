@@ -1,6 +1,7 @@
 import { ServiceWorkerContainer } from 'components/pwa/ServiceWorkerContainer';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
+import { useAppTheme } from 'theme/makeStyles';
 import { GlobalStyles } from 'tss-react';
 
 import { ThemeProvider, useTheme } from '@mui/material';
@@ -11,7 +12,7 @@ import App from './App';
 import 'react-toastify/dist/ReactToastify.css';
 
 export const AppProvider: React.FC = () => {
-    const theme = useTheme();
+    const theme = useAppTheme();
     return (
         <Provider store={store}>
             <GlobalStyles
