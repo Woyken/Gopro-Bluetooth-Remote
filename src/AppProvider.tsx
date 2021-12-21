@@ -1,3 +1,4 @@
+import DynamicManifestProvider from 'components/pwa/DynamicManifestProvider';
 import { ServiceWorkerContainer } from 'components/pwa/ServiceWorkerContainer';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
@@ -24,6 +25,7 @@ export const AppProvider: React.FC = () => {
                 }}
             />
             <ThemeProvider theme={theme}>
+                <DynamicManifestProvider />
                 <ServiceWorkerContainer />
                 <ToastContainer />
                 <CssBaseline />
