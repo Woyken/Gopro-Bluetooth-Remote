@@ -237,3 +237,5 @@ export const selectCurrentRecordingTimeText = createSelector(selectStatusVideoPr
 });
 
 export const selectIsShutterActive = createSelector(selectStatusEncodingActive10, (encodingActive) => statusAsNumber(encodingActive?.statusValue) === 1);
+
+export const selectIsWifiApEnabled = createSelector(selectStatusApState69, (apState) => statusAsNumber(apState?.statusValue) === 1);

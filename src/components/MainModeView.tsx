@@ -9,11 +9,17 @@ import {
     sleepCommand,
 } from 'store/goproBluetoothServiceActions/commands/commands';
 import { getSettingsCommand, getStatusesCommand } from 'store/goproBluetoothServiceActions/commands/queryCommands';
-import { statusApState69 } from 'store/goproBluetoothServiceActions/goproStatusMetadata';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { selectDeviceName } from 'store/selectors/bluetoothStateSelectors';
 import { selectCurrentModeGroup, SettingsModesGroups } from 'store/selectors/settingsSelectors';
-import { selectBatteryPercentage, selectCurrentRecordingTimeText, selectIsBatteryCharging, selectIsShutterActive, selectStorageRemainingTimeText } from 'store/selectors/statusSelectors';
+import {
+    selectBatteryPercentage,
+    selectCurrentRecordingTimeText,
+    selectIsBatteryCharging,
+    selectIsShutterActive,
+    selectIsWifiApEnabled,
+    selectStorageRemainingTimeText,
+} from 'store/selectors/statusSelectors';
 import { makeStyles } from 'theme/makeStyles';
 
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
@@ -86,7 +92,7 @@ const MainModeView: React.FC = () => {
     const { classes } = useStyles();
     const settingCurrentCategory = useAppSelector(selectCurrentModeGroup);
     const deviceName = useAppSelector(selectDeviceName);
-    const isWifiApEnabled = useAppSelector((state) => state.goproSettingsReducer.statuses[statusApState69.id]) === 1;
+    const isWifiApEnabled = useAppSelector(selectIsWifiApEnabled);
     const batteryPercentage = useAppSelector(selectBatteryPercentage);
     const isCharging = useAppSelector(selectIsBatteryCharging);
     // TODO sd card icon, display it's status statusSdStatus33
