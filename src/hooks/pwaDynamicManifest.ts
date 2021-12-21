@@ -4,7 +4,7 @@ import { useTheme } from '@mui/material';
 
 import { useGetBaseManifest } from './pwaGetBaseManifest';
 
-const manifestBaseUrl = `${window.location.href.replace(/\/+$/, '')}${import.meta.env.BASE_URL}`;
+const manifestBaseUrl = window.location.href;
 // Manifest should exist in index.html
 const manifestElement = Array.from(document.getElementsByTagName('link')).filter((l) => l.rel === 'manifest')[0];
 if (!manifestElement) throw new Error("Couldn't find manifest element");
