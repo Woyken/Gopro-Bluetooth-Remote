@@ -31,7 +31,10 @@ export const useDynamicManifest = () => {
         });
         const stringManifest = JSON.stringify(manifestTemplate);
         const blob = new Blob([stringManifest], { type: 'application/json' });
-        const manifestURL = URL.createObjectURL(blob);
-        manifestElement.href = manifestURL;
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onload = () => {
+            manifestElement.href = reader.result as string;
+        };
     }, [manifestTemplate, theme]);
 };
