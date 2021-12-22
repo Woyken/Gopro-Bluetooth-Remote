@@ -6,6 +6,8 @@ import { makeStyles } from 'theme/makeStyles';
 
 import { Container, Dialog, DialogTitle, FormControl, InputLabel, MenuItem, Paper, Select, SelectChangeEvent } from '@mui/material';
 
+import CurrentModeSettingsPreview from './CurrentModeSettingsPreview';
+
 const useStyles = makeStyles()({
     temp: {
         display: 'flex',
@@ -21,13 +23,15 @@ const SettingsPreview: React.FC = () => {
     return (
         <>
             <SettingsPreviewModal isOpen={isModalOpen} onClose={handleCloseModal} />
-            <Container maxWidth="sm" sx={{ width: 'fit-content', minWidth: '40vw' }}>
-                <Paper elevation={previewElevation} onMouseOver={() => setPreviewElevation(3)} onMouseOut={() => setPreviewElevation(1)} onClick={handleOpenModal}>
-                    <p style={{ textAlign: 'center' }}>
-                        2.7K|60|W
-                        <br />
-                        PT, ICON, ICON
-                    </p>
+            <Container maxWidth="sm" sx={{ width: 'fit-content', marginBottom: '1rem' }}>
+                <Paper
+                    elevation={previewElevation}
+                    onMouseOver={() => setPreviewElevation(3)}
+                    onMouseOut={() => setPreviewElevation(1)}
+                    onClick={handleOpenModal}
+                    sx={{ minWidth: '40vw', minHeight: '2em' }}
+                >
+                    <CurrentModeSettingsPreview />
                 </Paper>
             </Container>
         </>

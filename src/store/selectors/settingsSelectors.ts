@@ -579,3 +579,69 @@ export enum SettingsModes {
     timelapsePhoto = 0x14,
     nightlapse = 0x15,
 }
+
+const makeSettingsPreviewMainTexts = (mainSettings: typeof selectSettingVideoResolution2[]) =>
+    createSelector(...mainSettings, (...selectors: ReturnType<typeof selectSettingVideoResolution2>[]) => {
+        return selectors
+            .map((selector) => selector?.valueLabel)
+            .filter((x) => x !== undefined)
+            .map((x) => x as NonNullable<typeof x>);
+    });
+
+const selectSettingsPreviewMainTextsVideo = makeSettingsPreviewMainTexts([selectSettingVideoResolution2, selectSettingVideoFps3, selectSettingVideoFov4]);
+const selectSettingsPreviewMainTextsLooping = makeSettingsPreviewMainTexts([selectSettingVideoResolution2, selectSettingVideoFps3, selectSettingVideoFov4]);
+const selectSettingsPreviewMainTextsPhotoSingle = makeSettingsPreviewMainTexts([selectSettingPhotoFov17]);
+const selectSettingsPreviewMainTextsPhotoNight = makeSettingsPreviewMainTexts([selectSettingPhotoFov17]);
+const selectSettingsPreviewMainTextsPhotoBurst = makeSettingsPreviewMainTexts([selectSettingPhotoFov17]);
+const selectSettingsPreviewMainTextsTimelapseTimewarp = makeSettingsPreviewMainTexts([selectSettingVideoResolution2, selectSettingVideoFov4, selectSettingVideoSpeed111]);
+const selectSettingsPreviewMainTextsTimelapseVideo = makeSettingsPreviewMainTexts([selectSettingVideoResolution2, selectSettingVideoFov4, selectSettingInterval5]);
+const selectSettingsPreviewMainTextsTimelapsePhoto = makeSettingsPreviewMainTexts([selectSettingMultishotInterval30, selectSettingMultishotFov28]);
+const selectSettingsPreviewMainTextsNightlapse = makeSettingsPreviewMainTexts([selectSettingMultishotFov28, selectSettingMultishotShutter31, selectSettingMultishotInterval32]);
+
+export const selectCurrentModeSettingsPreviewMainTexts = createSelector(
+    selectSettingsCurrentMode92,
+    selectSettingsPreviewMainTextsVideo,
+    selectSettingsPreviewMainTextsLooping,
+    selectSettingsPreviewMainTextsPhotoSingle,
+    selectSettingsPreviewMainTextsPhotoNight,
+    selectSettingsPreviewMainTextsPhotoBurst,
+    selectSettingsPreviewMainTextsTimelapseTimewarp,
+    selectSettingsPreviewMainTextsTimelapseVideo,
+    selectSettingsPreviewMainTextsTimelapsePhoto,
+    selectSettingsPreviewMainTextsNightlapse,
+    (
+        currentMode,
+        settingsPreviewMainTextsVideo,
+        settingsPreviewMainTextsLooping,
+        settingsPreviewMainTextsPhotoSingle,
+        settingsPreviewMainTextsPhotoNight,
+        settingsPreviewMainTextsPhotoBurst,
+        settingsPreviewMainTextsTimelapseTimewarp,
+        settingsPreviewMainTextsTimelapseVideo,
+        settingsPreviewMainTextsTimelapsePhoto,
+        settingsPreviewMainTextsNightlapse
+    ) => {
+        switch (currentMode?.value) {
+            case SettingsModes.video:
+                return settingsPreviewMainTextsVideo;
+            case SettingsModes.videoLooping:
+                return settingsPreviewMainTextsLooping;
+            case SettingsModes.photoSingle:
+                return settingsPreviewMainTextsPhotoSingle;
+            case SettingsModes.photoNight:
+                return settingsPreviewMainTextsPhotoNight;
+            case SettingsModes.photoBurst:
+                return settingsPreviewMainTextsPhotoBurst;
+            case SettingsModes.timelapseTimewarp:
+                return settingsPreviewMainTextsTimelapseTimewarp;
+            case SettingsModes.timelapseVideo:
+                return settingsPreviewMainTextsTimelapseVideo;
+            case SettingsModes.timelapsePhoto:
+                return settingsPreviewMainTextsTimelapsePhoto;
+            case SettingsModes.nightlapse:
+                return settingsPreviewMainTextsNightlapse;
+            default:
+                return [];
+        }
+    }
+);
