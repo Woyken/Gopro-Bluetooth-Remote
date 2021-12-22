@@ -53,7 +53,6 @@ const SettingsPreviewModal: React.FC<IPropss> = (props) => {
                 {currentModeSettings.map((setting) => (
                     <SingleSetting key={setting.settingId} setting={setting} />
                 ))}
-                <div>actual view todo</div>
             </Dialog>
         </>
     );
