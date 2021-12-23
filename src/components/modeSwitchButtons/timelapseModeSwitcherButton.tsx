@@ -2,7 +2,7 @@ import SplitButton from 'components/SplitButton';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { selectCurrentModeGroup } from 'store/selectors/settingsSelectors';
 import { selectLastTimelapseMode } from 'store/selectors/statusSelectors';
-import { getCommandToChangeMode, getModelLabel, getModesByGroup, SettingsModes, SettingsModesGroups, SettingsModesPhoto, SettingsModesTimelapse } from 'utilities/modes/modeTypes';
+import { getCommandToChangeMode, getModelLabel, getModesByGroup, SettingsModes, SettingsModesGroups, SettingsModesTimelapse } from 'utilities/modes/modeTypes';
 
 import TimelapseVideoIcon from '@mui/icons-material/SwitchVideo';
 
