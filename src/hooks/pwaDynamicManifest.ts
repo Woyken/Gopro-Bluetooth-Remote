@@ -1,21 +1,22 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useTheme } from '@mui/material';
 
 import { useGetBaseManifest } from './pwaGetBaseManifest';
 
 const manifestBaseUrl = window.location.href;
-// Manifest should exist in index.html
-const manifestElement = Array.from(document.getElementsByTagName('link')).filter((l) => l.rel === 'manifest')[0];
-if (!manifestElement) throw new Error("Couldn't find manifest element");
 
 export const useDynamicManifest = () => {
     const manifestTemplate = useGetBaseManifest();
     const theme = useTheme();
+    const [manifestEl, setmanifestEl] = useState<HTMLLinkElement>();
 
     useEffect(() => {
+        // Manifest should exist in index.html
+        const manifestElement = Array.from(document.getElementsByTagName('link')).filter((l) => l.rel === 'manifest')[0];
+        setmanifestEl(manifestElement);
         // Cleanup template manifest url, we'll be new dynamic one
-        manifestElement.href = '';
+        if (manifestElement) manifestElement.href = '';
     }, []);
 
     useEffect(() => {
@@ -36,7 +37,7 @@ export const useDynamicManifest = () => {
         reader.onload = () => {
             // If using URL.createObjectURL, it creates unique guid url each time and it fails to install pwa on android
             // manifest href will be full file in base64
-            manifestElement.href = reader.result as string;
+            if (manifestEl) manifestEl.href = reader.result as string;
         };
     }, [manifestTemplate, theme]);
 };
