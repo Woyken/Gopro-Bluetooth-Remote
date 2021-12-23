@@ -970,7 +970,7 @@ export const settingsCurrentMode92: SettingMetadata = {
     id: 0x5c, // 92
     label: 'Current Mode',
     length: settingGeneralDefaultMode89.length,
-    values: settingGeneralDefaultMode89.values,
+    values: [...settingGeneralDefaultMode89.values, { id: 0x04, label: 'Gallery view' }],
 };
 
 export const settingPhotoShutter97: SettingMetadata = {

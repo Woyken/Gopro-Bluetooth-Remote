@@ -34,10 +34,15 @@ export enum SettingsModesTimelapse {
     nightlapse = 0x15,
 }
 
+export enum SettingsModesMenus {
+    galleryView = 0x04,
+}
+
 export const SettingsModes = {
     ...SettingsModesVideo,
     ...SettingsModesPhoto,
     ...SettingsModesTimelapse,
+    ...SettingsModesMenus,
 };
 export type SettingsModes = SettingsModesVideo | SettingsModesPhoto | SettingsModesTimelapse;
 
