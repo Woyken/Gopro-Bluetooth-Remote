@@ -61,6 +61,7 @@ import {
     settingVideoWhiteBalance11,
 } from 'store/goproBluetoothServiceActions/goproSettingsMetadata';
 import { RootState } from 'store/store';
+import { SettingsModes, SettingsModesGroups } from 'utilities/modes/modeTypes';
 
 import { createSelector } from '@reduxjs/toolkit';
 
@@ -537,6 +538,14 @@ export const selectGeneralSettings = createSelector(
     }
 );
 
+export const selectCurrentMode = createSelector(selectSettingsCurrentMode92, (currentMode) => {
+    if (currentMode === undefined) return undefined;
+    return {
+        id: currentMode.value as SettingsModes,
+        label: currentMode.valueLabel,
+    };
+});
+
 export const selectCurrentModeGroup = createSelector(selectSettingsCurrentMode92, (currentMode) => {
     switch (currentMode?.value) {
         case SettingsModes.video:
@@ -554,31 +563,13 @@ export const selectCurrentModeGroup = createSelector(selectSettingsCurrentMode92
         case SettingsModes.timelapseVideo:
             return SettingsModesGroups.timelapse;
         case SettingsModes.timelapsePhoto:
-            return SettingsModesGroups.photo;
+            return SettingsModesGroups.timelapse;
         case SettingsModes.nightlapse:
-            return SettingsModesGroups.photo;
+            return SettingsModesGroups.timelapse;
         default:
             return SettingsModesGroups.video;
     }
 });
-
-export enum SettingsModesGroups {
-    video,
-    photo,
-    timelapse,
-}
-
-export enum SettingsModes {
-    video = 0xc,
-    videoLooping = 0xf,
-    photoSingle = 0x11,
-    photoNight = 0x12,
-    photoBurst = 0x13,
-    timelapseTimewarp = 0x18,
-    timelapseVideo = 0xd,
-    timelapsePhoto = 0x14,
-    nightlapse = 0x15,
-}
 
 const makeSettingsPreviewMainTexts = (mainSettings: typeof selectSettingVideoResolution2[]) =>
     createSelector(...mainSettings, (...selectors: ReturnType<typeof selectSettingVideoResolution2>[]) => {

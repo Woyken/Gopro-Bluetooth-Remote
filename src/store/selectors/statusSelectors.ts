@@ -95,10 +95,11 @@ import {
 } from 'store/goproBluetoothServiceActions/goproStatusMetadata';
 import { StatusValue } from 'store/goproSettingsSlice';
 import { RootState } from 'store/store';
+import { SettingsModesGroups, SettingsModesPhoto, SettingsModesTimelapse, SettingsModesVideo } from 'utilities/modes/modeTypes';
 
 import { createSelector } from '@reduxjs/toolkit';
 
-import { selectCurrentModeGroup, SettingsModesGroups } from './settingsSelectors';
+import { selectCurrentModeGroup } from './settingsSelectors';
 
 const makeStatusSelector = (statusMetadata: StatusMetadata) =>
     createSelector(
@@ -239,3 +240,7 @@ export const selectCurrentRecordingTimeText = createSelector(selectStatusVideoPr
 export const selectIsShutterActive = createSelector(selectStatusEncodingActive10, (encodingActive) => statusAsNumber(encodingActive?.statusValue) === 1);
 
 export const selectIsWifiApEnabled = createSelector(selectStatusApState69, (apState) => statusAsNumber(apState?.statusValue) === 1);
+
+export const selectLastVideoMode = createSelector(selectStatusLegacyLastVideoMode71, (lastVideoMode) => statusAsNumber(lastVideoMode?.statusValue) as SettingsModesVideo);
+export const selectLastPhotoMode = createSelector(selectStatusLegacyLastPhotoMode72, (lastPhotoMode) => statusAsNumber(lastPhotoMode?.statusValue) as SettingsModesPhoto);
+export const selectLastTimelapseMode = createSelector(selectStatusLegacyLastTimelapseMode73, (lastTimelapseMode) => statusAsNumber(lastTimelapseMode?.statusValue) as SettingsModesTimelapse);

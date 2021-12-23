@@ -1,17 +1,7 @@
-import {
-    apControlWiFiApOffCommand,
-    apControlWiFiApOnCommand,
-    legacyPresetsLoadGroupMultishotCommand,
-    legacyPresetsLoadGroupPhotoCommand,
-    legacyPresetsLoadGroupVideoCommand,
-    setShutterOffCommand,
-    setShutterOnCommand,
-    sleepCommand,
-} from 'store/goproBluetoothServiceActions/commands/commands';
+import { apControlWiFiApOffCommand, apControlWiFiApOnCommand, setShutterOffCommand, setShutterOnCommand, sleepCommand } from 'store/goproBluetoothServiceActions/commands/commands';
 import { getSettingsCommand, getStatusesCommand } from 'store/goproBluetoothServiceActions/commands/queryCommands';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { selectDeviceName } from 'store/selectors/bluetoothStateSelectors';
-import { selectCurrentModeGroup, SettingsModesGroups } from 'store/selectors/settingsSelectors';
 import {
     selectBatteryPercentage,
     selectCurrentRecordingTimeText,
@@ -23,7 +13,6 @@ import {
 import { makeStyles } from 'theme/makeStyles';
 
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
-import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import RecordInactiveIcon from '@mui/icons-material/RadioButtonChecked';
 import SdStorageIcon from '@mui/icons-material/SdStorage';
@@ -33,11 +22,12 @@ import SdStorageIcon from '@mui/icons-material/SdStorage';
 // import SignalWifi3BarIcon from '@mui/icons-material/SignalWifi3Bar';
 // import SignalWifi4BarIcon from '@mui/icons-material/SignalWifi4Bar';
 import SignalWifiOffIcon from '@mui/icons-material/SignalWifiOff';
-import TimelapseVideoIcon from '@mui/icons-material/SwitchVideo';
-import VideocamIcon from '@mui/icons-material/Videocam';
 import WifiIcon from '@mui/icons-material/Wifi';
 import { Button, Container, IconButton, Paper, Typography } from '@mui/material';
 
+import PhotoModeSwitcherButton from './modeSwitchButtons/photoModeSwitcherButton';
+import TimelapseModeSwitcherButton from './modeSwitchButtons/timelapseModeSwitcherButton';
+import VideoModeSwitcherButton from './modeSwitchButtons/videoModeSwitcherButton';
 import BatteryPercentageIcon from './BatteryPercentageIcon';
 import SettingsPreview from './SettingsPreview';
 
@@ -90,7 +80,6 @@ const useStyles = makeStyles()({
 // TODO split this component
 const MainModeView: React.FC = () => {
     const { classes } = useStyles();
-    const settingCurrentCategory = useAppSelector(selectCurrentModeGroup);
     const deviceName = useAppSelector(selectDeviceName);
     const isWifiApEnabled = useAppSelector(selectIsWifiApEnabled);
     const batteryPercentage = useAppSelector(selectBatteryPercentage);
@@ -111,15 +100,6 @@ const MainModeView: React.FC = () => {
         } else {
             dispatch(apControlWiFiApOnCommand());
         }
-    };
-    const handlePhotoModeButtonClick = () => {
-        dispatch(legacyPresetsLoadGroupPhotoCommand());
-    };
-    const handleVideoModeButtonClick = () => {
-        dispatch(legacyPresetsLoadGroupVideoCommand());
-    };
-    const handleTimelapseModeButtonClick = () => {
-        dispatch(legacyPresetsLoadGroupMultishotCommand());
     };
     const handleShutterButtonClick = () => {
         if (isShutterActive) {
@@ -150,40 +130,14 @@ const MainModeView: React.FC = () => {
                             <BatteryPercentageIcon batteryPercentage={batteryPercentage} isCharging={isCharging} />
                             <Button onClick={() => dispatch(getSettingsCommand())}>settings dump</Button>
                             <Button onClick={() => dispatch(getStatusesCommand())}>statuses dump</Button>
-                            <p>Mode: {settingCurrentCategory}</p>
                         </Container>
                     </div>
                     <div className={classes.bottomControls}>
                         <SettingsPreview />
                         <div className={classes.bottomCenteredButtons}>
-                            <Button
-                                onClick={handleTimelapseModeButtonClick}
-                                className={classes.button}
-                                aria-label="Timelapse mode"
-                                color="primary"
-                                variant={settingCurrentCategory === SettingsModesGroups.timelapse ? 'text' : 'outlined'}
-                            >
-                                <TimelapseVideoIcon />
-                            </Button>
-
-                            <Button
-                                onClick={handleVideoModeButtonClick}
-                                className={classes.button}
-                                aria-label="Video mode"
-                                color="primary"
-                                variant={settingCurrentCategory === SettingsModesGroups.video ? 'text' : 'outlined'}
-                            >
-                                <VideocamIcon />
-                            </Button>
-                            <Button
-                                onClick={handlePhotoModeButtonClick}
-                                className={classes.button}
-                                aria-label="Photo mode"
-                                color="primary"
-                                variant={settingCurrentCategory === SettingsModesGroups.photo ? 'text' : 'outlined'}
-                            >
-                                <PhotoCameraIcon />
-                            </Button>
+                            <TimelapseModeSwitcherButton />
+                            <VideoModeSwitcherButton />
+                            <PhotoModeSwitcherButton />
                         </div>
                         <div className={classes.alignLeftToRight}>
                             <div className={classes.floatLeft} />
