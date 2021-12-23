@@ -1,5 +1,4 @@
 import { apControlWiFiApOffCommand, apControlWiFiApOnCommand, setShutterOffCommand, setShutterOnCommand, sleepCommand } from 'store/goproBluetoothServiceActions/commands/commands';
-import { getSettingsCommand, getStatusesCommand } from 'store/goproBluetoothServiceActions/commands/queryCommands';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { selectDeviceName } from 'store/selectors/bluetoothStateSelectors';
 import {
@@ -128,8 +127,6 @@ const MainModeView: React.FC = () => {
                                 <Typography variant="body1">{storageRemainingTimeText}</Typography>
                             </IconButton>
                             <BatteryPercentageIcon batteryPercentage={batteryPercentage} isCharging={isCharging} />
-                            <Button onClick={() => dispatch(getSettingsCommand())}>settings dump</Button>
-                            <Button onClick={() => dispatch(getStatusesCommand())}>statuses dump</Button>
                         </Container>
                     </div>
                     <div className={classes.bottomControls}>
