@@ -39,5 +39,5 @@ export const useDynamicManifest = () => {
             // manifest href will be full file in base64
             if (manifestEl) manifestEl.href = reader.result as string;
         };
-    }, [manifestTemplate, theme]);
+    }, [manifestEl, manifestTemplate, theme]);
 };
