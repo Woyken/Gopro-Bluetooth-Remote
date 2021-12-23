@@ -93,20 +93,20 @@ define(['./workbox-a51b997a'], (function (workbox) { 'use strict';
    */
 
   workbox.precacheAndRoute([{
-    "url": "assets/index.09c9b60f.js",
-    "revision": null
-  }, {
     "url": "assets/index.5561b2f0.css",
     "revision": null
   }, {
-    "url": "assets/react.7cdffc58.js",
+    "url": "assets/index.c1d3248c.js",
     "revision": null
   }, {
-    "url": "assets/vendor.e8aba181.js",
+    "url": "assets/react.f96f9844.js",
+    "revision": null
+  }, {
+    "url": "assets/vendor.d193c6df.js",
     "revision": null
   }, {
     "url": "index.html",
-    "revision": "a3a8a673bc7a80415a999d3925546e40"
+    "revision": "17b0eb51e698786f0ae91de465b48827"
   }, {
     "url": "camera.ico",
     "revision": "043eb22b6e8605bbceb61cf021c602a8"
