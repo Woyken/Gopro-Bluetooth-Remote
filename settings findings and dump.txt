@@ -1,5 +1,8 @@
 HERO 7 Black settings
 
+/// EDIT ///
+/// Turns out there's a detailed settings dump available here https://github.com/KonradIT/goprowifihack/blob/master/HERO7/gpControl-HERO7Black.json
+
 ALL VALUES ARE IN DECIMAL
 
 1st dump
@@ -15,7 +18,6 @@ reset
 Going through settings one by one, enabling protune, changing setting values and all that jazz...
 These are some findings
 TODO proper formatting...
-
 
 If we join these with official table:
 https://gopro.github.io/OpenGoPro/ble_1_0#settings-quick-reference
