@@ -22,12 +22,13 @@ import SdStorageIcon from '@mui/icons-material/SdStorage';
 // import SignalWifi4BarIcon from '@mui/icons-material/SignalWifi4Bar';
 import SignalWifiOffIcon from '@mui/icons-material/SignalWifiOff';
 import WifiIcon from '@mui/icons-material/Wifi';
-import { Button, Container, IconButton, Paper, Typography } from '@mui/material';
+import { Container, IconButton, Paper, Typography } from '@mui/material';
 
 import PhotoModeSwitcherButton from './modeSwitchButtons/photoModeSwitcherButton';
 import TimelapseModeSwitcherButton from './modeSwitchButtons/timelapseModeSwitcherButton';
 import VideoModeSwitcherButton from './modeSwitchButtons/videoModeSwitcherButton';
 import BatteryPercentageIcon from './BatteryPercentageIcon';
+import { SettingsPreferencesButton } from './SettingsPreferences';
 import SettingsPreview from './SettingsPreview';
 
 const useStyles = makeStyles()({
@@ -68,6 +69,7 @@ const useStyles = makeStyles()({
     },
     floatLeft: {
         flex: 1,
+        display: 'flex',
     },
     floatRight: {
         flex: 1,
@@ -137,7 +139,9 @@ const MainModeView: React.FC = () => {
                             <PhotoModeSwitcherButton />
                         </div>
                         <div className={classes.alignLeftToRight}>
-                            <div className={classes.floatLeft} />
+                            <div className={classes.floatLeft}>
+                                <SettingsPreferencesButton />
+                            </div>
                             <div className={classes.recordButton}>
                                 <IconButton onClick={handleShutterButtonClick} aria-label="Record button" color="error">
                                     {isShutterActive ? <FiberManualRecordIcon /> : <RecordInactiveIcon />}
