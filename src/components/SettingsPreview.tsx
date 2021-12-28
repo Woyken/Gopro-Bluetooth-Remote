@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { selectCurrentModeSettings } from 'store/selectors/settingsSelectors';
 import { makeStyles } from 'theme/makeStyles';
 
-import { Container, Dialog, DialogTitle, FormControl, InputLabel, MenuItem, Paper, Select, SelectChangeEvent } from '@mui/material';
+import { Container, Dialog, DialogContent, DialogTitle, FormControl, InputLabel, MenuItem, Paper, Select, SelectChangeEvent } from '@mui/material';
 
 import CurrentModeSettingsPreview from './CurrentModeSettingsPreview';
 
@@ -50,9 +50,11 @@ const SettingsPreviewModal: React.FC<IPropss> = (props) => {
         <>
             <Dialog open={isOpen} onClose={onClose}>
                 <DialogTitle>Change mode settings</DialogTitle>
-                {currentModeSettings.map((setting) => (
-                    <SingleSetting key={setting.settingId} setting={setting} />
-                ))}
+                <DialogContent>
+                    {currentModeSettings.map((setting) => (
+                        <SingleSetting key={setting.settingId} setting={setting} />
+                    ))}
+                </DialogContent>
             </Dialog>
         </>
     );
