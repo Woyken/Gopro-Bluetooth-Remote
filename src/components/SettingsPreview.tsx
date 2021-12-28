@@ -49,7 +49,7 @@ const SettingsPreviewModal: React.FC<IPropss> = (props) => {
     return (
         <>
             <Dialog open={isOpen} onClose={onClose}>
-                <DialogTitle>Change current mode settings</DialogTitle>
+                <DialogTitle>Change mode settings</DialogTitle>
                 {currentModeSettings.map((setting) => (
                     <SingleSetting key={setting.settingId} setting={setting} />
                 ))}
