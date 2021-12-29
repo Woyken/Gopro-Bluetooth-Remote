@@ -2,6 +2,7 @@
 import { toast } from 'react-toastify';
 import { bluetoothDeviceState } from 'store/goproBleServiceState';
 import { goproBluetoothSlice } from 'store/goproBluetoothSlice';
+import { goproSettingsSlice } from 'store/goproSettingsSlice';
 import { commandResponseReceiverProvider } from 'store/packetParsing/goproPacketReaderCommand';
 import { queryResponseReceiverProvider } from 'store/packetParsing/goproPacketReaderQuery';
 import { settingsResponseReceiverProvider } from 'store/packetParsing/goproPacketReaderSetting';
@@ -82,6 +83,7 @@ export const gattConnect = createAsyncThunk<GattConnectResult, void, { state: Ro
     bluetoothDeviceState.characteristics.settingsResponseCharacteristic.oncharacteristicvaluechanged = goproBlePacketDataReaderProvider(settingsResponseReceiverProvider(dispatch));
     await bluetoothDeviceState.characteristics.settingsResponseCharacteristic.startNotifications();
 
+    dispatch(goproSettingsSlice.actions.settingsRequested());
     // Explicitly first subscribe to ones needed to know of we can send commands
     await dispatch(subscribeToStatusChangesCommand([statusSystemReady82.id, statusEncodingActive10.id, statusSystemBusy8.id]));
 

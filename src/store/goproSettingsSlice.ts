@@ -39,6 +39,8 @@ export const goproSettingsSlice = createSlice({
         },
         settingsRequested: (state) => {
             state.isFetching = true;
+            state.settings = {};
+            state.statuses = {};
         },
         settingsRequestFailed: (state) => {
             state.isFetching = false;

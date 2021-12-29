@@ -3,6 +3,7 @@ import { ErrorPage } from 'components/contentPages/ErrorPage';
 import { SearchForGoProView } from 'components/contentPages/SearchForGoProPage';
 import { Header } from 'components/Header';
 import MainModeView from 'components/MainModeView';
+import { useAllPreferences } from 'hooks/preferences/allPreferencesHook';
 import React from 'react';
 import { makeStyles } from 'theme/makeStyles';
 
@@ -20,6 +21,9 @@ const useStyles = makeStyles()({
 });
 
 const RenderContent: React.FC = () => {
+    // Probably not the best way to hook into state for custom preferences handling. Consider creating middleware for this.
+    useAllPreferences();
+
     const isDeviceSelected = useAppSelector((state) => state.goproBluetoothReducer.isDeviceSelected);
     const isGattConnected = useAppSelector((state) => state.goproBluetoothReducer.isGattConnected);
     if (window.location.protocol !== 'https:') return <ErrorPage errorTitle="Bluetooth requires https" errorDescription="Web Bluetooth will only work on https pages" />;

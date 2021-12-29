@@ -636,3 +636,6 @@ export const selectCurrentModeSettingsPreviewMainTexts = createSelector(
         }
     }
 );
+
+// Selecting some known setting that will be populated when app is initialized
+export const selectIsSettingsInitialized = createSelector(selectSettingVideoResolution2, (videoResolution) => videoResolution !== undefined);

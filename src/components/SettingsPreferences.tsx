@@ -6,6 +6,8 @@ import { selectGeneralSettings } from 'store/selectors/settingsSelectors';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { Dialog, DialogContent, DialogTitle, FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 
+import ToggleWifiOffOnConnect from './preferences/ToggleWiFiOffOnConnect';
+
 export const SettingsPreferencesButton: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const handleCloseModal = () => setIsModalOpen(false);
@@ -35,6 +37,7 @@ export const SettingsPreferencesDialog: React.FC<IProps> = (props) => {
             <Dialog open={isOpen} onClose={onClose}>
                 <DialogTitle>Preferences</DialogTitle>
                 <DialogContent>
+                    <ToggleWifiOffOnConnect />
                     {generalSettings.map((setting) => (
                         <SingleSetting key={setting.settingId} setting={setting} />
                     ))}
