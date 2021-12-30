@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { gattConnect, requestDevice } from './goproBluetoothServiceActions/goproBluetoothServiceActions';
+import { gattConnect, getKnownDevice, requestDevice } from './goproBluetoothServiceActions/goproBluetoothServiceActions';
 import { bluetoothDeviceState } from './goproBleServiceState';
 
 export interface OpenGoProVersionState {
@@ -24,9 +24,15 @@ interface GoproBluetoothDeviceCommandsState {
     openGoProVersion?: OpenGoProVersionState;
 }
 
+export enum BluetoothDeviceAvailability {
+    None,
+    BeingRequested,
+    SavedAndWaitingForAdvertisement,
+    Ready,
+}
+
 interface GoproBluetoothDeviceState {
-    isRequestingDevice: boolean;
-    isDeviceSelected: boolean;
+    deviceAvailability: BluetoothDeviceAvailability;
     deviceName: string;
     error?: string;
     isGattConnecting: boolean;
@@ -35,8 +41,7 @@ interface GoproBluetoothDeviceState {
 }
 
 export const initialState: GoproBluetoothDeviceState = {
-    isRequestingDevice: false,
-    isDeviceSelected: false,
+    deviceAvailability: BluetoothDeviceAvailability.None,
     isGattConnected: false,
     isGattConnecting: false,
     deviceName: 'unknown',
@@ -61,25 +66,38 @@ export const goproBluetoothSlice = createSlice({
         openGoProGetVersionResponse: (state, action: PayloadAction<OpenGoProVersionState>) => {
             state.goproBluetoothDeviceCommandsState.openGoProVersion = action.payload;
         },
+        savedDeviceAvailable: (state, action: PayloadAction<string>) => {
+            state.deviceAvailability = BluetoothDeviceAvailability.Ready;
+            state.error = undefined;
+            state.deviceName = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(requestDevice.pending, (state) => {
             bluetoothDeviceState.device = undefined;
-            state.isRequestingDevice = true;
-            state.isDeviceSelected = false;
+            state.deviceAvailability = BluetoothDeviceAvailability.BeingRequested;
             state.error = undefined;
         });
         builder.addCase(requestDevice.fulfilled, (state, action) => {
-            state.isRequestingDevice = false;
-            state.isDeviceSelected = true;
+            state.deviceAvailability = BluetoothDeviceAvailability.Ready;
             state.error = undefined;
             state.deviceName = action.payload.deviceName;
         });
         builder.addCase(requestDevice.rejected, (state, action) => {
             bluetoothDeviceState.device = undefined;
-            state.isRequestingDevice = false;
-            state.isDeviceSelected = false;
+            state.deviceAvailability = BluetoothDeviceAvailability.None;
             state.error = action.error.message ?? 'unknown error';
+        });
+        builder.addCase(getKnownDevice.pending, (state) => {
+            state.error = undefined;
+        });
+        builder.addCase(getKnownDevice.rejected, (state) => {
+            state.deviceName = 'unknown';
+            state.deviceAvailability = BluetoothDeviceAvailability.None;
+        });
+        builder.addCase(getKnownDevice.fulfilled, (state, action) => {
+            state.deviceName = action.payload.deviceName;
+            state.deviceAvailability = BluetoothDeviceAvailability.SavedAndWaitingForAdvertisement;
         });
         builder.addCase(gattConnect.pending, (state) => {
             state.isGattConnecting = true;

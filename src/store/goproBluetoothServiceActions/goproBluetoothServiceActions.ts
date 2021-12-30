@@ -8,7 +8,7 @@ import { queryResponseReceiverProvider } from 'store/packetParsing/goproPacketRe
 import { settingsResponseReceiverProvider } from 'store/packetParsing/goproPacketReaderSetting';
 import { RootState } from 'store/store';
 
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { Action, createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit';
 
 import { goproBlePacketDataReaderProvider } from '../packetParsing/goproPacketReader';
 
@@ -20,11 +20,7 @@ interface SelectDeviceResult {
     deviceName: string;
 }
 
-export const requestDevice = createAsyncThunk<SelectDeviceResult, void, { state: RootState }>('bluetoothDevice/requestDevice', async (_, { dispatch }) => {
-    const device = await navigator.bluetooth.requestDevice({
-        filters: [{ services: ['0000fea6-0000-1000-8000-00805f9b34fb'] }],
-        optionalServices: ['0000fea6-0000-1000-8000-00805f9b34fb', 'b5f90001-aa8d-11e3-9046-0002a5d5c51b'],
-    });
+function registerForGattDisconnectEvent(device: BluetoothDevice, dispatch: ThunkDispatch<RootState, void, Action>) {
     device.ongattserverdisconnected = () => {
         // On disconnect, invalidate all GATT services and characteristics https://web.dev/bluetooth/#disconnect
         bluetoothDeviceState.characteristics = undefined;
@@ -33,6 +29,36 @@ export const requestDevice = createAsyncThunk<SelectDeviceResult, void, { state:
         dispatch(goproBluetoothSlice.actions.gattDisconnected('Connection lost'));
         toast.error('Gopro disconnected, connection lost');
     };
+}
+
+export const getKnownDevice = createAsyncThunk<SelectDeviceResult, void, { state: RootState }>('bluetoothDevice/getKnownDevice', async (_, { dispatch }) => {
+    if (!('bluetooth' in navigator) || !('getDevices' in navigator.bluetooth)) throw new Error('Browser does not support getDevices');
+    const knownDevices = await navigator.bluetooth.getDevices();
+    // Should probably eventually support multiple devices...
+    const knownDevice = knownDevices[0];
+    if (!knownDevice) throw new Error("Couldn't find any known devices");
+    const onAdvertisementEvRecevied = (e: Event) => {
+        const bluetoothEvent = e as BluetoothAdvertisingEvent;
+        dispatch(goproBluetoothSlice.actions.savedDeviceAvailable(knownDevice.name ?? knownDevice.id));
+        registerForGattDisconnectEvent(bluetoothEvent.device, dispatch);
+        bluetoothDeviceState.device = bluetoothEvent.device;
+        knownDevice.removeEventListener('advertisementreceived', onAdvertisementEvRecevied);
+    };
+    knownDevice.addEventListener('advertisementreceived', onAdvertisementEvRecevied);
+    knownDevice.watchAdvertisements();
+    return {
+        deviceName: knownDevice.name ?? knownDevice.id,
+    };
+});
+
+export const requestDevice = createAsyncThunk<SelectDeviceResult, void, { state: RootState }>('bluetoothDevice/requestDevice', async (_, { dispatch }) => {
+    const device = await navigator.bluetooth.requestDevice({
+        filters: [{ services: ['0000fea6-0000-1000-8000-00805f9b34fb'] }],
+        optionalServices: ['0000fea6-0000-1000-8000-00805f9b34fb', 'b5f90001-aa8d-11e3-9046-0002a5d5c51b'],
+    });
+
+    registerForGattDisconnectEvent(device, dispatch);
+
     bluetoothDeviceState.device = device;
     dispatch(gattConnect());
     return {
