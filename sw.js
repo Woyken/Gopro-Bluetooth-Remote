@@ -96,7 +96,7 @@ define(['./workbox-a51b997a'], (function (workbox) { 'use strict';
     "url": "assets/index.5561b2f0.css",
     "revision": null
   }, {
-    "url": "assets/index.dc33a08c.js",
+    "url": "assets/index.72a24309.js",
     "revision": null
   }, {
     "url": "assets/react.ba27320d.js",
@@ -106,7 +106,7 @@ define(['./workbox-a51b997a'], (function (workbox) { 'use strict';
     "revision": null
   }, {
     "url": "index.html",
-    "revision": "c6cf2927fba38564c099c3f7f23cbf34"
+    "revision": "43f48b9f1b48ff47732d2e9423c86f9e"
   }, {
     "url": "camera.ico",
     "revision": "043eb22b6e8605bbceb61cf021c602a8"
