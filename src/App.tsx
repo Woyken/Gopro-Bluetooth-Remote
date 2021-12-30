@@ -21,9 +21,6 @@ const useStyles = makeStyles()({
 });
 
 const RenderContent: React.FC = () => {
-    // Probably not the best way to hook into state for custom preferences handling. Consider creating middleware for this.
-    useAllPreferences();
-
     const isDeviceSelected = useAppSelector((state) => state.goproBluetoothReducer.isDeviceSelected);
     const isGattConnected = useAppSelector((state) => state.goproBluetoothReducer.isGattConnected);
     if (window.location.protocol !== 'https:') return <ErrorPage errorTitle="Bluetooth requires https" errorDescription="Web Bluetooth will only work on https pages" />;
@@ -34,6 +31,9 @@ const RenderContent: React.FC = () => {
 };
 
 const App: React.FC = () => {
+    // Probably not the best way to hook into state for custom preferences handling. Consider creating middleware for this.
+    useAllPreferences();
+
     const { classes } = useStyles();
     return (
         <div className={classes.flexContent}>
