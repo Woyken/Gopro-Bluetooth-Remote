@@ -58,6 +58,7 @@ enum CommandId {
     SetShutter = 0x01,
     Sleep = 0x05,
     APControl = 0x17,
+    GetSettingsJson = 0x3b,
     GetHardwareInfo = 0x3c,
     PresetsLoadGroup = 0x3e,
     PresetsLoad = 0x40,
@@ -69,6 +70,21 @@ function dispatchCommandResponse(dispatch: ThunkDispatch<RootState, unknown, Any
     // TODO handle regular command response?
     // At least show error toast on failure?
     switch (commandResponse.commandId) {
+        case CommandId.GetSettingsJson: {
+            console.log('CommandId.GetSettingsJson', commandResponse);
+            if (commandResponse.errorCode === CommandResponseCode.error) {
+                // Error occured during get hardware info? Sometimes this happens while GoPro is in the middle of booting up.
+                dispatch(getSettingsJsonCommand());
+                break;
+            }
+            const settingsJsonRaw = inflate(Uint8Array.from(commandResponse.data));
+            console.log(settingsJsonRaw);
+            // hex to char
+            const settingsJson = String.fromCharCode(...settingsJsonRaw);
+            console.log(settingsJson);
+            // TODO actual dispatch and save to state
+            break;
+        }
         case CommandId.GetHardwareInfo: {
             if (commandResponse.errorCode === CommandResponseCode.error) {
                 // Error occured during get hardware info? Sometimes this happens while GoPro is in the middle of booting up.

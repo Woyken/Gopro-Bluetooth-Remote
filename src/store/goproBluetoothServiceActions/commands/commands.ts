@@ -156,6 +156,10 @@ export const sleepCommand = createAsyncThunk<void, void, { state: RootState }>('
     await dispatch(sendCommandAction([0x05]));
 });
 
+export const getSettingsJsonCommand = createAsyncThunk<void, void, { state: RootState }>('commands/getSettingsJsonCommand', async (_, { dispatch }) => {
+    await dispatch(sendCommandAction([0x3b]));
+});
+
 export const getHardwareInfoCommand = createAsyncThunk<void, void, { state: RootState }>('commands/getHardwareInfoCommand', async (_, { dispatch }) => {
     await dispatch(sendCommandAction([0x3c]));
 });
