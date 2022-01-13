@@ -1,6 +1,6 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { bluetoothDeviceState } from 'store/goproBleServiceState';
 
-import { bluetoothDeviceState } from './goproBleServiceState';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface SettingValue {
     value: number;

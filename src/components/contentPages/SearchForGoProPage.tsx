@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { getKnownDevice, requestDevice } from 'store/goproBluetoothServiceActions/goproBluetoothServiceActions';
-import { BluetoothDeviceAvailability } from 'store/goproBluetoothSlice';
+import { BluetoothDeviceAvailability } from 'store/slices/goproBluetoothSlice';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 
 import { Box, Button, Container, Typography } from '@mui/material';

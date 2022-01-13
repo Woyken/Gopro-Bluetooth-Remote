@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { gattConnect, getKnownDevice, requestDevice } from './goproBluetoothServiceActions/goproBluetoothServiceActions';
-import { bluetoothDeviceState } from './goproBleServiceState';
+import { gattConnect, getKnownDevice, requestDevice } from '../goproBluetoothServiceActions/goproBluetoothServiceActions';
+import { bluetoothDeviceState } from '../goproBleServiceState';
 
 export interface OpenGoProVersionState {
     majorVersion: number;

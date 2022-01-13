@@ -1,12 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import { goproBluetoothReducer } from './goproBluetoothSlice';
-import { goproSettingsReducer } from './goproSettingsSlice';
+import { goproBluetoothReducer } from './slices/goproBluetoothSlice';
+import { goproSettingsMetadataReducer } from './slices/goproSettingsMetadataSlice';
+import { goproSettingsReducer } from './slices/goproSettingsSlice';
 
 export const store = configureStore({
     reducer: {
         goproBluetoothReducer,
         goproSettingsReducer,
+        goproSettingsMetadataReducer,
     },
     devTools: true,
 });

@@ -1,7 +1,7 @@
 /* eslint-disable no-bitwise */
 import { toast } from 'react-toastify';
 import { bluetoothDeviceState } from 'store/goproBleServiceState';
-import { goproBluetoothSlice } from 'store/goproBluetoothSlice';
+import { goproBluetoothSlice } from 'store/slices/goproBluetoothSlice';
 import { goproSettingsSlice } from 'store/goproSettingsSlice';
 import { commandResponseReceiverProvider } from 'store/packetParsing/goproPacketReaderCommand';
 import { queryResponseReceiverProvider } from 'store/packetParsing/goproPacketReaderQuery';
@@ -12,7 +12,7 @@ import { Action, createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit';
 
 import { goproBlePacketDataReaderProvider } from '../packetParsing/goproPacketReader';
 
-import { getHardwareInfoCommand, openGoProGetVersionCommand } from './commands/commands';
+import { getHardwareInfoCommand, getSettingsJsonCommand, openGoProGetVersionCommand } from './commands/commands';
 import { subscribeToSettingsChangesCommand, subscribeToStatusChangesCommand } from './commands/queryCommands';
 import { statusEncodingActive10, statusSystemBusy8, statusSystemReady82 } from './goproStatusMetadata';
 
@@ -115,8 +115,7 @@ export const gattConnect = createAsyncThunk<GattConnectResult, void, { state: Ro
 
     // Subscribe to status and setting changes, will be useful to know when the device is ready to receive commands
     // TODO Reconsider this subscribing logic
-    await dispatch(subscribeToStatusChangesCommand([...new Array(88).keys()]));
-    await dispatch(subscribeToSettingsChangesCommand([...new Array(112).keys()]));
+    await dispatch(getSettingsJsonCommand());
 
     await dispatch(openGoProGetVersionCommand());
     await dispatch(getHardwareInfoCommand());

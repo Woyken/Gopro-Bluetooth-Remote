@@ -5,7 +5,7 @@ import { Header } from 'components/Header';
 import MainModeView from 'components/MainModeView';
 import { useAllPreferences } from 'hooks/preferences/allPreferencesHook';
 import React from 'react';
-import { BluetoothDeviceAvailability } from 'store/goproBluetoothSlice';
+import { BluetoothDeviceAvailability } from 'store/slices/goproBluetoothSlice';
 import { makeStyles } from 'theme/makeStyles';
 
 import { useAppSelector } from './store/hooks';
