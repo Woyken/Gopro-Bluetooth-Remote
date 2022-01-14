@@ -23,7 +23,15 @@ enum NetworkType {
 }
 
 interface DisplayHint {
-    key: string;
+    key:
+        | 'GPCAMERA_GROUP_MODE'
+        | 'GPCAMERA_GROUP_PROTUNE'
+        | 'GPCAMERA_GROUP_ONSCREEN_SHORTCUTS'
+        | 'GPCAMERA_GROUP_SETUP'
+        | 'GPCAMERA_GROUP_DELETE_ID'
+        | 'GPCAMERA_GROUP_CAMERA_INFO'
+        | 'GPCAMERA_GROUP_CONNECTIONS'
+        | 'GPCAMERA_GROUP_CAMERA_STATUS';
     display_name: string;
     settings: DisplayHintSetting[];
     commands: DisplayHintCommand[];
@@ -49,7 +57,7 @@ enum WidgetType {
 }
 
 interface DisplayHintsCategory {
-    key: string;
+    key: 'GPCAMERA_CATEGORY_MODE' | 'GPCAMERA_CATEGORY_GENERAL';
     groups: string[];
 }
 

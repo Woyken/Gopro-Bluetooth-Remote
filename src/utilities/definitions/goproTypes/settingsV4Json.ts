@@ -57,7 +57,7 @@ enum CommandWidgetType {
 }
 
 interface DisplayHint {
-    key: string;
+    key: 'GPCAMERA_GROUP_MODE' | 'GPCAMERA_GROUP_SETUP' | 'GPCAMERA_GROUP_DELETE_ID' | 'GPCAMERA_GROUP_CAMERA_INFO' | 'GPCAMERA_GROUP_CONNECTIONS' | 'GPCAMERA_GROUP_CAMERA_STATUS';
     display_name: string;
     settings: DisplayHintSetting[];
     commands: DisplayHintCommand[];
