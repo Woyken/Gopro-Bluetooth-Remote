@@ -2,6 +2,7 @@ import createCachedSelector from 're-reselect';
 import { RootState } from 'store/store';
 
 import { createSelector } from '@reduxjs/toolkit';
+import { throwExpression } from 'utilities/throwExpression';
 
 const SCHEMA_V4_CURRENT_MODE_SETTING_ID = 92;
 const SCHEMA_V5_CURRENT_MODE_STATUS_ID = 89;
@@ -56,6 +57,13 @@ export const selectSettingsMetadataAllSettings = createSelector(selectSettingsMe
         default:
             throw new Error('Unknown settings schema version');
     }
+});
+
+export const selectSettingsMetadataAllSettingsById = createSelector(selectSettingsMetadataAllSettings, (allSettings) => {
+    return allSettings.reduce((acc, setting) => {
+        acc[setting.id] = setting;
+        return acc;
+    }, {} as Record<number, SettingsMetadataSetting>);
 });
 
 interface SettingsMetadataFilter {
@@ -238,18 +246,49 @@ const selectCurrentModeLimitedSettingsListBlacklist = createSelector(selectCurre
     );
 });
 
+// TODO split GPCAMERA_GROUP_MODE and GPCAMERA_GROUP_PROTUNE
+const selectSettingsMetadataDisplayHintsModeSettingsList = createSelector(selectSettingsMetadataSettingsJson, (settingsJson) => {
+    switch (settingsJson?.schema_version) {
+        case 4: {
+            const foundHint = settingsJson.display_hints.find((hint) => hint.key === 'GPCAMERA_GROUP_MODE');
+            if (!foundHint) throw new Error('GPCAMERA_GROUP_MODE hint not found');
+            return {
+                displayName: foundHint.display_name,
+                settings: foundHint.settings,
+            };
+        }
+        case 5: {
+            const foundHint = settingsJson.display_hints.find((hint) => hint.key === 'GPCAMERA_GROUP_MODE');
+            if (!foundHint) throw new Error('GPCAMERA_GROUP_MODE hint not found');
+            return {
+                displayName: foundHint.display_name,
+                settings: foundHint.settings,
+            };
+        }
+        default:
+            throw new Error('Unknown settings schema version');
+    }
+});
+
+const selectSettingsMetadataModeSettingsListFromHints = createSelector(selectSettingsMetadataDisplayHintsModeSettingsList, selectSettingsMetadataAllSettingsById, (hint, allSettingsById) => {
+    return hint.settings.map((setting) => ({
+        displayData: setting,
+        metadata: allSettingsById[setting.setting_id] || throwExpression(`Setting ${setting.setting_id} not found in settings list`),
+    }));
+});
+
 /**
  * Gets available settings for current mode. These should be displayed unconditionally.
  * If after applying full filter it has no options, show it disabled.
  */
-const selectCurrentModeLimitedSettingList = createSelector(selectSettingsMetadataAllSettings, selectCurrentModeLimitedSettingsListBlacklist, (allSettingsMetadata, blacklists) => {
+const selectCurrentModeLimitedSettingList = createSelector(selectSettingsMetadataModeSettingsListFromHints, selectCurrentModeLimitedSettingsListBlacklist, (allSettingsMetadata, blacklists) => {
     return allSettingsMetadata
         .map((setting) => {
-            const blacklistForThisSetting = blacklists[setting.id];
-            if (!blacklistForThisSetting) return setting;
+            const blacklistForThisSetting = blacklists[setting.metadata.id];
+            if (!blacklistForThisSetting) return setting.metadata;
             return {
-                ...setting,
-                options: setting.options.filter((option) => !blacklistForThisSetting.has(option.id)),
+                ...setting.metadata,
+                options: setting.metadata.options.filter((option) => !blacklistForThisSetting.has(option.id)),
             };
         })
         .filter((setting) => setting.options.length > 0);
