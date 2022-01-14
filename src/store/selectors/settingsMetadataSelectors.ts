@@ -134,8 +134,6 @@ export const selectSettingsMetadataFilters = createSelector(selectSettingsMetada
     }
 });
 
-// TODO this is not a good idea!
-// Some filters are activated by multiple settings, so we need to check all of them, cannot make a dictionary by single setting!
 function reduceFiltersToRecord(filters: SettingsMetadataFilter[]) {
     return filters
         .map((filter) => ({
@@ -160,12 +158,12 @@ const selectSettingsMetadataPerModeSettingsListFilters = createSelector(selectSe
     switch (schemaVersion) {
         case 4:
             return reduceFiltersToRecord(
-                filters.filter((filter) => filter.activatedBy.some((activatedBy) => ('settingId' in activatedBy ? activatedBy.settingId === SCHEMA_V4_CURRENT_MODE_SETTING_ID : false)))
+                filters.filter((filter) => filter.activatedBy.every((activatedBy) => ('settingId' in activatedBy ? activatedBy.settingId === SCHEMA_V4_CURRENT_MODE_SETTING_ID : false)))
             );
 
         case 5:
             return reduceFiltersToRecord(
-                filters.filter((filter) => filter.activatedBy.some((activatedBy) => ('statusId' in activatedBy ? activatedBy.statusId === SCHEMA_V5_CURRENT_MODE_STATUS_ID : false)))
+                filters.filter((filter) => filter.activatedBy.every((activatedBy) => ('statusId' in activatedBy ? activatedBy.statusId === SCHEMA_V5_CURRENT_MODE_STATUS_ID : false)))
             );
         default:
             throw new Error('Unknown settings schema version');
