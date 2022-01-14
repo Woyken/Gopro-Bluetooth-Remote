@@ -35,6 +35,7 @@ export async function sendCommand(commandData: CommandData) {
     if (!characteristics) throw new Error('no characteristics');
     const { commandCharacteristic } = characteristics;
     await waitUntilDeviceReady();
+    // The WebBLE doesn't allow us to write 2 packets simultaneously to same characteristic. So we need to queue up commands.
     await functionQueue(async () => {
         const data = [commandData.commandId];
         if (commandData.data) data.push(...commandData.data);
