@@ -40,6 +40,14 @@ export async function sendCommand(commandData: CommandData) {
         const data = [commandData.commandId];
         if (commandData.data) data.push(...commandData.data);
         await writeGoProPacketData(commandCharacteristic, data);
+        // It is not enough to wait for packet to be sent.
+        // We'll have to wait for response to be received too.
+        // Example: When requesting SettingsJson, it will be split into around 450 packets.
+        // It takes a while for this response to be received. If we send another command before that response is finished,
+        // It will start writing another response, and packets will be mixed up.
+        // We have headers for each packet, so we know on the first packet which command it came from,
+        // but for continuation packets, we don't know which command it corresponds to, we can just assume it is for last command response header.
+        // TODO - find a way to wait for response to be received.
     }, commandCharacteristic);
 }
 
