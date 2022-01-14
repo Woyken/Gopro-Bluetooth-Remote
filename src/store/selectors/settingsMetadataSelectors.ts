@@ -134,6 +134,8 @@ export const selectSettingsMetadataFilters = createSelector(selectSettingsMetada
     }
 });
 
+// TODO this is not a good idea!
+// Some filters are activated by multiple settings, so we need to check all of them, cannot make a dictionary by single setting!
 function reduceFiltersToRecord(filters: SettingsMetadataFilter[]) {
     return filters
         .map((filter) => ({
