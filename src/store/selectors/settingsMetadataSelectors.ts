@@ -142,6 +142,15 @@ export const selectSettingsMetadataFilters = createSelector(selectSettingsMetada
     }
 });
 
+function mergeToBlacklist(existingList: SettingsMetadataFilter['blacklist'], addList: SettingsMetadataFilter['blacklist']) {
+    return existingList.concat(addList).reduce((acc, curr) => {
+        if (!acc.some((item) => item.settingId === curr.settingId)) {
+            acc.push(curr);
+        }
+        return acc;
+    }, [] as SettingsMetadataFilter['blacklist']);
+}
+
 function reduceFiltersToRecord(filters: SettingsMetadataFilter[]) {
     return filters
         .map((filter) => ({
@@ -150,8 +159,8 @@ function reduceFiltersToRecord(filters: SettingsMetadataFilter[]) {
         }))
         .reduce((acc, filter) => {
             filter.modeIds.forEach((modeId) => {
-                const existing = acc[modeId];
-                if (existing) existing.push(...filter.blacklist);
+                const existingBlacklistsForMode = acc[modeId];
+                if (existingBlacklistsForMode) acc[modeId] = mergeToBlacklist(existingBlacklistsForMode, filter.blacklist);
                 else acc[modeId] = filter.blacklist;
             });
             return acc;
