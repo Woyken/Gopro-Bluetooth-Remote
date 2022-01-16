@@ -197,7 +197,7 @@ const selectActiveFilterBlacklists = createSelector(
     (currentSettings, currentStatuses, filters) =>
         filters
             .map((filter) => {
-                const isFilterActive = filter.activatedBy.some((activatedBy) => {
+                const isFilterActive = filter.activatedBy.every((activatedBy) => {
                     if ('settingId' in activatedBy) {
                         const settingValue = currentSettings[activatedBy.settingId]?.value;
                         return typeof settingValue === 'number' ? activatedBy.values.has(settingValue) : false;
