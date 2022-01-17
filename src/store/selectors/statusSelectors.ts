@@ -93,7 +93,7 @@ import {
     statusWlanSsid29,
     statusZoomWhileEncoding88,
 } from 'store/goproBluetoothServiceActions/goproStatusMetadata';
-import { StatusValue } from 'store/goproSettingsSlice';
+import { StatusValue } from 'store/slices/goproSettingsSlice';
 import { RootState } from 'store/store';
 import { SettingsModesGroups, SettingsModesPhoto, SettingsModesTimelapse, SettingsModesVideo } from 'utilities/modes/modeTypes';
 
@@ -247,3 +247,17 @@ export const selectLastTimelapseMode = createSelector(selectStatusLegacyLastTime
 
 // Selecting some known status that will be populated when app is initialized
 export const selectIsStatusInitialized = createSelector(selectStatusInternalBatteryPercentage70, (batteryPercentage) => batteryPercentage !== undefined);
+
+export enum SdCardStatus {
+    Unknown = -1,
+    Ok = 0,
+    SdCardFull = 1,
+    SdCardRemoved = 2,
+    SdCardFormatError = 3,
+    SdCardBusy = 4,
+    SdCardSwapped = 8,
+}
+
+export const selectSdCardStatus = createSelector(selectStatusSdStatus33, (sdCardStatus) => {
+    return statusAsNumber(sdCardStatus?.statusValue) as SdCardStatus;
+});

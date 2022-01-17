@@ -1,8 +1,7 @@
-import createCachedSelector from 're-reselect';
 import { RootState } from 'store/store';
+import { throwExpression } from 'utilities/throwExpression';
 
 import { createSelector } from '@reduxjs/toolkit';
-import { throwExpression } from 'utilities/throwExpression';
 
 const SCHEMA_V4_CURRENT_MODE_SETTING_ID = 92;
 const SCHEMA_V5_CURRENT_MODE_STATUS_ID = 89;
@@ -171,7 +170,7 @@ function reduceFiltersToRecord(filters: SettingsMetadataFilter[]) {
  * Getting only filters that are filtering by current mode.
  * When those filters are applied we'll get list of settings that should be displayed for this one mode.
  */
-const selectSettingsMetadataPerModeSettingsListFilters = createSelector(selectSettingsMetadataSchemaVersion, selectSettingsMetadataFilters, (schemaVersion, filters) => {
+const selectFiltersThatFilterByModeIdOnly = createSelector(selectSettingsMetadataSchemaVersion, selectSettingsMetadataFilters, (schemaVersion, filters) => {
     switch (schemaVersion) {
         case 4:
             return reduceFiltersToRecord(
@@ -241,9 +240,14 @@ const selectCurrentActiveModeId = createSelector(
     }
 );
 
-const selectCurrentModeLimitedSettingsListBlacklist = createSelector(selectCurrentActiveModeId, selectSettingsMetadataPerModeSettingsListFilters, (currentModeId, activeModeBlacklists) => {
+/**
+ * We need this list to know which settings to display for mode.
+ * Without it there's no way to know if this setting is meant for photo or video mode.
+ * Find filters that are limiting only by mode ids.
+ */
+const selectModeOnlyBlacklistsBySettingIdForCurrentMode = createSelector(selectCurrentActiveModeId, selectFiltersThatFilterByModeIdOnly, (currentModeId, filtersThatFilterByModeIdOnly) => {
     return (
-        activeModeBlacklists[currentModeId]?.reduce((acc, blacklist) => {
+        filtersThatFilterByModeIdOnly[currentModeId]?.reduce((acc, blacklist) => {
             const existing = acc[blacklist.settingId];
             if (existing) {
                 acc[blacklist.settingId] = new Set([...existing, ...blacklist.values]);
@@ -255,68 +259,130 @@ const selectCurrentModeLimitedSettingsListBlacklist = createSelector(selectCurre
     );
 });
 
-// TODO split GPCAMERA_GROUP_MODE and GPCAMERA_GROUP_PROTUNE
-const selectSettingsMetadataDisplayHintsModeSettingsList = createSelector(selectSettingsMetadataSettingsJson, (settingsJson) => {
+const selectProtuneSettingId = createSelector(selectSettingsMetadataSettingsJson, selectModeOnlyBlacklistsBySettingIdForCurrentMode, (settingsJson, blacklists) => {
     switch (settingsJson?.schema_version) {
         case 4: {
-            const foundHint = settingsJson.display_hints.find((hint) => hint.key === 'GPCAMERA_GROUP_MODE');
-            if (!foundHint) throw new Error('GPCAMERA_GROUP_MODE hint not found');
-            return {
-                displayName: foundHint.display_name,
-                settings: foundHint.settings,
-            };
+            const protuneSettings = settingsJson.modes
+                .map((x) => x.settings)
+                .flat()
+                .filter((x) => x.path_segment === 'protune' && !blacklists[x.id])
+                .map((x) => x.id);
+            if (protuneSettings.length > 1) throw new Error('Found multiple protune settings, should only be 1 per mode');
+            return protuneSettings[0];
         }
         case 5: {
-            const foundHint = settingsJson.display_hints.find((hint) => hint.key === 'GPCAMERA_GROUP_MODE');
-            if (!foundHint) throw new Error('GPCAMERA_GROUP_MODE hint not found');
-            return {
-                displayName: foundHint.display_name,
-                settings: foundHint.settings,
-            };
+            return 114;
         }
         default:
             throw new Error('Unknown settings schema version');
     }
 });
 
-const selectSettingsMetadataModeSettingsListFromHints = createSelector(selectSettingsMetadataDisplayHintsModeSettingsList, selectSettingsMetadataAllSettingsById, (hint, allSettingsById) => {
-    return hint.settings.map((setting) => ({
-        displayData: setting,
-        metadata: allSettingsById[setting.setting_id] || throwExpression(`Setting ${setting.setting_id} not found in settings list`),
-    }));
+const selectModeSettingsIdsHiddenBehindProtune = createSelector(selectSettingsMetadataSettingsJson, (settingsJson) => {
+    switch (settingsJson?.schema_version) {
+        case 4: {
+            return new Set(
+                settingsJson.modes
+                    .map((x) => x.settings)
+                    .flat()
+                    .filter((x) => x.path_segment.startsWith('protune_'))
+                    .map((x) => x.id)
+            );
+        }
+        case 5: {
+            const foundHint = settingsJson.display_hints.find((hint) => hint.key === 'GPCAMERA_GROUP_PROTUNE');
+            if (!foundHint) throw new Error('Could not find GPCAMERA_GROUP_PROTUNE hint');
+            return new Set(foundHint.settings.map((x) => x.setting_id));
+        }
+        default:
+            throw new Error('Unknown settings schema version');
+    }
 });
+
+const selectModeSettingsIdsAlwaysShown = createSelector(
+    selectSettingsMetadataSettingsJson,
+    selectProtuneSettingId,
+    selectModeSettingsIdsHiddenBehindProtune,
+    (settingsJson, protuneSettingId, modeSettingsIdsHiddenBehindProtune) => {
+        switch (settingsJson?.schema_version) {
+            case 4: {
+                const foundHint = settingsJson.display_hints.find((hint) => hint.key === 'GPCAMERA_GROUP_MODE');
+                if (!foundHint) throw new Error('GPCAMERA_GROUP_MODE hint not found');
+                return new Set(foundHint.settings.map((setting) => setting.setting_id).filter((x) => !modeSettingsIdsHiddenBehindProtune.has(x) && x !== protuneSettingId));
+            }
+            case 5: {
+                const foundHint = settingsJson.display_hints.find((hint) => hint.key === 'GPCAMERA_GROUP_MODE');
+                if (!foundHint) throw new Error('GPCAMERA_GROUP_MODE hint not found');
+                return new Set(foundHint.settings.map((setting) => setting.setting_id));
+            }
+            default:
+                throw new Error('Unknown settings schema version');
+        }
+    }
+);
 
 /**
  * Gets available settings for current mode. These should be displayed unconditionally.
  * If after applying full filter it has no options, show it disabled.
  */
-const selectCurrentModeLimitedSettingList = createSelector(selectSettingsMetadataModeSettingsListFromHints, selectCurrentModeLimitedSettingsListBlacklist, (allSettingsMetadata, blacklists) => {
-    return allSettingsMetadata
-        .map((setting) => {
-            const blacklistForThisSetting = blacklists[setting.metadata.id];
-            if (!blacklistForThisSetting) return setting.metadata;
-            return {
-                ...setting.metadata,
-                options: setting.metadata.options.filter((option) => !blacklistForThisSetting.has(option.id)),
-            };
-        })
-        .filter((setting) => setting.options.length > 0);
-});
+const selectCurrentModeSettings = createSelector(
+    selectModeSettingsIdsAlwaysShown,
+    selectProtuneSettingId,
+    selectModeSettingsIdsHiddenBehindProtune,
+    selectModeOnlyBlacklistsBySettingIdForCurrentMode,
+    (state: RootState) => state.goproSettingsReducer.settings,
+    selectSettingsMetadataAllSettingsById,
+    (modeSettingsIdsAlwaysShown, protuneSettingId, modeSettingsIdsHiddenBehindProtune, blacklists, currentSettings, allSettingsByIds) => {
+        const isProtuneEnabled = protuneSettingId ? currentSettings[protuneSettingId]?.value : undefined;
+        let settingsIds = new Set([...modeSettingsIdsAlwaysShown]);
+        if (protuneSettingId) settingsIds.add(protuneSettingId);
+        if (isProtuneEnabled) settingsIds = new Set([...settingsIds, ...modeSettingsIdsHiddenBehindProtune]);
+        const settings = [...settingsIds].map((id) => allSettingsByIds[id] || throwExpression(`Setting ${id} not found in settings list`));
+        return settings
+            .map((setting) => {
+                const blacklistForThisSetting = blacklists[setting.id];
+                if (!blacklistForThisSetting) return setting;
+                return {
+                    ...setting,
+                    options: setting.options.filter((option) => !blacklistForThisSetting.has(option.id)),
+                };
+            })
+            .filter((setting) => setting.options.length > 0);
+    }
+);
 
 /**
  * These are all settings in settings menu for current mode.
  * Some will have 0 options, because of filters. Show then disabled.
  */
-const selectSettingsMetadataFilteredCurrentModeSettings = createSelector(selectActiveFilterBlacklistsMerged, selectCurrentModeLimitedSettingList, (activeFilters, modeLimitedSettingsMetadata) => {
-    return modeLimitedSettingsMetadata.map((setting) => {
-        const filterForThisSetting = activeFilters[setting.id];
-        if (!filterForThisSetting) return setting;
-        return {
-            ...setting,
-            options: setting.options.filter((option) => !filterForThisSetting.has(option.id)),
-        };
-    });
-});
+export const selectFilteredCurrentModeSettings = createSelector(
+    selectActiveFilterBlacklistsMerged,
+    selectCurrentModeSettings,
+    selectSettingsMetadataAllSettingsById,
+    (state: RootState) => state.goproSettingsReducer.settings,
+    (activeFilterBlacklists, currentModeSettings, allSettingsByIds, currentSettings) => {
+        return (
+            currentModeSettings
+                .map((setting) => {
+                    const filterForThisSetting = activeFilterBlacklists[setting.id];
+                    if (!filterForThisSetting) return setting;
+                    return {
+                        ...setting,
+                        options: setting.options.filter((option) => !filterForThisSetting.has(option.id)),
+                    };
+                })
+                // If setting has no options after filtering, show it disabled with current value
+                .map((setting) => {
+                    if (setting.options.length > 0) return setting;
+                    const currentSettingValue = currentSettings[setting.id]?.value;
+                    const currentOption =
+                        allSettingsByIds[setting.id]?.options.find((option) => option.id === currentSettingValue) ||
+                        throwExpression(`Could not find option ${currentSettingValue} for setting ${setting.id} ${setting.displayName}`);
+                    return { ...setting, options: [currentOption] };
+                })
+        );
+    }
+);
 
 // TODO use GPCAMERA_GROUP_MODE and GPCAMERA_GROUP_PROTUNE to get a list of setting to display in ui
 // display GPCAMERA_GROUP_MODE settings, when protune is enabled display GPCAMERA_GROUP_MODE setting and GPCAMERA_GROUP_PROTUNE settings

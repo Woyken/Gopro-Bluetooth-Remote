@@ -1,6 +1,9 @@
+import { inflate } from 'pako';
 import { getHardwareInfoCommand, openGoProGetVersionCommand } from 'store/goproBluetoothServiceActions/commands/commands';
-import { GetHardwareInfoState, goproBluetoothSlice, OpenGoProVersionState } from 'store/goproBluetoothSlice';
+import { GetHardwareInfoState, goproBluetoothSlice, OpenGoProVersionState } from 'store/slices/goproBluetoothSlice';
+import { fetchSettingsMetadata, goproSettingsMetadataSlice } from 'store/slices/goproSettingsMetadataSlice';
 import { RootState } from 'store/store';
+import { parseAsSettings } from 'utilities/definitions/goproTypes/settingsJson';
 
 import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
 
@@ -66,23 +69,20 @@ enum CommandId {
     OpenGoProGetVersion = 0x51,
 }
 
-function dispatchCommandResponse(dispatch: ThunkDispatch<RootState, unknown, AnyAction>, commandResponse: CommandResponse) {
+async function dispatchCommandResponse(dispatch: ThunkDispatch<RootState, unknown, AnyAction>, commandResponse: CommandResponse) {
     // TODO handle regular command response?
     // At least show error toast on failure?
     switch (commandResponse.commandId) {
         case CommandId.GetSettingsJson: {
-            console.log('CommandId.GetSettingsJson', commandResponse);
             if (commandResponse.errorCode === CommandResponseCode.error) {
                 // Error occured during get hardware info? Sometimes this happens while GoPro is in the middle of booting up.
-                dispatch(getSettingsJsonCommand());
+                dispatch(fetchSettingsMetadata());
                 break;
             }
             const settingsJsonRaw = inflate(Uint8Array.from(commandResponse.data));
-            console.log(settingsJsonRaw);
-            // hex to char
             const settingsJson = String.fromCharCode(...settingsJsonRaw);
-            console.log(settingsJson);
-            // TODO actual dispatch and save to state
+            const settings = parseAsSettings(settingsJson);
+            dispatch(goproSettingsMetadataSlice.actions.settingsMetadataReceived(settings));
             break;
         }
         case CommandId.GetHardwareInfo: {

@@ -18,6 +18,7 @@ export const goproSettingsMetadataSlice = createSlice({
     initialState,
     reducers: {
         settingsMetadataReceived: (state, action: PayloadAction<SettingsJson>) => {
+            state.isFetching = false;
             state.settingsJson = { ...state.settingsJson, ...action.payload };
         },
         settingsMetadataRequested: (state) => {
@@ -33,5 +34,6 @@ export const goproSettingsMetadataSlice = createSlice({
 export const goproSettingsMetadataReducer = goproSettingsMetadataSlice.reducer;
 
 export const fetchSettingsMetadata = createAsyncThunk<void, void, { state: RootState }>(`${goproSettingsMetadataSlice.name}/fetchSettingsMetadata`, async (_, { dispatch }) => {
+    dispatch(goproSettingsMetadataSlice.actions.settingsMetadataRequested());
     dispatch(getSettingsJsonCommand());
 });

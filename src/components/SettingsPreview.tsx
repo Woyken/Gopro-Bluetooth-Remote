@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { setSettingValueCommand } from 'store/goproBluetoothServiceActions/commands/settingsCommands';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { selectCurrentModeSettings } from 'store/selectors/settingsSelectors';
+import { selectFilteredCurrentModeSettings } from 'store/selectors/settingsMetadataSelectors';
 import { makeStyles } from 'theme/makeStyles';
 
 import { Container, Dialog, DialogContent, DialogTitle, FormControl, InputLabel, MenuItem, Paper, Select, SelectChangeEvent } from '@mui/material';
@@ -45,14 +45,14 @@ interface IPropss {
 
 const SettingsPreviewModal: React.FC<IPropss> = (props) => {
     const { isOpen, onClose } = props;
-    const currentModeSettings = useAppSelector(selectCurrentModeSettings);
+    const currentModeSettings = useAppSelector(selectFilteredCurrentModeSettings);
     return (
         <>
             <Dialog open={isOpen} onClose={onClose}>
                 <DialogTitle>Change mode settings</DialogTitle>
                 <DialogContent>
                     {currentModeSettings.map((setting) => (
-                        <SingleSetting key={setting.settingId} setting={setting} />
+                        <SingleSetting key={setting.id} setting={setting} />
                     ))}
                 </DialogContent>
             </Dialog>
@@ -63,17 +63,17 @@ const SettingsPreviewModal: React.FC<IPropss> = (props) => {
 export default SettingsPreview;
 
 interface IProps {
-    setting: ReturnType<typeof selectCurrentModeSettings>[0];
+    setting: ReturnType<typeof selectFilteredCurrentModeSettings>[0];
 }
 
 const SingleSetting: React.FC<IProps> = (props) => {
     const dispatch = useAppDispatch();
     const { setting } = props;
-    const currentSettingValue = useAppSelector((state) => state.goproSettingsReducer.settings[setting.settingId]);
+    const currentSettingValue = useAppSelector((state) => state.goproSettingsReducer.settings[setting.id]);
 
     const handleChange = (event: SelectChangeEvent) => {
         const selectedSettingValue = parseInt(event.target.value, 10);
-        dispatch(setSettingValueCommand({ settingId: setting.settingId, valueId: selectedSettingValue }));
+        dispatch(setSettingValueCommand({ settingId: setting.id, valueId: selectedSettingValue }));
     };
     useStyles();
 
@@ -81,11 +81,11 @@ const SingleSetting: React.FC<IProps> = (props) => {
     return (
         <>
             <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-                <InputLabel id="demo-simple-select-standard-label">{setting.settingLabel}</InputLabel>
-                <Select labelId="demo-simple-select-standard-label" id="demo-simple-select-standard" value={currentSettingValue.value.toString()} onChange={handleChange} label={setting.settingLabel}>
-                    {setting.possibleValues.map((possibleValue) => (
+                <InputLabel>{setting.displayName}</InputLabel>
+                <Select value={currentSettingValue.value.toString()} onChange={handleChange} label={setting.displayName}>
+                    {setting.options.map((possibleValue) => (
                         <MenuItem key={possibleValue.id} value={possibleValue.id}>
-                            {possibleValue.label}
+                            {possibleValue.displayName}
                         </MenuItem>
                     ))}
                 </Select>
