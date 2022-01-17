@@ -1,7 +1,8 @@
+import { useTranslatedSetting } from 'hooks/translatedSetting';
 import { useState } from 'react';
 import { setSettingValueCommand } from 'store/goproBluetoothServiceActions/commands/settingsCommands';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { selectFilteredCurrentModeSettings } from 'store/selectors/settingsMetadataSelectors';
+import { selectFilteredCurrentModeSettings, SettingsMetadataSetting } from 'store/selectors/settingsMetadataSelectors';
 import { makeStyles } from 'theme/makeStyles';
 
 import { Container, Dialog, DialogContent, DialogTitle, FormControl, InputLabel, MenuItem, Paper, Select, SelectChangeEvent } from '@mui/material';
@@ -63,17 +64,18 @@ const SettingsPreviewModal: React.FC<IPropss> = (props) => {
 export default SettingsPreview;
 
 interface IProps {
-    setting: ReturnType<typeof selectFilteredCurrentModeSettings>[0];
+    setting: SettingsMetadataSetting;
 }
 
 const SingleSetting: React.FC<IProps> = (props) => {
     const dispatch = useAppDispatch();
     const { setting } = props;
-    const currentSettingValue = useAppSelector((state) => state.goproSettingsReducer.settings[setting.id]);
+    const translatedSetting = useTranslatedSetting(setting);
+    const currentSettingValue = useAppSelector((state) => state.goproSettingsReducer.settings[translatedSetting.id]);
 
     const handleChange = (event: SelectChangeEvent) => {
         const selectedSettingValue = parseInt(event.target.value, 10);
-        dispatch(setSettingValueCommand({ settingId: setting.id, valueId: selectedSettingValue }));
+        dispatch(setSettingValueCommand({ settingId: translatedSetting.id, valueId: selectedSettingValue }));
     };
     useStyles();
 
@@ -81,9 +83,9 @@ const SingleSetting: React.FC<IProps> = (props) => {
     return (
         <>
             <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-                <InputLabel>{setting.displayName}</InputLabel>
-                <Select value={currentSettingValue.value.toString()} onChange={handleChange} label={setting.displayName}>
-                    {setting.options.map((possibleValue) => (
+                <InputLabel>{translatedSetting.displayName}</InputLabel>
+                <Select value={currentSettingValue.value.toString()} onChange={handleChange} label={translatedSetting.displayName}>
+                    {translatedSetting.options.map((possibleValue) => (
                         <MenuItem key={possibleValue.id} value={possibleValue.id}>
                             {possibleValue.displayName}
                         </MenuItem>

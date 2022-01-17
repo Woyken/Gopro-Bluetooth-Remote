@@ -30,7 +30,7 @@
         "linebreak-style": "off",
         "eol-last": "off",
         "max-len": ["warn", { "code": 200 }],
-        "import/extensions": ["error", "never", { "svg": "always" }],
+        "import/extensions": ["error", "never", { "svg": "always", "json": "always" }],
         "prettier/prettier": [
             "error",
             {

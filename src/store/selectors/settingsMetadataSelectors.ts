@@ -23,7 +23,7 @@ export const selectSettingsMetadataSchemaVersion = createSelector(
     (settingsJson, isSettingsReady) => settingsJson?.schema_version ?? (isSettingsReady ? 1 : 0)
 );
 
-interface SettingsMetadataSetting {
+export interface SettingsMetadataSetting {
     id: number;
     displayName: string;
     options: {
@@ -383,10 +383,3 @@ export const selectFilteredCurrentModeSettings = createSelector(
         );
     }
 );
-
-// TODO use GPCAMERA_GROUP_MODE and GPCAMERA_GROUP_PROTUNE to get a list of setting to display in ui
-// display GPCAMERA_GROUP_MODE settings, when protune is enabled display GPCAMERA_GROUP_MODE setting and GPCAMERA_GROUP_PROTUNE settings
-// schemaVer 5 - protune setting id 114
-// schemaVer 4 - has multiple protune settings, depending on mode
-// schemaVer 4 - doesn't have split GPCAMERA_GROUP_MODE and GPCAMERA_GROUP_PROTUNE. Only single GPCAMERA_GROUP_MODE with all settings in it.
-// noticed for schemaVer4 that there are some settings that have path value starting with "protune_", maybe I can fake a GPCAMERA_GROUP_PROTUNE group from those settings
