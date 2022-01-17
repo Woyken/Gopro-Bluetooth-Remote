@@ -6,7 +6,9 @@ const CurrentModeSettingsPreview: React.FC = () => {
     return (
         <p style={{ textAlign: 'center', margin: 'auto' }}>
             {mainSettingTexts.map((text, index) => (
-                <span key={text}>
+                // TODO
+                // eslint-disable-next-line react/no-array-index-key
+                <span key={text + index}>
                     {index > 0 ? '|' : null}
                     {text}
                 </span>
