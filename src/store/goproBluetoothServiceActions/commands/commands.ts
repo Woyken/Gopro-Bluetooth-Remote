@@ -1,8 +1,10 @@
 import { bluetoothDeviceState } from 'store/goproBleServiceState';
+import { waitForPacketById } from 'store/packetParsing/goproPacketReader';
+import { commandResponseReceiverProvider } from 'store/packetParsing/goproPacketReaderCommand';
 import { RootState, store } from 'store/store';
 import { functionQueue } from 'utilities/functionQueue';
 
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit';
 
 import { writeGoProPacketData } from '../goproBluetoothServiceActions';
 import { statusSystemReady82 } from '../goproStatusMetadata';
@@ -30,29 +32,25 @@ async function waitUntilDeviceReady() {
 }
 
 type CommandData = { commandId: number; data?: number[] };
-export async function sendCommand(commandData: CommandData) {
+export async function sendCommand(commandData: CommandData, dispatch: ThunkDispatch<RootState, void, any>) {
     const { characteristics } = bluetoothDeviceState;
     if (!characteristics) throw new Error('no characteristics');
-    const { commandCharacteristic } = characteristics;
+    const { commandCharacteristic, commandResponseCharacteristic } = characteristics;
     await waitUntilDeviceReady();
     // The WebBLE doesn't allow us to write 2 packets simultaneously to same characteristic. So we need to queue up commands.
+    // Also let's wait to receive full response to be safe
     await functionQueue(async () => {
         const data = [commandData.commandId];
         if (commandData.data) data.push(...commandData.data);
+        const responsePromise = waitForPacketById(commandResponseCharacteristic, commandData.commandId);
         await writeGoProPacketData(commandCharacteristic, data);
-        // It is not enough to wait for packet to be sent.
-        // We'll have to wait for response to be received too.
-        // Example: When requesting SettingsJson, it will be split into around 450 packets.
-        // It takes a while for this response to be received. If we send another command before that response is finished,
-        // It will start writing another response, and packets will be mixed up.
-        // We have headers for each packet, so we know on the first packet which command it came from,
-        // but for continuation packets, we don't know which command it corresponds to, we can just assume it is for last command response header.
-        // TODO - find a way to wait for response to be received.
+        const packetData = await responsePromise;
+        commandResponseReceiverProvider(dispatch)(packetData);
     }, commandCharacteristic);
 }
 
-const sendCommandAction = createAsyncThunk<void, CommandData, { state: RootState }>('commands/sendCommandAction', async (commandData) => {
-    await sendCommand(commandData);
+const sendCommandAction = createAsyncThunk<void, CommandData, { state: RootState }>('commands/sendCommandAction', async (commandData, { dispatch }) => {
+    await sendCommand(commandData, dispatch);
 });
 
 // Non-standard commands

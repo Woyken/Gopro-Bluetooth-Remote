@@ -11,7 +11,7 @@ import { RootState } from 'store/store';
 
 import { Action, createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit';
 
-import { goproBlePacketDataReaderProvider } from '../packetParsing/goproPacketReader';
+import { packetReaderProvider } from '../packetParsing/goproPacketReader';
 
 import { getHardwareInfoCommand, getSettingsJsonCommand, openGoProGetVersionCommand } from './commands/commands';
 import { subscribeToSettingsChangesCommand, subscribeToStatusChangesCommand } from './commands/queryCommands';
@@ -103,11 +103,10 @@ export const gattConnect = createAsyncThunk<GattConnectResult, void, { state: Ro
         queryCharacteristic: await queryCharacteristicPromise,
         queryResponseCharacteristic: await queryResponseCharacteristicPromise,
     };
-    bluetoothDeviceState.characteristics.commandResponseCharacteristic.oncharacteristicvaluechanged = goproBlePacketDataReaderProvider(commandResponseReceiverProvider(dispatch));
     await bluetoothDeviceState.characteristics.commandResponseCharacteristic.startNotifications();
-    bluetoothDeviceState.characteristics.queryResponseCharacteristic.oncharacteristicvaluechanged = goproBlePacketDataReaderProvider(queryResponseReceiverProvider(dispatch));
+    bluetoothDeviceState.characteristics.queryResponseCharacteristic.oncharacteristicvaluechanged = packetReaderProvider(queryResponseReceiverProvider(dispatch));
     await bluetoothDeviceState.characteristics.queryResponseCharacteristic.startNotifications();
-    bluetoothDeviceState.characteristics.settingsResponseCharacteristic.oncharacteristicvaluechanged = goproBlePacketDataReaderProvider(settingsResponseReceiverProvider(dispatch));
+    bluetoothDeviceState.characteristics.settingsResponseCharacteristic.oncharacteristicvaluechanged = packetReaderProvider(settingsResponseReceiverProvider(dispatch));
     await bluetoothDeviceState.characteristics.settingsResponseCharacteristic.startNotifications();
 
     dispatch(goproSettingsSlice.actions.settingsRequested());
