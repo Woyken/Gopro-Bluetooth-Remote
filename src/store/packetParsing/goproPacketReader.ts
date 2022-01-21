@@ -16,25 +16,12 @@ function createPacketAccumulator(startPacket: Packet<StartPacketHeader>) {
     let nextExpectedContinuationIndex = 0;
     const events: AccumulatorEvents = {};
 
-    let timeoutHandle: number | undefined;
-
-    function rescheduleTimeout() {
-        cancelTimeout();
-        timeoutHandle = window.setTimeout(() => {
-            events.onError?.(new Error('Timeout'));
-        }, 5000);
-    }
-
-    function cancelTimeout() {
-        clearTimeout(timeoutHandle);
-        timeoutHandle = undefined;
-    }
-
     function sendEventIfReady() {
-        if (packetDataAccumulated.length > expectedMessageLength)
+        if (packetDataAccumulated.length > expectedMessageLength) {
             events.onError?.(new Error(`Did response messages get out of sync? Current length: ${packetDataAccumulated.length}, expected: ${expectedMessageLength}`));
+            throw new Error('Did response messages get out of sync?');
+        }
         if (packetDataAccumulated.length === expectedMessageLength) {
-            cancelTimeout();
             if (!events.onPacketsAccumulated) throw new Error('Packet accumulator event not registered?');
             events.onPacketsAccumulated(packetDataAccumulated);
         }
@@ -51,13 +38,13 @@ function createPacketAccumulator(startPacket: Packet<StartPacketHeader>) {
 
     function accumulatePacket(packet: Packet<ContinuationPacketHeader>) {
         if (!checkIfPacketIsExpected(packet)) return false;
-        rescheduleTimeout();
         packetDataAccumulated = packetDataAccumulated.concat(packet.data);
         sendEventIfReady();
         nextExpectedContinuationIndex++;
         if (nextExpectedContinuationIndex > 15) nextExpectedContinuationIndex = 0;
         return true;
     }
+
     return {
         accumulatePacket,
         events,
@@ -65,6 +52,7 @@ function createPacketAccumulator(startPacket: Packet<StartPacketHeader>) {
 }
 
 interface AccumulatorStoreEvents {
+    // onExpectedPacketStartReceived?: (packetData: PacketData) => void;
     onExpectedPacketReceived?: (mergedPacketData: PacketData) => void;
     onExpectedPacketError?: (error: Error) => void;
 }
@@ -73,81 +61,118 @@ function getStartPacketId(packet: Packet<StartPacketHeader>) {
     return packet.data[0] || throwExpression("Start packet doesn't have id as first byte");
 }
 
+/**
+ * This queue only starts acting when it received start packet with expected id
+ * Stops and emits event when it receives finished expected packet
+ */
 function createPacketAccumulatorQueue(expectedId: number) {
     const accumulatorsQueue: ReturnType<typeof createPacketAccumulator>[] = [];
     const events: AccumulatorStoreEvents = {};
 
+    function cleanupAccumulatorEvents(acc: ReturnType<typeof createPacketAccumulator>) {
+        acc.events.onPacketsAccumulated = undefined;
+        acc.events.onError = undefined;
+    }
+
+    function removeAccumulator(acc: ReturnType<typeof createPacketAccumulator>) {
+        cleanupAccumulatorEvents(acc);
+        const i = accumulatorsQueue.findIndex((a) => a === acc);
+        if (i === -1) throw new Error('Accumulator got lost?');
+        accumulatorsQueue.splice(i, 1);
+    }
+
+    function dispatchSuccessEvent(packetData: PacketData) {
+        events.onExpectedPacketReceived?.(packetData);
+        cancelPacketFlowTimeout();
+    }
+
+    function dispatchErrorEvent(error: Error) {
+        events.onExpectedPacketError?.(error);
+    }
+
+    // If we don't receive starting packet within 10 seconds, consider command lost
+    const startPacketTimeoutHandle: number | undefined = window.setTimeout(() => {
+        dispose();
+    }, 10000);
+
+    // If packets stop flowing at all, probably connection dropped or something like that
+    let packetFlowTimeoutHandle: number | undefined;
+
+    function reschedulePacketFlowTimeout() {
+        cancelPacketFlowTimeout();
+        // Will be reset after each received packet, if packets are flowing, we expect to receive our expected one
+        packetFlowTimeoutHandle = window.setTimeout(() => {
+            events.onExpectedPacketError?.(new Error('Timeout, did not receive any more packets for a while'));
+        }, 5000);
+    }
+
+    function cancelPacketFlowTimeout() {
+        window.clearTimeout(packetFlowTimeoutHandle);
+        packetFlowTimeoutHandle = undefined;
+    }
+
     function consumePacket(packet: Packet) {
+        reschedulePacketFlowTimeout();
         if (packet.header.isStart) {
-            console.log('consume packet is start', expectedId, packet);
             const packetId = getStartPacketId(packet as Packet<StartPacketHeader>);
-            console.log('consume packet packet id', packetId);
             if (accumulatorsQueue.length === 0) {
-                console.log('consume packet queue is empty');
                 // We're expecting initial packet with the expectedId
                 if (packetId === expectedId) {
-                    console.log('consume packet expected id');
+                    // Start packet received, clear timeout
+                    window.clearTimeout(startPacketTimeoutHandle);
+
                     // Our starting packet, add first accumulator to list
                     const accumulator = createPacketAccumulator(packet as Packet<StartPacketHeader>);
                     accumulatorsQueue.unshift(accumulator);
-                    console.log('consume packet queue is empty, added accumulator');
                     accumulator.events.onPacketsAccumulated = (packetData) => {
-                        console.log('expected packet accumulator, onPacketsAccumulated', packetData);
-                        const i = accumulatorsQueue.findIndex((acc) => acc === accumulator);
-                        if (i === -1) throw new Error('Accumulator got lost?');
-                        accumulatorsQueue.splice(i, 1);
-                        accumulator.events.onPacketsAccumulated = undefined;
-                        accumulator.events.onError = undefined;
-                        events.onExpectedPacketReceived?.(packetData);
+                        removeAccumulator(accumulator);
+                        dispatchSuccessEvent(packetData);
                     };
                     accumulator.events.onError = (error) => {
-                        console.log('expected packet accumulator, onError', error);
-                        const i = accumulatorsQueue.findIndex((acc) => acc === accumulator);
-                        if (i === -1) throw new Error('Accumulator got lost?');
-                        accumulatorsQueue.splice(i, 1);
-                        accumulator.events.onPacketsAccumulated = undefined;
-                        accumulator.events.onError = undefined;
-                        events.onExpectedPacketError?.(error);
+                        removeAccumulator(accumulator);
+                        dispatchErrorEvent(error);
                     };
                     return true;
                 }
                 // Not our starting packet, ignore
                 return false;
             }
-            // This is initial packet of some other command, it is the one for whom we'll be receiving events now, until it's finished.
+            // This is initial packet of some other command, it is the one for whom we'll be receiving events from now on till it's finished.
             const accumulator = createPacketAccumulator(packet as Packet<StartPacketHeader>);
             accumulatorsQueue.unshift(accumulator);
 
             accumulator.events.onPacketsAccumulated = () => {
                 // some other command response finished, remove it from the queue
-                const i = accumulatorsQueue.findIndex((acc) => acc === accumulator);
-                if (i === -1) throw new Error('Accumulator got lost?');
-                accumulatorsQueue.splice(i, 1);
-                accumulator.events.onPacketsAccumulated = undefined;
-                accumulator.events.onError = undefined;
+                removeAccumulator(accumulator);
             };
             accumulator.events.onError = () => {
                 // some other command response failed, this might have corrupted the response
                 // remove it from the queue anyway... Let's hope for the best...
-                const i = accumulatorsQueue.findIndex((acc) => acc === accumulator);
-                if (i === -1) throw new Error('Accumulator got lost?');
-                accumulatorsQueue.splice(i, 1);
-                accumulator.events.onPacketsAccumulated = undefined;
-                accumulator.events.onError = undefined;
+                removeAccumulator(accumulator);
             };
             return true;
         }
+        if (accumulatorsQueue.length === 0) return false;
         return accumulatorsQueue[0]?.accumulatePacket(packet as Packet<ContinuationPacketHeader>) || false;
     }
+
+    function dispose() {
+        accumulatorsQueue.forEach(cleanupAccumulatorEvents);
+        accumulatorsQueue.length = 0;
+        events.onExpectedPacketError?.(new Error('Disposed'));
+    }
+
     return {
         consumePacket,
         events,
+        dispose,
     };
 }
 
 export async function waitForPacketById(characteristicToListen: BluetoothRemoteGATTCharacteristic, id: number) {
     // Create a packet accumulator queue, where latest one is active
     const packetAccumulatorQueue = createPacketAccumulatorQueue(id);
+
     const onEvent = (ev: Event) => {
         const characteristic = ev.target as BluetoothRemoteGATTCharacteristic;
         const { value } = characteristic;
@@ -166,13 +191,13 @@ export async function waitForPacketById(characteristicToListen: BluetoothRemoteG
     console.log('registering listener for characteristic, waiting for packet with id', id);
     return new Promise<PacketData>((resolve, reject) => {
         packetAccumulatorQueue.events.onExpectedPacketReceived = (packetData) => {
-            console.log('got expected packet, resolving', id, packetData);
+            console.log('got expected packet, resolving id ', id, ' with data ', packetData);
             resolve(packetData);
             packetAccumulatorQueue.events.onExpectedPacketReceived = undefined;
             packetAccumulatorQueue.events.onExpectedPacketError = undefined;
         };
         packetAccumulatorQueue.events.onExpectedPacketError = (error) => {
-            console.log('got expected packet error, rejecting', id, error);
+            console.error('got expected packet error, rejecting id ', id, ' error ', error);
             reject(error);
             packetAccumulatorQueue.events.onExpectedPacketReceived = undefined;
             packetAccumulatorQueue.events.onExpectedPacketError = undefined;
@@ -182,25 +207,6 @@ export async function waitForPacketById(characteristicToListen: BluetoothRemoteG
     });
 }
 
-// TODO
-// currently there's no way to detect which command response timed out, since in theory we can be receiving multiple responses at the same time
-// need a way to track if command has gotten a start packet at least.
-// from a bunch of testing looks like they are using some sort of queue/stack system
-// After start packet received, we'll receive all it's responses, previous one will wait until current one is processed
-// Ex.
-// send get settings json command
-// receive "get settings json" start packet
-// receive "get settings json" continuation packet x8
-// send get device info command
-// receive "get settings json" continuation packet x2
-// receive "get device info" start packet
-// receive "get device info" continuation packet x4 DONE
-// receive "get settings json" continuation packet x2
-// send get device info command
-// receive "get settings json" continuation packet x2
-// receive "get device info" start packet
-// receive "get device info" continuation packet x4 DONE
-// receive "get settings json" continuation packet x500 DONE
 function createPacketAccumulatorStore() {
     const events: AccumulatorStoreEvents = {};
     const activePacketAccumulators: ReturnType<typeof createPacketAccumulator>[] = [];
