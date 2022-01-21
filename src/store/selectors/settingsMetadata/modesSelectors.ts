@@ -32,9 +32,9 @@ export const selectActiveUiModeByUiModeGroup = createCachedSelector(
 )((_, uiModeGroup) => uiModeGroup);
 
 export enum UiModeGroup {
+    timeLapse,
     video,
     photo,
-    timeLapse,
     unknown,
 }
 
@@ -206,65 +206,68 @@ export const selectUiModeGroups = createSelector(selectSettingsMetadataSettingsJ
                         }
                         return acc;
                     }, [] as { group: UiModeGroup; modes: UiMode[] }[])
+                    .sort((a, b) => a.group - b.group)
             );
         case 5:
-            return settingsJson.ui_mode_groups.map((group) => {
-                let uiModeGroup: UiModeGroup;
-                switch (group.id) {
-                    case 1000:
-                        uiModeGroup = UiModeGroup.video;
-                        break;
-                    case 1001:
-                        uiModeGroup = UiModeGroup.photo;
-                        break;
-                    case 1002:
-                        uiModeGroup = UiModeGroup.timeLapse;
-                        break;
-                    default:
-                        uiModeGroup = UiModeGroup.unknown;
-                        break;
-                }
+            return settingsJson.ui_mode_groups
+                .map((group) => {
+                    let uiModeGroup: UiModeGroup;
+                    switch (group.id) {
+                        case 1000:
+                            uiModeGroup = UiModeGroup.video;
+                            break;
+                        case 1001:
+                            uiModeGroup = UiModeGroup.photo;
+                            break;
+                        case 1002:
+                            uiModeGroup = UiModeGroup.timeLapse;
+                            break;
+                        default:
+                            uiModeGroup = UiModeGroup.unknown;
+                            break;
+                    }
 
-                return {
-                    group: uiModeGroup,
-                    modes: group.modes.map((modeId) => {
-                        switch (modeId) {
-                            case 12:
-                                return UiMode.video;
-                            case 15:
-                                return UiMode.looping;
-                            case 16:
-                                return UiMode.singlePhoto;
-                            case 17:
-                                return UiMode.photo;
-                            case 18:
-                                return UiMode.nightPhoto;
-                            case 19:
-                                return UiMode.burstPhoto;
-                            case 13:
-                                return UiMode.timeLapseVideo;
-                            case 20:
-                                return UiMode.timeLapsePhoto;
-                            case 21:
-                                return UiMode.nightLapsePhoto;
-                            case 24:
-                                return UiMode.timeWarpVideo;
-                            case 25:
-                                return UiMode.liveBurst;
-                            case 4:
-                                return UiMode.playback;
-                            case 5:
-                                return UiMode.setup;
-                            case 22:
-                                return UiMode.broadcastRecord;
-                            case 23:
-                                return UiMode.broadcast;
-                            default:
-                                return UiMode.unknown;
-                        }
-                    }),
-                };
-            });
+                    return {
+                        group: uiModeGroup,
+                        modes: group.modes.map((modeId) => {
+                            switch (modeId) {
+                                case 12:
+                                    return UiMode.video;
+                                case 15:
+                                    return UiMode.looping;
+                                case 16:
+                                    return UiMode.singlePhoto;
+                                case 17:
+                                    return UiMode.photo;
+                                case 18:
+                                    return UiMode.nightPhoto;
+                                case 19:
+                                    return UiMode.burstPhoto;
+                                case 13:
+                                    return UiMode.timeLapseVideo;
+                                case 20:
+                                    return UiMode.timeLapsePhoto;
+                                case 21:
+                                    return UiMode.nightLapsePhoto;
+                                case 24:
+                                    return UiMode.timeWarpVideo;
+                                case 25:
+                                    return UiMode.liveBurst;
+                                case 4:
+                                    return UiMode.playback;
+                                case 5:
+                                    return UiMode.setup;
+                                case 22:
+                                    return UiMode.broadcastRecord;
+                                case 23:
+                                    return UiMode.broadcast;
+                                default:
+                                    return UiMode.unknown;
+                            }
+                        }),
+                    };
+                })
+                .sort((a, b) => a.group - b.group);
         default:
             throw new Error('Unknown settings schema version');
     }
