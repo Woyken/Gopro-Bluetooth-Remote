@@ -64,7 +64,7 @@
     "prettier": "^2.4.1",
     "ts-jest": "^27.1.0",
     "typescript": "^4.4.4",
-    "vite": "^2.6.13",
+    "vite": "^2.7.13",
     "vite-plugin-checker": "^0.3.4",
     "vite-plugin-pwa": "^0.11.10",
     "vite-react-jsx": "^1.1.2",
