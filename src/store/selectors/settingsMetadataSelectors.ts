@@ -3,7 +3,7 @@ import { throwExpression } from 'utilities/throwExpression';
 
 import { createSelector } from '@reduxjs/toolkit';
 
-const SCHEMA_V4_CURRENT_MODE_SETTING_ID = 92;
+export const SCHEMA_V4_CURRENT_MODE_SETTING_ID = 92;
 const SCHEMA_V5_CURRENT_MODE_STATUS_ID = 89;
 
 export const selectSettingsMetadataSettingsJson = createSelector(
@@ -222,7 +222,7 @@ const selectActiveFilterBlacklistsMerged = createSelector(selectActiveFilterBlac
     }, {} as Record<number, Set<number>>);
 });
 
-const selectCurrentActiveModeId = createSelector(
+export const selectCurrentActiveModeId = createSelector(
     selectSettingsMetadataSchemaVersion,
     (state: RootState) => state.goproSettingsReducer.settings[SCHEMA_V4_CURRENT_MODE_SETTING_ID]?.value,
     (state: RootState) => state.goproSettingsReducer.statuses[SCHEMA_V5_CURRENT_MODE_STATUS_ID],

@@ -24,10 +24,8 @@ import SignalWifiOffIcon from '@mui/icons-material/SignalWifiOff';
 import WifiIcon from '@mui/icons-material/Wifi';
 import { Container, IconButton, Paper, Typography } from '@mui/material';
 
-import PhotoModeSwitcherButton from './modeSwitchButtons/photoModeSwitcherButton';
-import TimelapseModeSwitcherButton from './modeSwitchButtons/timelapseModeSwitcherButton';
-import VideoModeSwitcherButton from './modeSwitchButtons/videoModeSwitcherButton';
 import BatteryPercentageIcon from './BatteryPercentageIcon';
+import ModeSwitchButtons from './ModeSwitchButtons';
 import SdCardIcon from './SdCardIcon';
 import { SettingsPreferencesButton } from './SettingsPreferences';
 import SettingsPreview from './SettingsPreview';
@@ -132,9 +130,7 @@ const MainModeView: React.FC = () => {
                     <div className={classes.bottomControls}>
                         <SettingsPreview />
                         <div className={classes.bottomCenteredButtons}>
-                            <TimelapseModeSwitcherButton />
-                            <VideoModeSwitcherButton />
-                            <PhotoModeSwitcherButton />
+                            <ModeSwitchButtons />
                         </div>
                         <div className={classes.alignLeftToRight}>
                             <div className={classes.floatLeft}>
