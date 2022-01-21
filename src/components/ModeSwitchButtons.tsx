@@ -9,9 +9,7 @@ const ModeSwitchButtons: React.FC = () => {
     return (
         <>
             {uiModeGroups.map((x) => (
-                <>
-                    <ModeSwitcherGroupButton groupId={x.group} availableModeIds={x.modes} />
-                </>
+                <ModeSwitcherGroupButton key={x.group} groupId={x.group} availableModeIds={x.modes} />
             ))}
         </>
     );
