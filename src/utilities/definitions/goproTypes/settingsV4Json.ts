@@ -12,22 +12,11 @@ export interface Settings {
 
 interface CameraModeMap {
     description: string;
-    mapping_type: MappingType;
+    mapping_type: 'read' | 'read_write';
     mode_value: number;
     sub_mode_value: number;
-    wsdk_mode_group_key: WsdkModeGroupKey;
-    wsdk_mode_key: string;
-}
-
-enum MappingType {
-    Read = 'read',
-    ReadWrite = 'read_write',
-}
-
-enum WsdkModeGroupKey {
-    Multishot = 'multishot',
-    Photo = 'photo',
-    Video = 'video',
+    wsdk_mode_group_key: 'multishot' | 'photo' | 'video';
+    wsdk_mode_key: 'video' | 'video_time_warp' | 'video_time_lapse' | 'looping' | 'photo' | 'night' | 'burst' | 'photo_time_lapse' | 'photo_night_lapse';
 }
 
 interface SettingsCommand {
