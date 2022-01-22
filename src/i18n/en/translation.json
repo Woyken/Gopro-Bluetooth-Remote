@@ -1144,5 +1144,23 @@
                 }
             }
         }
+    },
+    "modes": {
+        "video": "Video",
+        "looping": "Looping",
+        "singlePhoto": "Photo",
+        "photo": "Photo",
+        "nightPhoto": "Night photo",
+        "burstPhoto": "Burst photo",
+        "timeLapseVideo": "Time Lapse Video",
+        "timeLapsePhoto": "Time Lapse Photo",
+        "nightLapsePhoto": "Night Lapse Photo",
+        "timeWarpVideo": "TimeWarp Video",
+        "liveBurst": "Live Burst",
+        "playback": "Playback",
+        "setup": "Setup",
+        "broadcastRecord": "Broadcast Record",
+        "broadcast": "Broadcast",
+        "unknown": "Unknown"
     }
 }

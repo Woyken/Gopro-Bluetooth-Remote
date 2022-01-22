@@ -39,22 +39,22 @@ export enum UiModeGroup {
 }
 
 export enum UiMode {
-    video,
-    looping,
-    singlePhoto,
-    photo,
-    nightPhoto,
-    burstPhoto,
-    timeLapseVideo,
-    timeLapsePhoto,
-    nightLapsePhoto,
-    timeWarpVideo,
-    liveBurst,
-    playback,
-    setup,
-    broadcastRecord,
-    broadcast,
-    unknown,
+    video = 'video',
+    looping = 'looping',
+    singlePhoto = 'singlePhoto',
+    photo = 'photo',
+    nightPhoto = 'nightPhoto',
+    burstPhoto = 'burstPhoto',
+    timeLapseVideo = 'timeLapseVideo',
+    timeLapsePhoto = 'timeLapsePhoto',
+    nightLapsePhoto = 'nightLapsePhoto',
+    timeWarpVideo = 'timeWarpVideo',
+    liveBurst = 'liveBurst',
+    playback = 'playback',
+    setup = 'setup',
+    broadcastRecord = 'broadcastRecord',
+    broadcast = 'broadcast',
+    unknown = 'unknown',
 }
 
 function modeIdToUiMode(modeId: number): UiMode {
