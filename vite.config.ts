@@ -42,12 +42,13 @@ function pathResolve(dir: string) {
 
 // https://vitejs.dev/config/
 const config: () => UserConfig = () => ({
-    base: '/Gopro-Bluetooth-Remote/',
+    base: process.env.MODE === 'development' ? '/' : '/Gopro-Bluetooth-Remote/',
     server: {
         hmr: { port: 443 },
     },
     build: {
-        sourcemap: true,
+        sourcemap: process.env.MODE === 'development',
+        minify: process.env.MODE === 'development' ? false : undefined,
     },
     resolve: {
         alias: [
