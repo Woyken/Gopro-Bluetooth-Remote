@@ -94,7 +94,7 @@ function modeIdToUiMode(modeId: number): UiMode {
     }
 }
 
-function uiModeToModeId(uiMode: UiMode): number {
+export function uiModeToModeId(uiMode: UiMode): number {
     switch (uiMode) {
         case UiMode.video:
             return 12;

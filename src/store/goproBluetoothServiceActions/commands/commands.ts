@@ -1,6 +1,7 @@
 import { bluetoothDeviceState } from 'store/goproBleServiceState';
 import { waitForPacketById } from 'store/packetParsing/goproPacketReader';
 import { commandResponseReceiverProvider } from 'store/packetParsing/goproPacketReaderCommand';
+import { commandGpCameraSetMode, commandGpCameraSubmode, selectIsCommandSupportedByKey } from 'store/selectors/settingsMetadata/commandSelectors';
 import { UiMode } from 'store/selectors/settingsMetadata/modesSelectors';
 import { RootState, store } from 'store/store';
 import { functionQueue } from 'utilities/functionQueue';
@@ -98,37 +99,12 @@ export const legacyPresetsLoadGroupMultishotCommand = createAsyncThunk<void, voi
     await dispatch(sendCommandAction({ commandId: 0x02, data: [0x01, 0x02] }));
 });
 
-export const loadUiModeCommand = createAsyncThunk<unknown, UiMode, { state: RootState }>('commands/legacyPresetsLoadPresetByModeCommand', async (mode, { dispatch, getState }) => {
-    const { goproSettingsMetadataReducer } = getState();
-    const { settingsJson } = goproSettingsMetadataReducer;
-    switch (settingsJson?.schema_version) {
-        case 4:
-            switch (mode) {
-                case UiMode.singlePhoto:
-                case UiMode.photo:
-                    return dispatch(legacyPresetsLoadPresetPhotoCommand());
-                case UiMode.burstPhoto:
-                    return dispatch(legacyPresetsLoadPresetBurstPhotoCommand());
-                case UiMode.nightPhoto:
-                    return dispatch(legacyPresetsLoadPresetNightPhotoCommand());
-                case UiMode.video:
-                    return dispatch(legacyPresetsLoadPresetVideoCommand());
-                case UiMode.looping:
-                    return dispatch(legacyPresetsLoadPresetLoopingVideoCommand());
-                case UiMode.timeWarpVideo:
-                    return dispatch(legacyPresetsLoadPresetTimewarpCommand());
-                case UiMode.timeLapseVideo:
-                    return dispatch(legacyPresetsLoadPresetTimeLapseVideoCommand());
-                case UiMode.timeLapsePhoto:
-                    return dispatch(legacyPresetsLoadPresetTimeLapsePhotoCommand());
-                case UiMode.nightLapsePhoto:
-                    return dispatch(legacyPresetsLoadPresetNightLapsePhotoCommand());
-                default:
-                    return dispatch(legacyPresetsLoadPresetVideoCommand());
-            }
-        default:
-            throw new Error('Unsupported schema version');
-    }
+export const setUiModeCommand = createAsyncThunk<unknown, UiMode, { state: RootState }>('commands/legacyPresetsLoadPresetByModeCommand', async (mode, { dispatch, getState }) => {
+    if (selectIsCommandSupportedByKey(getState(), commandGpCameraSubmode.key))
+        return dispatch(sendCommandAction({ commandId: commandGpCameraSubmode.commandId, data: commandGpCameraSubmode.dataProducer(mode) }));
+    if (selectIsCommandSupportedByKey(getState(), commandGpCameraSetMode.key))
+        return dispatch(sendCommandAction({ commandId: commandGpCameraSetMode.commandId, data: commandGpCameraSetMode.dataProducer(mode) }));
+    throw new Error("Don't know how to set mode");
 });
 
 export const legacyPresetsLoadPresetVideoCommand = createAsyncThunk<void, void, { state: RootState }>('commands/legacyPresetsLoadPresetVideoCommand', async (_, { dispatch }) => {
