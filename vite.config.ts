@@ -40,15 +40,19 @@ function pathResolve(dir: string) {
     return resolve(__dirname, '.', dir);
 }
 
+const mode = process.env.APP_MODE;
+const isDev = mode === 'development';
+
 // https://vitejs.dev/config/
 const config: () => UserConfig = () => ({
-    base: process.env.MODE === 'development' ? '/' : '/Gopro-Bluetooth-Remote/',
+    mode,
+    base: isDev ? '/' : '/',
     server: {
         hmr: { port: 443 },
     },
     build: {
-        sourcemap: process.env.MODE === 'development',
-        minify: process.env.MODE === 'development' ? false : undefined,
+        sourcemap: isDev,
+        minify: isDev ? false : undefined,
     },
     resolve: {
         alias: [
