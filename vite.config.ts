@@ -1,6 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { resolve } from 'path';
 
+import { visualizer } from 'rollup-plugin-visualizer';
 import { UserConfig } from 'vite';
 import Checker from 'vite-plugin-checker';
 import { ManifestOptions, VitePWA, VitePWAOptions } from 'vite-plugin-pwa';
@@ -53,6 +54,23 @@ const config: () => UserConfig = () => ({
     build: {
         sourcemap: isDev,
         minify: isDev ? false : undefined,
+        rollupOptions: {
+            plugins: [isDev ? visualizer() : undefined],
+            output: {
+                manualChunks: (id, api): string | undefined => {
+                    if (id.includes('node_modules')) {
+                        if (id.includes('@mui')) {
+                            return 'vendor_mui';
+                        }
+                        if (id.includes('pako')) {
+                            return 'vendor_pako';
+                        }
+                        return 'vendor'; // all other package goes here
+                    }
+                    return undefined;
+                },
+            },
+        },
     },
     resolve: {
         alias: [
