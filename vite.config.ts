@@ -46,7 +46,7 @@ const isDev = mode === 'development';
 // https://vitejs.dev/config/
 const config: () => UserConfig = () => ({
     mode,
-    base: isDev ? '/' : '/',
+    base: isDev ? '/' : '/Gopro-Bluetooth-Remote/',
     server: {
         hmr: { port: 443 },
     },
