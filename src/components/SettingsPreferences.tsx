@@ -1,7 +1,8 @@
+import { useTranslatedSetting } from 'hooks/translatedSetting';
 import { useState } from 'react';
 import { setSettingValueCommand } from 'store/goproBluetoothServiceActions/commands/settingsCommands';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { selectGeneralSettings } from 'store/selectors/settingsSelectors';
+import { selectAllGeneralSettings, SettingsMetadataSetting } from 'store/selectors/settingsMetadataSelectors';
 
 import SettingsIcon from '@mui/icons-material/Settings';
 import { Dialog, DialogContent, DialogTitle, FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
@@ -31,7 +32,7 @@ interface IProps {
 // TODO redo these settings, some settings need sliders, some would work better with checkboxes
 export const SettingsPreferencesDialog: React.FC<IProps> = (props) => {
     const { isOpen, onClose } = props;
-    const generalSettings = useAppSelector(selectGeneralSettings);
+    const generalSettings = useAppSelector(selectAllGeneralSettings);
     return (
         <>
             <Dialog open={isOpen} onClose={onClose}>
@@ -39,7 +40,7 @@ export const SettingsPreferencesDialog: React.FC<IProps> = (props) => {
                 <DialogContent>
                     <ToggleWifiOffOnConnect />
                     {generalSettings.map((setting) => (
-                        <SingleSetting key={setting.settingId} setting={setting} />
+                        <SingleSetting key={setting.id} setting={setting} />
                     ))}
                 </DialogContent>
             </Dialog>
@@ -48,28 +49,29 @@ export const SettingsPreferencesDialog: React.FC<IProps> = (props) => {
 };
 
 interface ISingleSettingProps {
-    setting: ReturnType<typeof selectGeneralSettings>[0];
+    setting: SettingsMetadataSetting;
 }
 
 const SingleSetting: React.FC<ISingleSettingProps> = (props) => {
     const dispatch = useAppDispatch();
     const { setting } = props;
-    const currentSettingValue = useAppSelector((state) => state.goproSettingsReducer.settings[setting.settingId]);
+    const translatedSetting = useTranslatedSetting(setting);
+    const currentSettingValue = useAppSelector((state) => state.goproSettingsReducer.settings[translatedSetting.id]);
 
     const handleChange = (event: SelectChangeEvent) => {
         const selectedSettingValue = parseInt(event.target.value, 10);
-        dispatch(setSettingValueCommand({ settingId: setting.settingId, valueId: selectedSettingValue }));
+        dispatch(setSettingValueCommand({ settingId: translatedSetting.id, valueId: selectedSettingValue }));
     };
 
     if (!currentSettingValue) return <div>something went wrong... known setting missing</div>;
     return (
         <>
             <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-                <InputLabel id="demo-simple-select-standard-label">{setting.settingLabel}</InputLabel>
-                <Select labelId="demo-simple-select-standard-label" id="demo-simple-select-standard" value={currentSettingValue.value.toString()} onChange={handleChange} label={setting.settingLabel}>
-                    {setting.possibleValues.map((possibleValue) => (
+                <InputLabel>{translatedSetting.displayName}</InputLabel>
+                <Select value={currentSettingValue.value.toString()} onChange={handleChange} label={translatedSetting.displayName}>
+                    {translatedSetting.options.map((possibleValue) => (
                         <MenuItem key={possibleValue.id} value={possibleValue.id}>
-                            {possibleValue.label}
+                            {possibleValue.displayName}
                         </MenuItem>
                     ))}
                 </Select>

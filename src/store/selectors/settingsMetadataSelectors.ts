@@ -186,8 +186,13 @@ const selectFiltersThatFilterByModeIdOnly = createSelector(selectSettingsMetadat
     }
 });
 
-const selectActiveFilterBlacklists = createSelector(
+const selectCurrentSettings = createSelector(
     (state: RootState) => state.goproSettingsReducer.settings,
+    (currentSettings) => currentSettings
+);
+
+const selectActiveFilterBlacklists = createSelector(
+    selectCurrentSettings,
     (state: RootState) => state.goproSettingsReducer.statuses,
     selectSettingsMetadataFilters,
     // TODO think about using re-reselector.
@@ -330,7 +335,7 @@ const selectCurrentModeSettings = createSelector(
     selectProtuneSettingId,
     selectModeSettingsIdsHiddenBehindProtune,
     selectModeOnlyBlacklistsBySettingIdForCurrentMode,
-    (state: RootState) => state.goproSettingsReducer.settings,
+    selectCurrentSettings,
     selectSettingsMetadataAllSettingsById,
     (modeSettingsIdsAlwaysShown, protuneSettingId, modeSettingsIdsHiddenBehindProtune, blacklists, currentSettings, allSettingsByIds) => {
         const isProtuneEnabled = protuneSettingId ? currentSettings[protuneSettingId]?.value : undefined;
@@ -359,7 +364,7 @@ export const selectFilteredCurrentModeSettings = createSelector(
     selectActiveFilterBlacklistsMerged,
     selectCurrentModeSettings,
     selectSettingsMetadataAllSettingsById,
-    (state: RootState) => state.goproSettingsReducer.settings,
+    selectCurrentSettings,
     (activeFilterBlacklists, currentModeSettings, allSettingsByIds, currentSettings) => {
         return (
             currentModeSettings
@@ -381,5 +386,49 @@ export const selectFilteredCurrentModeSettings = createSelector(
                     return { ...setting, options: [currentOption] };
                 })
         );
+    }
+);
+
+const selectAllGeneralSettingsIds = createSelector(selectSettingsMetadataSettingsJson, (settingsJson) => {
+    switch (settingsJson?.schema_version) {
+        case 4: {
+            const foundHint = settingsJson.display_hints.find((hint) => hint.key === 'GPCAMERA_GROUP_SETUP');
+            if (!foundHint) throw new Error('GPCAMERA_GROUP_SETUP hint not found');
+            return foundHint.settings.map((setting) => setting.setting_id);
+        }
+        case 5: {
+            const foundHint = settingsJson.display_hints.find((hint) => hint.key === 'GPCAMERA_GROUP_SETUP');
+            if (!foundHint) throw new Error('GPCAMERA_GROUP_SETUP hint not found');
+            return foundHint.settings.map((setting) => setting.setting_id);
+        }
+        default:
+            throw new Error('Unknown settings schema version');
+    }
+});
+
+export const selectAllGeneralSettings = createSelector(
+    selectActiveFilterBlacklistsMerged,
+    selectAllGeneralSettingsIds,
+    selectSettingsMetadataAllSettingsById,
+    selectCurrentSettings,
+    (activeFilterBlacklists, allSettingsIds, allSettingsByIds, currentSettings) => {
+        return allSettingsIds
+            .map((id) => allSettingsByIds[id] || throwExpression(`Setting ${id} not found in settings list`))
+            .map((setting) => {
+                const blacklistForThisSetting = activeFilterBlacklists[setting.id];
+                if (!blacklistForThisSetting) return setting;
+                return {
+                    ...setting,
+                    options: setting.options.filter((option) => !blacklistForThisSetting.has(option.id)),
+                };
+            })
+            .map((setting) => {
+                if (setting.options.length > 0) return setting;
+                const currentSettingValue = currentSettings[setting.id]?.value;
+                const currentOption =
+                    allSettingsByIds[setting.id]?.options.find((option) => option.id === currentSettingValue) ||
+                    throwExpression(`Could not find option ${currentSettingValue} for setting ${setting.id} ${setting.displayName}`);
+                return { ...setting, options: [currentOption] };
+            });
     }
 );
