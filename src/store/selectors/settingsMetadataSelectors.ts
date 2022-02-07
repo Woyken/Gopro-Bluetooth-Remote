@@ -432,3 +432,29 @@ export const selectAllGeneralSettings = createSelector(
             });
     }
 );
+
+export const selectCurrentModePreviewSettings = createSelector(
+    selectFilteredCurrentModeSettings,
+    selectProtuneSettingId,
+    selectModeSettingsIdsHiddenBehindProtune,
+    selectSettingsMetadataAllSettingsById,
+    selectCurrentSettings,
+    (filteredCurrentModeSettings, protuneSettingId, modeSettingsIdsHiddenBehindProtune, allSettingsByIds, currentSettings) => {
+        const settings = filteredCurrentModeSettings
+            .filter((setting) => !modeSettingsIdsHiddenBehindProtune.has(setting.id))
+            .filter((s) => s.options.length > 1)
+            .filter((s) => s.id !== protuneSettingId);
+        return settings
+            .map((setting) => {
+                const currentSettingValue = currentSettings[setting.id]?.value;
+                const currentOption =
+                    allSettingsByIds[setting.id]?.options.find((option) => option.id === currentSettingValue) ||
+                    throwExpression(`Could not find option ${currentSettingValue} for setting ${setting.id} ${setting.displayName}`);
+                return {
+                    ...setting,
+                    currentOptionId: currentOption.id,
+                };
+            })
+            .filter((setting) => setting.options.length > 0);
+    }
+);

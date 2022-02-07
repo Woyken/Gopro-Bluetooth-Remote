@@ -1,20 +1,29 @@
+import { useTranslatedSetting } from 'hooks/translatedSetting';
 import { useAppSelector } from 'store/hooks';
-import { selectCurrentModeSettingsPreviewMainTexts } from 'store/selectors/settingsSelectors';
+import { selectCurrentModePreviewSettings } from 'store/selectors/settingsMetadataSelectors';
 
 const CurrentModeSettingsPreview: React.FC = () => {
-    const mainSettingTexts = useAppSelector(selectCurrentModeSettingsPreviewMainTexts);
+    const previewSettings = useAppSelector(selectCurrentModePreviewSettings);
     return (
         <p style={{ textAlign: 'center', margin: 'auto' }}>
-            {mainSettingTexts.map((text, index) => (
+            {previewSettings.map((setting, index) => (
                 // TODO
                 // eslint-disable-next-line react/no-array-index-key
-                <span key={text + index}>
+                <span key={setting.id}>
                     {index > 0 ? '|' : null}
-                    {text}
+                    <SingleSettingText setting={setting} />
                 </span>
             ))}
         </p>
     );
 };
 
+const SingleSettingText: React.FC<{ setting: ReturnType<typeof selectCurrentModePreviewSettings>[0] }> = (props) => {
+    const { setting } = props;
+    const { currentOptionId } = setting;
+    const translatedSetting = useTranslatedSetting(setting);
+    const currentOption = translatedSetting.options.find((x) => x.id === currentOptionId);
+    if (!currentOption) return <>Missing setting option!</>;
+    return <>{currentOption.displayName}</>;
+};
 export default CurrentModeSettingsPreview;
