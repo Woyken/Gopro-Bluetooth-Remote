@@ -86,6 +86,7 @@ const config: () => UserConfig = () => ({
         react({
             babel: {
                 plugins: [
+                    ['@babel/plugin-transform-react-jsx', { runtime: 'automatic' }],
                     [
                         '@emotion',
                         {
