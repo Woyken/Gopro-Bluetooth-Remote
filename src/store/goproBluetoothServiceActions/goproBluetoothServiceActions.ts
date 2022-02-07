@@ -1,11 +1,9 @@
 /* eslint-disable no-bitwise */
 import { toast } from 'react-toastify';
 import { bluetoothDeviceState } from 'store/goproBleServiceState';
-import { commandResponseReceiverProvider } from 'store/packetParsing/goproPacketReaderCommand';
 import { queryResponseReceiverProvider } from 'store/packetParsing/goproPacketReaderQuery';
 import { settingsResponseReceiverProvider } from 'store/packetParsing/goproPacketReaderSetting';
 import { goproBluetoothSlice } from 'store/slices/goproBluetoothSlice';
-import { fetchSettingsMetadata } from 'store/slices/goproSettingsMetadataSlice';
 import { goproSettingsSlice } from 'store/slices/goproSettingsSlice';
 import { RootState } from 'store/store';
 
@@ -110,6 +108,9 @@ export const gattConnect = createAsyncThunk<GattConnectResult, void, { state: Ro
     await bluetoothDeviceState.characteristics.settingsResponseCharacteristic.startNotifications();
 
     dispatch(goproSettingsSlice.actions.settingsRequested());
+    // Fetch settings first, so we know what commands and settings camera supports
+    await dispatch(getSettingsJsonCommand());
+
     // Explicitly first subscribe to ones needed to know of we can send commands
     await dispatch(subscribeToStatusChangesCommand([statusSystemReady82.id, statusEncodingActive10.id, statusSystemBusy8.id]));
 
@@ -117,7 +118,6 @@ export const gattConnect = createAsyncThunk<GattConnectResult, void, { state: Ro
     // TODO Reconsider this subscribing logic
     await dispatch(subscribeToStatusChangesCommand([...new Array(88).keys()]));
     await dispatch(subscribeToSettingsChangesCommand([...new Array(112).keys()]));
-    await dispatch(fetchSettingsMetadata());
 
     await dispatch(openGoProGetVersionCommand());
     await dispatch(getHardwareInfoCommand());

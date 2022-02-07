@@ -1,8 +1,7 @@
 import { getSettingsJsonCommand } from 'store/goproBluetoothServiceActions/commands/commands';
-import { RootState } from 'store/store';
 import { SettingsJson } from 'utilities/definitions/goproTypes/settingsJson';
 
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 export interface GoproSettingsMetadataState {
     settingsJson?: SettingsJson;
@@ -16,24 +15,17 @@ const initialState: GoproSettingsMetadataState = {
 export const goproSettingsMetadataSlice = createSlice({
     name: 'goproSettingsMetadata',
     initialState,
-    reducers: {
-        settingsMetadataReceived: (state, action: PayloadAction<SettingsJson>) => {
-            state.isFetching = false;
-            state.settingsJson = { ...state.settingsJson, ...action.payload };
-        },
-        settingsMetadataRequested: (state) => {
+    reducers: {},
+    extraReducers: (builder) => {
+        builder.addCase(getSettingsJsonCommand.pending, (state, action) => {
             state.isFetching = true;
-            state.settingsJson = undefined;
-        },
-        settingsMetadataRequestFailed: (state) => {
+            state.settingsJson = action.payload;
+        });
+        builder.addCase(getSettingsJsonCommand.fulfilled, (state, action) => {
             state.isFetching = false;
-        },
+            state.settingsJson = action.payload;
+        });
     },
 });
 
 export const goproSettingsMetadataReducer = goproSettingsMetadataSlice.reducer;
-
-export const fetchSettingsMetadata = createAsyncThunk<void, void, { state: RootState }>(`${goproSettingsMetadataSlice.name}/fetchSettingsMetadata`, async (_, { dispatch }) => {
-    dispatch(goproSettingsMetadataSlice.actions.settingsMetadataRequested());
-    dispatch(getSettingsJsonCommand());
-});

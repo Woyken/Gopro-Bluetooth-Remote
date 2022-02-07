@@ -1,7 +1,9 @@
+import { getHardwareInfoCommand, openGoProGetVersionCommand } from 'store/goproBluetoothServiceActions/commands/commands';
+
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { gattConnect, getKnownDevice, requestDevice } from '../goproBluetoothServiceActions/goproBluetoothServiceActions';
 import { bluetoothDeviceState } from '../goproBleServiceState';
+import { gattConnect, getKnownDevice, requestDevice } from '../goproBluetoothServiceActions/goproBluetoothServiceActions';
 
 export interface OpenGoProVersionState {
     majorVersion: number;
@@ -58,14 +60,6 @@ export const goproBluetoothSlice = createSlice({
             state.isGattConnected = false;
             state.error = action.payload;
         },
-        getHardwareInfoResponse: (state, action: PayloadAction<GetHardwareInfoState>) => {
-            state.goproBluetoothDeviceCommandsState.getHardwareInfo = action.payload;
-            // Let's override device name when we know wifi ssid
-            state.deviceName = action.payload.apSsid;
-        },
-        openGoProGetVersionResponse: (state, action: PayloadAction<OpenGoProVersionState>) => {
-            state.goproBluetoothDeviceCommandsState.openGoProVersion = action.payload;
-        },
         savedDeviceAvailable: (state, action: PayloadAction<string>) => {
             state.deviceAvailability = BluetoothDeviceAvailability.Ready;
             state.error = undefined;
@@ -73,6 +67,14 @@ export const goproBluetoothSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
+        builder.addCase(openGoProGetVersionCommand.fulfilled, (state, action) => {
+            state.goproBluetoothDeviceCommandsState.openGoProVersion = action.payload;
+        });
+        builder.addCase(getHardwareInfoCommand.fulfilled, (state, action) => {
+            state.goproBluetoothDeviceCommandsState.getHardwareInfo = action.payload;
+            // Let's override device name when we know wifi ssid
+            state.deviceName = action.payload.apSsid;
+        });
         builder.addCase(requestDevice.pending, (state) => {
             bluetoothDeviceState.device = undefined;
             state.deviceAvailability = BluetoothDeviceAvailability.BeingRequested;

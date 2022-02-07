@@ -1,9 +1,7 @@
 import { inflate } from 'pako';
-import { getHardwareInfoCommand, openGoProGetVersionCommand } from 'store/goproBluetoothServiceActions/commands/commands';
-import { GetHardwareInfoState, goproBluetoothSlice, OpenGoProVersionState } from 'store/slices/goproBluetoothSlice';
-import { fetchSettingsMetadata, goproSettingsMetadataSlice } from 'store/slices/goproSettingsMetadataSlice';
+import { GetHardwareInfoState, OpenGoProVersionState } from 'store/slices/goproBluetoothSlice';
 import { RootState } from 'store/store';
-import { parseAsSettings } from 'utilities/definitions/goproTypes/settingsJson';
+import { parseAsSettings, SettingsJson } from 'utilities/definitions/goproTypes/settingsJson';
 
 import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
 
@@ -30,20 +28,42 @@ function parseCommandResponseCode(responseCode: number) {
     }
 }
 
-enum CommandResponseCode {
-    unknown,
+export enum CommandResponseCode {
+    unknown = 1,
     success,
     error,
     invalidParameter,
 }
 
-interface CommandResponse {
+export type CommandResponseSuccess = {
     commandId: number;
-    errorCode: CommandResponseCode;
+    errorCode: CommandResponseCode.success;
     data: number[];
+};
+
+export type CommandResponseError = {
+    commandId: number;
+    errorCode: Exclude<CommandResponseCode, CommandResponseCode.success>;
+};
+
+export type CommandResponse = CommandResponseSuccess | CommandResponseError;
+
+export function assertCommandResponseSuccess(response: CommandResponse): asserts response is CommandResponseSuccess {
+    switch (response.errorCode) {
+        case CommandResponseCode.success:
+            return;
+        case CommandResponseCode.invalidParameter:
+            throw new Error('Failed to fetch settings metadata. Unsupported camera model');
+        case CommandResponseCode.error:
+            throw new Error('Failed to fetch settings metadata. Error, camera still booting? Or stuck?');
+        case CommandResponseCode.unknown:
+            throw new Error('Failed to fetch settings metadata. Unknown error');
+        default:
+            throw new Error('Forgot to add new type?');
+    }
 }
 
-function parseCommandResponse(response: PacketData): CommandResponse {
+export function parseCommandResponse(response: PacketData): CommandResponse {
     if (response.length < 2) throw new Error('command response too short');
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const commandId = response[0]!;
@@ -57,64 +77,18 @@ function parseCommandResponse(response: PacketData): CommandResponse {
     };
 }
 
-enum CommandId {
-    SetShutter = 0x01,
-    Sleep = 0x05,
-    APControl = 0x17,
-    GetSettingsJson = 0x3b,
-    GetHardwareInfo = 0x3c,
-    PresetsLoadGroup = 0x3e,
-    PresetsLoad = 0x40,
-    Analytics = 0x50,
-    OpenGoProGetVersion = 0x51,
+export function parseSettingsJsonResponse(commandResponse: CommandResponseSuccess): SettingsJson {
+    const settingsJsonRaw = inflate(Uint8Array.from(commandResponse.data));
+    const settingsJson = String.fromCharCode(...settingsJsonRaw);
+    return parseAsSettings(settingsJson);
 }
 
-async function dispatchCommandResponse(dispatch: ThunkDispatch<RootState, unknown, AnyAction>, commandResponse: CommandResponse) {
-    // TODO handle regular command response?
-    // At least show error toast on failure?
-    switch (commandResponse.commandId) {
-        case CommandId.GetSettingsJson: {
-            if (commandResponse.errorCode === CommandResponseCode.error) {
-                // Error occured during get hardware info? Sometimes this happens while GoPro is in the middle of booting up.
-                dispatch(fetchSettingsMetadata());
-                break;
-            }
-            const settingsJsonRaw = inflate(Uint8Array.from(commandResponse.data));
-            const settingsJson = String.fromCharCode(...settingsJsonRaw);
-            const settings = parseAsSettings(settingsJson);
-            dispatch(goproSettingsMetadataSlice.actions.settingsMetadataReceived(settings));
-            break;
-        }
-        case CommandId.GetHardwareInfo: {
-            if (commandResponse.errorCode === CommandResponseCode.error) {
-                // Error occured during get hardware info? Sometimes this happens while GoPro is in the middle of booting up.
-                dispatch(getHardwareInfoCommand());
-                break;
-            }
-            dispatch(goproBluetoothSlice.actions.getHardwareInfoResponse(parseGetHardwareInfoResponse(commandResponse)));
-            break;
-        }
-        case CommandId.OpenGoProGetVersion: {
-            if (commandResponse.errorCode === CommandResponseCode.error) {
-                // Error occured during open GoPro? Sometimes this happens while GoPro is in the middle of booting up.
-                dispatch(openGoProGetVersionCommand());
-                break;
-            }
-            if (commandResponse.errorCode === CommandResponseCode.invalidParameter) {
-                // Open GoPro unsupported
-                // Likely device older than GoPro Hero 9
-                dispatch(goproBluetoothSlice.actions.openGoProGetVersionResponse({ majorVersion: 0, minorVersion: 0 }));
-                break;
-            }
-            dispatch(goproBluetoothSlice.actions.openGoProGetVersionResponse(parseOpenGoProGetVersionResponse(commandResponse)));
-            break;
-        }
-        default:
-            break;
-    }
+export async function dispatchCommandResponse(_: ThunkDispatch<RootState, unknown, AnyAction>, commandResponse: CommandResponse) {
+    assertCommandResponseSuccess(commandResponse);
+    // Left over for commands that are not handled explicitly
 }
 
-function parseGetHardwareInfoResponse(commandResponse: CommandResponse): GetHardwareInfoState {
+export function parseGetHardwareInfoResponse(commandResponse: CommandResponseSuccess): GetHardwareInfoState {
     const { data } = commandResponse;
     let dataIndex = 0;
     // model number
@@ -167,7 +141,7 @@ function parseGetHardwareInfoResponse(commandResponse: CommandResponse): GetHard
     };
 }
 
-function parseOpenGoProGetVersionResponse(commandResponse: CommandResponse): OpenGoProVersionState {
+export function parseOpenGoProGetVersionResponse(commandResponse: CommandResponseSuccess): OpenGoProVersionState {
     const { data } = commandResponse;
     let dataIndex = 0;
     // Major version

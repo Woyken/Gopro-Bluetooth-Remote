@@ -1,12 +1,13 @@
 import { bluetoothDeviceState } from 'store/goproBleServiceState';
 import { RootState } from 'store/store';
-import { functionQueue } from 'utilities/functionQueue';
+import { functionQueueProvider } from 'utilities/functionQueue';
 
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { allKnownSettings } from '../goproSettingsMetadata';
 
 type CommandData = number[];
+const functionQueue = functionQueueProvider();
 export async function sendSettingCommand(commandData: CommandData) {
     await functionQueue(async () => {
         const { characteristics } = bluetoothDeviceState;
