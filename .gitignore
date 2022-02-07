@@ -11,6 +11,9 @@
 # production
 /dist
 
+# module visualizer
+moduleVisualizerOutput.html
+
 # misc
 .DS_Store
 .env.local

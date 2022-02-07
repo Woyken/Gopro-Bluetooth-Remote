@@ -55,7 +55,7 @@ const config: () => UserConfig = () => ({
         sourcemap: isDev,
         minify: isDev ? false : undefined,
         rollupOptions: {
-            plugins: [isDev ? visualizer() : undefined],
+            plugins: [isDev ? visualizer({ filename: 'moduleVisualizerOutput.html' }) : undefined],
             output: {
                 manualChunks: (id, api): string | undefined => {
                     if (id.includes('node_modules')) {
