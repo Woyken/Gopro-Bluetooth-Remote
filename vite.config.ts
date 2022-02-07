@@ -41,7 +41,7 @@ function pathResolve(dir: string) {
     return resolve(__dirname, '.', dir);
 }
 
-const mode = process.env.APP_MODE;
+const mode = process.env.APP_ENV;
 const isDev = mode === 'development';
 
 // https://vitejs.dev/config/
