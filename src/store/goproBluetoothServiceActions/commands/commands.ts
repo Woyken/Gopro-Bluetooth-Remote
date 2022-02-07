@@ -77,7 +77,7 @@ export async function queueAndSendCommand(commandData: CommandData) {
     const { characteristics } = bluetoothDeviceState;
     if (!characteristics) throw new Error('no characteristics');
     const { commandCharacteristic, commandResponseCharacteristic } = characteristics;
-    await waitUntilDeviceReady();
+    // await waitUntilDeviceReady();
     return functionQueue(async () => {
         const commandResponseData = await sendCommand(commandData, commandCharacteristic, commandResponseCharacteristic);
         // dispatchCommandResponse(dispatch, commandResponseData);
