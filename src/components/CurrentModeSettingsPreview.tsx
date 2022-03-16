@@ -7,8 +7,6 @@ const CurrentModeSettingsPreview: React.FC = () => {
     return (
         <p style={{ textAlign: 'center', margin: 'auto' }}>
             {previewSettings.map((setting, index) => (
-                // TODO
-                // eslint-disable-next-line react/no-array-index-key
                 <span key={setting.id}>
                     {index > 0 ? '|' : null}
                     <SingleSettingText setting={setting} />
