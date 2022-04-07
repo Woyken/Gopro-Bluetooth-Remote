@@ -21,13 +21,11 @@ interface Statuses {
 export interface GoproSettingsState {
     settings: Settings;
     statuses: Statuses;
-    isFetching: boolean;
 }
 
 const initialState: GoproSettingsState = {
     settings: {},
     statuses: {},
-    isFetching: false,
 };
 
 export const goproSettingsSlice = createSlice({
@@ -38,12 +36,8 @@ export const goproSettingsSlice = createSlice({
             state.settings = { ...state.settings, ...action.payload };
         },
         settingsRequested: (state) => {
-            state.isFetching = true;
             state.settings = {};
             state.statuses = {};
-        },
-        settingsRequestFailed: (state) => {
-            state.isFetching = false;
         },
         statusesReceived: (state, action: PayloadAction<Statuses>) => {
             state.statuses = { ...state.statuses, ...action.payload };

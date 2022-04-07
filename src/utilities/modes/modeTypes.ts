@@ -1,15 +1,3 @@
-import {
-    legacyPresetsLoadPresetBurstPhotoCommand,
-    legacyPresetsLoadPresetLoopingVideoCommand,
-    legacyPresetsLoadPresetNightLapsePhotoCommand,
-    legacyPresetsLoadPresetNightPhotoCommand,
-    legacyPresetsLoadPresetPhotoCommand,
-    legacyPresetsLoadPresetTimeLapsePhotoCommand,
-    legacyPresetsLoadPresetTimeLapseVideoCommand,
-    legacyPresetsLoadPresetTimewarpCommand,
-    legacyPresetsLoadPresetVideoCommand,
-} from 'store/goproBluetoothServiceActions/commands/commands';
-
 export enum SettingsModesGroups {
     video,
     photo,

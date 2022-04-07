@@ -33,6 +33,13 @@ export interface SettingsMetadataSetting {
     }[];
 }
 
+export const selectSettingsMetadataAllStatuses = createSelector(selectSettingsMetadataSettingsJson, (settingsJson) => {
+    if (!settingsJson) return [];
+    return settingsJson.status.groups.map((group) => group.fields).flat();
+});
+
+export const selectSettingsMetadataAllStatusesIdsList = createSelector(selectSettingsMetadataAllStatuses, (statuses) => statuses.map((status) => status.id));
+
 export const selectSettingsMetadataAllSettings = createSelector(selectSettingsMetadataSettingsJson, (settingsJson): SettingsMetadataSetting[] => {
     if (!settingsJson) return [];
     switch (settingsJson.schema_version) {
@@ -57,6 +64,8 @@ export const selectSettingsMetadataAllSettings = createSelector(selectSettingsMe
             throw new Error('Unknown settings schema version');
     }
 });
+
+export const selectSettingsMetadataAllSettingsIdsList = createSelector(selectSettingsMetadataAllSettings, (settings) => settings.map((setting) => setting.id));
 
 export const selectSettingsMetadataAllSettingsById = createSelector(selectSettingsMetadataAllSettings, (allSettings) => {
     return allSettings.reduce((acc, setting) => {

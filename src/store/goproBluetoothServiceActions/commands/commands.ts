@@ -227,6 +227,13 @@ export const sleepCommand = createAsyncThunk<void, void, { state: RootState }>('
     dispatchCommandResponse(dispatch, commandResponseData);
 });
 
+export async function fetchSettingsJson() {
+    const commandResponseData = await sendCommandAction({ commandId: 0x3b, retries: 5 });
+    assertCommandResponseSuccess(commandResponseData);
+    const settingsJsonResponse = parseSettingsJsonResponse(commandResponseData);
+    return settingsJsonResponse;
+}
+
 export const getSettingsJsonCommand = createAsyncThunk<SettingsJson, void, { state: RootState }>('commands/getSettingsJsonCommand', async () => {
     const commandResponseData = await sendCommandAction({ commandId: 0x3b, retries: 5 });
     assertCommandResponseSuccess(commandResponseData);
