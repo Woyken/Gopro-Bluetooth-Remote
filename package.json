@@ -27,7 +27,7 @@
     "build": "vite build",
     "build:watch": "cross-env APP_ENV=development vite build --watch",
     "https-preview": "serve dist",
-    "serve": "cross-env APP_ENV=development vite preview",
+    "serve": "cross-env APP_ENV=development vite preview --host",
     "lint": "eslint src --ext .tsx --ext .ts",
     "lint:fix": "npm run lint -- --fix",
     "test": "jest --colors --passWithNoTests",
