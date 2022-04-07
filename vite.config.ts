@@ -50,6 +50,10 @@ const config: () => UserConfig = () => ({
     base: isDev ? '/' : '/Gopro-Bluetooth-Remote/',
     server: {
         hmr: { port: 443 },
+        https: true,
+    },
+    preview: {
+        https: true,
     },
     build: {
         sourcemap: isDev,
