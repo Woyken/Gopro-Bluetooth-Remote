@@ -85,6 +85,7 @@ const config: () => UserConfig = () => ({
         VitePWA(pwaOptions),
         tsconfigPaths(),
         react({
+            jsxRuntime: 'classic',
             babel: {
                 plugins: [
                     [
