@@ -207,7 +207,7 @@ export const selectIsBatteryCharging = createSelector(selectStatusInternalBatter
 
 function statusAsNumber(value: StatusValue): number {
     if (typeof value === 'number') return value;
-    throw new Error('Status is not number, did API change?');
+    throw new Error(`Status is not number, did API change? ${value} ${typeof value}`);
 }
 
 export const selectBatteryPercentage = createSelector(selectStatusInternalBatteryPercentage70, (batteryPercentage) => statusAsNumber(batteryPercentage?.statusValue));
