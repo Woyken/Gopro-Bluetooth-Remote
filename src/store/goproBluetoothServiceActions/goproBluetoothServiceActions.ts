@@ -155,7 +155,10 @@ export const fetchSettingsJsonBleCommand = createAsyncThunk<SettingsJson, void, 
 export const getSettingsJsonCachedCommand = createAsyncThunk<SettingsJson | undefined, void, { state: RootState }>('bluetoothDevice/getSettingsJsonCachedCommand', async (_, { dispatch }) => {
     const settingsJson = getSettingsJsonCached();
     if (!settingsJson) await dispatch(fetchSettingsJsonBleCommand());
-    else dispatch(fetchSettingsJsonBleCommand());
+    // TODO if we asynchronously start fetching settingsJson
+    // Actions like subscribe to settings and statuses will not respond at all
+    // Consider adding semaphore like thing to limit all bluetooth actions to one at a time
+    // else dispatch(fetchSettingsJsonBleCommand());
     return settingsJson;
 });
 
