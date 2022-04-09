@@ -93,20 +93,29 @@ define(['./workbox-a51b997a'], (function (workbox) { 'use strict';
    */
 
   workbox.precacheAndRoute([{
-    "url": "assets/index.5561b2f0.css",
+    "url": "assets/index.5c8099f5.js",
     "revision": null
   }, {
-    "url": "assets/index.72a24309.js",
+    "url": "assets/react.2da1357a.js",
     "revision": null
   }, {
-    "url": "assets/react.ba27320d.js",
+    "url": "assets/vendor_i18next.e8c7b5a3.js",
     "revision": null
   }, {
-    "url": "assets/vendor.e9ca8edb.js",
+    "url": "assets/vendor_mui.da9df8f0.js",
+    "revision": null
+  }, {
+    "url": "assets/vendor_pako.8f836244.js",
+    "revision": null
+  }, {
+    "url": "assets/vendor.d5a6499d.css",
+    "revision": null
+  }, {
+    "url": "assets/vendor.e61fe395.js",
     "revision": null
   }, {
     "url": "index.html",
-    "revision": "43f48b9f1b48ff47732d2e9423c86f9e"
+    "revision": "5ae51b7e4c4b990c43b63d6f57d2022b"
   }, {
     "url": "camera.ico",
     "revision": "043eb22b6e8605bbceb61cf021c602a8"
@@ -127,4 +136,3 @@ define(['./workbox-a51b997a'], (function (workbox) { 'use strict';
   workbox.registerRoute(new workbox.NavigationRoute(workbox.createHandlerBoundToURL("index.html")));
 
 }));
-//# sourceMappingURL=sw.js.map
