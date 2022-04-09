@@ -5,7 +5,7 @@
 import type { Manifest } from 'hooks/pwaGetBaseManifest';
 import fetchMock from 'jest-fetch-mock';
 
-import { act, render, waitFor } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 
 import '@testing-library/jest-dom';
 
@@ -30,9 +30,7 @@ describe('<AppProvider />', () => {
             theme_color: '#ffffff',
         };
         fetchMock.mockResponseOnce(JSON.stringify(mockManifest));
-        act(() => {
-            render(<AppProvider />);
-        });
+        render(<AppProvider />);
         await waitFor(() => {
             expect(fetchMock.mock.calls.length).toBe(1);
             const manifestElement = Array.from(document.getElementsByTagName('link')).filter((l) => l.rel === 'manifest')[0];
