@@ -5,7 +5,8 @@ import { Header } from 'components/Header';
 import MainModeView from 'components/MainModeView';
 import { useAllPreferences } from 'hooks/preferences/allPreferencesHook';
 import React from 'react';
-import { BluetoothDeviceAvailability } from 'store/goproBluetoothSlice';
+import { selectIsConnectedAndInitialized } from 'store/selectors/bluetoothStateSelectors';
+import { BluetoothDeviceAvailability } from 'store/slices/goproBluetoothSlice';
 import { makeStyles } from 'theme/makeStyles';
 
 import { useAppSelector } from './store/hooks';
@@ -24,6 +25,8 @@ const useStyles = makeStyles()({
 const RenderContent: React.FC = () => {
     const deviceAvailability = useAppSelector((state) => state.goproBluetoothReducer.deviceAvailability);
     const isGattConnected = useAppSelector((state) => state.goproBluetoothReducer.isGattConnected);
+    const isSettingsLoaded = useAppSelector((state) => !state.goproSettingsMetadataReducer.isFetching && state.goproSettingsMetadataReducer.settingsJson);
+    const isInitialized = useAppSelector(selectIsConnectedAndInitialized);
     if (window.location.protocol !== 'https:') return <ErrorPage errorTitle="Bluetooth requires https" errorDescription="Web Bluetooth will only work on https pages" />;
     if (!('bluetooth' in navigator)) return <ErrorPage errorTitle="Bluetooth not supported" errorDescription="Your browser does not support bluetooth. https://caniuse.com/web-bluetooth" />;
     switch (deviceAvailability) {
@@ -35,6 +38,8 @@ const RenderContent: React.FC = () => {
             break;
     }
     if (!isGattConnected) return <ConnectToGoProView />;
+    if (!isSettingsLoaded) return <ErrorPage errorTitle="Fetching settings..." errorDescription="A little time consuming process, TODO cache this between runs" />;
+    if (!isInitialized) return <ErrorPage errorTitle="Getting current camera status..." errorDescription="Should be quick" />;
     return <MainModeView />;
 };
 

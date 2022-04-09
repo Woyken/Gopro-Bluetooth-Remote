@@ -15,9 +15,9 @@ interface IProps {
         icon: JSX.Element;
         label: string;
         onClick: () => void;
-        id: number;
+        id: React.Key;
     }[];
-    primaryButtonId: number;
+    primaryButtonId: React.Key;
     isGroupSelected: boolean;
 }
 
@@ -32,7 +32,7 @@ const SplitButton: React.FC<IProps> = (props) => {
         primaryButton?.onClick();
     };
 
-    const handleMenuItemClick = (id: number) => {
+    const handleMenuItemClick = (id: React.Key) => {
         buttonChoices.find((button) => button.id === id)?.onClick();
         setOpen(false);
     };

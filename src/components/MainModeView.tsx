@@ -7,6 +7,7 @@ import {
     selectIsBatteryCharging,
     selectIsShutterActive,
     selectIsWifiApEnabled,
+    selectSdCardStatus,
     selectStorageRemainingTimeText,
 } from 'store/selectors/statusSelectors';
 import { makeStyles } from 'theme/makeStyles';
@@ -14,7 +15,6 @@ import { makeStyles } from 'theme/makeStyles';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import RecordInactiveIcon from '@mui/icons-material/RadioButtonChecked';
-import SdStorageIcon from '@mui/icons-material/SdStorage';
 // import SignalWifi0BarIcon from '@mui/icons-material/SignalWifi0Bar';
 // import SignalWifi1BarIcon from '@mui/icons-material/SignalWifi1Bar';
 // import SignalWifi2BarIcon from '@mui/icons-material/SignalWifi2Bar';
@@ -24,10 +24,9 @@ import SignalWifiOffIcon from '@mui/icons-material/SignalWifiOff';
 import WifiIcon from '@mui/icons-material/Wifi';
 import { Container, IconButton, Paper, Typography } from '@mui/material';
 
-import PhotoModeSwitcherButton from './modeSwitchButtons/photoModeSwitcherButton';
-import TimelapseModeSwitcherButton from './modeSwitchButtons/timelapseModeSwitcherButton';
-import VideoModeSwitcherButton from './modeSwitchButtons/videoModeSwitcherButton';
 import BatteryPercentageIcon from './BatteryPercentageIcon';
+import ModeSwitchButtons from './ModeSwitchButtons';
+import SdCardIcon from './SdCardIcon';
 import { SettingsPreferencesButton } from './SettingsPreferences';
 import SettingsPreview from './SettingsPreview';
 
@@ -85,7 +84,7 @@ const MainModeView: React.FC = () => {
     const isWifiApEnabled = useAppSelector(selectIsWifiApEnabled);
     const batteryPercentage = useAppSelector(selectBatteryPercentage);
     const isCharging = useAppSelector(selectIsBatteryCharging);
-    // TODO sd card icon, display it's status statusSdStatus33
+    const sdCardStatus = useAppSelector(selectSdCardStatus);
     // TODO remaining space KB in sd card statusRemainingSpace54
     const storageRemainingTimeText = useAppSelector(selectStorageRemainingTimeText);
 
@@ -124,19 +123,14 @@ const MainModeView: React.FC = () => {
                                 <PowerSettingsNewIcon />
                             </IconButton>
                             <IconButton onClick={handleWiFiButtonClick}>{isWifiApEnabled ? <WifiIcon /> : <SignalWifiOffIcon />}</IconButton>
-                            <IconButton>
-                                <SdStorageIcon />
-                                <Typography variant="body1">{storageRemainingTimeText}</Typography>
-                            </IconButton>
+                            <SdCardIcon sdCardStatus={sdCardStatus} storageRemainingTimeText={storageRemainingTimeText} />
                             <BatteryPercentageIcon batteryPercentage={batteryPercentage} isCharging={isCharging} />
                         </Container>
                     </div>
                     <div className={classes.bottomControls}>
                         <SettingsPreview />
                         <div className={classes.bottomCenteredButtons}>
-                            <TimelapseModeSwitcherButton />
-                            <VideoModeSwitcherButton />
-                            <PhotoModeSwitcherButton />
+                            <ModeSwitchButtons />
                         </div>
                         <div className={classes.alignLeftToRight}>
                             <div className={classes.floatLeft}>

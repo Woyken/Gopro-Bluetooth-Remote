@@ -7,6 +7,8 @@ import { GlobalStyles } from 'tss-react';
 
 import { CssBaseline, ThemeProvider } from '@mui/material';
 
+import './i18n/config';
+
 import { store } from './store/store';
 import App from './App';
 

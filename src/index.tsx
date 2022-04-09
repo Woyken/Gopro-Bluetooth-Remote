@@ -2,6 +2,9 @@
 /// <reference types="vite-plugin-pwa/client" />
 
 import { AppProvider } from 'AppProvider';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
-ReactDOM.render(<AppProvider />, document.getElementById('root'));
+const container = document.getElementById('root');
+if (!container) throw new Error("Couldn't find root container");
+const root = createRoot(container);
+root.render(<AppProvider />);

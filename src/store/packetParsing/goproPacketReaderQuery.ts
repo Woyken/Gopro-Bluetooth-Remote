@@ -1,6 +1,6 @@
 /* eslint-disable no-bitwise */
 import { allKnownStatuses } from 'store/goproBluetoothServiceActions/goproStatusMetadata';
-import { goproSettingsSlice, GoproSettingsState } from 'store/goproSettingsSlice';
+import { goproSettingsSlice, GoproSettingsState } from 'store/slices/goproSettingsSlice';
 import { RootState } from 'store/store';
 
 import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';

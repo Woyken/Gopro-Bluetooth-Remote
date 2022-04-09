@@ -21,6 +21,7 @@ export const useDynamicManifest = () => {
 
     useEffect(() => {
         if (!manifestTemplate) return;
+        if (!manifestEl) return;
         // Manifest theme color to match current theme
         manifestTemplate.theme_color = theme.palette.primary.main;
         manifestTemplate.background_color = theme.palette.background.default;

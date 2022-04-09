@@ -1,18 +1,21 @@
 /* eslint-disable no-bitwise */
 import { toast } from 'react-toastify';
 import { bluetoothDeviceState } from 'store/goproBleServiceState';
-import { goproBluetoothSlice } from 'store/goproBluetoothSlice';
-import { goproSettingsSlice } from 'store/goproSettingsSlice';
-import { commandResponseReceiverProvider } from 'store/packetParsing/goproPacketReaderCommand';
 import { queryResponseReceiverProvider } from 'store/packetParsing/goproPacketReaderQuery';
 import { settingsResponseReceiverProvider } from 'store/packetParsing/goproPacketReaderSetting';
+import { selectSettingsMetadataAllSettingsIdsList, selectSettingsMetadataAllStatusesIdsList } from 'store/selectors/settingsMetadataSelectors';
+import { goproBluetoothSlice } from 'store/slices/goproBluetoothSlice';
+import { goproSettingsMetadataSlice } from 'store/slices/goproSettingsMetadataSlice';
+import { goproSettingsSlice } from 'store/slices/goproSettingsSlice';
 import { RootState } from 'store/store';
+import { SettingsJson } from 'utilities/definitions/goproTypes/settingsJson';
+import { delay } from 'utilities/promiseUtilities';
 
 import { Action, createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit';
 
-import { goproBlePacketDataReaderProvider } from '../packetParsing/goproPacketReader';
+import { packetReaderProvider } from '../packetParsing/goproPacketReader';
 
-import { getHardwareInfoCommand, openGoProGetVersionCommand } from './commands/commands';
+import { fetchSettingsJson, getHardwareInfoCommand, getSettingsJsonCommand, openGoProGetVersionCommand } from './commands/commands';
 import { subscribeToSettingsChangesCommand, subscribeToStatusChangesCommand } from './commands/queryCommands';
 import { statusEncodingActive10, statusSystemBusy8, statusSystemReady82 } from './goproStatusMetadata';
 
@@ -102,26 +105,61 @@ export const gattConnect = createAsyncThunk<GattConnectResult, void, { state: Ro
         queryCharacteristic: await queryCharacteristicPromise,
         queryResponseCharacteristic: await queryResponseCharacteristicPromise,
     };
-    bluetoothDeviceState.characteristics.commandResponseCharacteristic.oncharacteristicvaluechanged = goproBlePacketDataReaderProvider(commandResponseReceiverProvider(dispatch));
     await bluetoothDeviceState.characteristics.commandResponseCharacteristic.startNotifications();
-    bluetoothDeviceState.characteristics.queryResponseCharacteristic.oncharacteristicvaluechanged = goproBlePacketDataReaderProvider(queryResponseReceiverProvider(dispatch));
+    bluetoothDeviceState.characteristics.queryResponseCharacteristic.oncharacteristicvaluechanged = packetReaderProvider(queryResponseReceiverProvider(dispatch));
     await bluetoothDeviceState.characteristics.queryResponseCharacteristic.startNotifications();
-    bluetoothDeviceState.characteristics.settingsResponseCharacteristic.oncharacteristicvaluechanged = goproBlePacketDataReaderProvider(settingsResponseReceiverProvider(dispatch));
+    bluetoothDeviceState.characteristics.settingsResponseCharacteristic.oncharacteristicvaluechanged = packetReaderProvider(settingsResponseReceiverProvider(dispatch));
     await bluetoothDeviceState.characteristics.settingsResponseCharacteristic.startNotifications();
 
     dispatch(goproSettingsSlice.actions.settingsRequested());
-    // Explicitly first subscribe to ones needed to know of we can send commands
-    await dispatch(subscribeToStatusChangesCommand([statusSystemReady82.id, statusEncodingActive10.id, statusSystemBusy8.id]));
-
-    // Subscribe to status and setting changes, will be useful to know when the device is ready to receive commands
-    // TODO Reconsider this subscribing logic
-    await dispatch(subscribeToStatusChangesCommand([...new Array(88).keys()]));
-    await dispatch(subscribeToSettingsChangesCommand([...new Array(112).keys()]));
+    // Fetch settings first, so we know what commands and settings camera supports
+    await dispatch(getSettingsJsonCachedCommand());
+    await dispatch(subscribeToAllStatusesChangesCommand());
+    await dispatch(subscribeToAllSettingsChangesCommand());
 
     await dispatch(openGoProGetVersionCommand());
     await dispatch(getHardwareInfoCommand());
-    // TODO maybe subscribe only when UI requires it? With current interface we literally always need it...
-    // For now subscribe to all known settings, last setting ID is 112, last status id is 88
+});
+
+const subscribeToAllSettingsChangesCommand = createAsyncThunk<void, void, { state: RootState }>('bluetoothDevice/subscribeToSettingsChangesCommand', async (_, { dispatch, getState }) => {
+    const allSettingsIds = selectSettingsMetadataAllSettingsIdsList(getState());
+    if (allSettingsIds.length === 0) return;
+    await dispatch(subscribeToSettingsChangesCommand(allSettingsIds));
+});
+
+const subscribeToAllStatusesChangesCommand = createAsyncThunk<void, void, { state: RootState }>('bluetoothDevice/subscribeToStatusesChangesCommand', async (_, { dispatch, getState }) => {
+    const allStatusIds = selectSettingsMetadataAllStatusesIdsList(getState());
+    if (allStatusIds.length === 0) return;
+    await dispatch(subscribeToStatusChangesCommand(allStatusIds));
+});
+
+function getSettingsJsonCached() {
+    // TODO cache should be per device
+    const settingsJsonString = window.localStorage.getItem('settingsJson');
+    if (!settingsJsonString) return undefined;
+    const settingsJson = JSON.parse(settingsJsonString) as SettingsJson;
+    return settingsJson;
+}
+
+async function fetchSettingsJsonBle() {
+    const settingsJson = await fetchSettingsJson();
+    window.localStorage.setItem('settingsJson', JSON.stringify(settingsJson));
+    return settingsJson;
+}
+
+export const fetchSettingsJsonBleCommand = createAsyncThunk<SettingsJson, void, { state: RootState }>('bluetoothDevice/fetchSettingsJsonBleCommand', async () => {
+    const settingsJson = await fetchSettingsJsonBle();
+    return settingsJson;
+});
+
+export const getSettingsJsonCachedCommand = createAsyncThunk<SettingsJson | undefined, void, { state: RootState }>('bluetoothDevice/getSettingsJsonCachedCommand', async (_, { dispatch }) => {
+    const settingsJson = getSettingsJsonCached();
+    if (!settingsJson) await dispatch(fetchSettingsJsonBleCommand());
+    // TODO if we asynchronously start fetching settingsJson
+    // Actions like subscribe to settings and statuses will not respond at all
+    // Consider adding semaphore like thing to limit all bluetooth actions to one at a time
+    // else dispatch(fetchSettingsJsonBleCommand());
+    return settingsJson;
 });
 
 async function writeGoProPacketDataRaw(characteristic: BluetoothRemoteGATTCharacteristic, data: number[]) {

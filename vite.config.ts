@@ -1,6 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { resolve } from 'path';
 
+import { visualizer } from 'rollup-plugin-visualizer';
 import { UserConfig } from 'vite';
 import Checker from 'vite-plugin-checker';
 import { ManifestOptions, VitePWA, VitePWAOptions } from 'vite-plugin-pwa';
@@ -40,14 +41,37 @@ function pathResolve(dir: string) {
     return resolve(__dirname, '.', dir);
 }
 
+const mode = process.env.APP_ENV;
+const isDev = mode === 'development';
+
 // https://vitejs.dev/config/
 const config: () => UserConfig = () => ({
-    base: '/Gopro-Bluetooth-Remote/',
+    mode,
+    base: isDev ? '/' : '/Gopro-Bluetooth-Remote/',
     server: {
         hmr: { port: 443 },
+        https: true,
+    },
+    preview: {
+        https: true,
     },
     build: {
-        sourcemap: true,
+        sourcemap: isDev,
+        minify: isDev ? false : undefined,
+        rollupOptions: {
+            plugins: [isDev ? visualizer({ filename: 'moduleVisualizerOutput.html' }) : undefined],
+            output: {
+                manualChunks: (id, api): string | undefined => {
+                    if (id.includes('node_modules')) {
+                        if (id.includes('@mui')) return 'vendor_mui';
+                        if (id.includes('pako')) return 'vendor_pako';
+                        if (id.includes('i18next')) return 'vendor_i18next';
+                        return 'vendor'; // all other package goes here
+                    }
+                    return undefined;
+                },
+            },
+        },
     },
     resolve: {
         alias: [
@@ -61,6 +85,7 @@ const config: () => UserConfig = () => ({
         VitePWA(pwaOptions),
         tsconfigPaths(),
         react({
+            jsxRuntime: 'classic',
             babel: {
                 plugins: [
                     [
