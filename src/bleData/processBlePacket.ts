@@ -114,14 +114,9 @@ type ProcessingMessageInProgress = {
 };
 type ProcessingMessage = ProcessingMessageInProgress | ProcessingMessageCompleted;
 
-function parseCharacteristicEvent(characteristic: BluetoothRemoteGATTCharacteristic) {
-    fromEvent(characteristic, 'characteristicvaluechanged').pipe(
-        map((ev) => {
-            const { value } = ev.target as BluetoothRemoteGATTCharacteristic;
-            return value;
-        }),
-        filterNullish(),
-        map((data) => {
+export function accumulateBleMessages() {
+    return pipe(
+        map((data: DataView) => {
             const header = parsePacketHeader(data);
             if (!header) return undefined;
 
@@ -179,5 +174,15 @@ function parseCharacteristicEvent(characteristic: BluetoothRemoteGATTCharacteris
         }, [] as ProcessingMessage[]),
         map((v) => v.filter((x) => x.isCompleted).map((x) => x as ProcessingMessageCompleted)),
         mergeMap((v) => v)
+    );
+}
+
+function parseCharacteristicEvent(characteristic: BluetoothRemoteGATTCharacteristic) {
+    fromEvent(characteristic, 'characteristicvaluechanged').pipe(
+        map((ev) => {
+            const { value } = ev.target as BluetoothRemoteGATTCharacteristic;
+            return value;
+        }),
+        filterNullish()
     );
 }
