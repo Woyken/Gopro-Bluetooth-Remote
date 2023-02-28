@@ -1,4 +1,4 @@
-import { bufferCount, filter, from, fromEvent, map, merge, Observable, OperatorFunction, pipe, skip, startWith, take, tap, toArray, UnaryFunction } from 'rxjs';
+import { bufferCount, filter, from, fromEvent, map, merge, mergeMap, Observable, OperatorFunction, pipe, scan, skip, startWith, take, tap, toArray, UnaryFunction } from 'rxjs';
 
 function getPacketHeaderForChunkData(chunkIndex: number) {
     // Not the first chunk, header will be smaller
@@ -102,6 +102,18 @@ function filterNullish<T>(): UnaryFunction<Observable<T | null | undefined>, Obs
     return pipe(filter((x) => x != null) as OperatorFunction<T | null | undefined, T>);
 }
 
+type ProcessingMessageCompleted = {
+    isCompleted: true;
+    data: Uint8Array;
+};
+type ProcessingMessageInProgress = {
+    isCompleted: false;
+    expectedDataSize: number;
+    nextContinuationIndex: number;
+    incompleteData: Uint8Array;
+};
+type ProcessingMessage = ProcessingMessageInProgress | ProcessingMessageCompleted;
+
 function parseCharacteristicEvent(characteristic: BluetoothRemoteGATTCharacteristic) {
     fromEvent(characteristic, 'characteristicvaluechanged').pipe(
         map((ev) => {
@@ -110,14 +122,62 @@ function parseCharacteristicEvent(characteristic: BluetoothRemoteGATTCharacteris
         }),
         filterNullish(),
         map((data) => {
-            if (data.byteLength < 1) return undefined;
             const header = parsePacketHeader(data);
             if (!header) return undefined;
 
             return {
                 header,
                 data: new Uint8Array(data.buffer).slice(header.headerSizeBytes),
-            };
-        })
+            } as const;
+        }),
+        filterNullish(),
+        // There must be a better way to accumulate packets into complete message than this
+        scan((acc, curr) => {
+            // remove already completed messages, they will be already sent through the pipe
+            acc = acc.filter((x) => !x.isCompleted);
+
+            if (curr.header.isStart) {
+                if (curr.header.messageLength === curr.data.length) {
+                    acc.push({ isCompleted: true, data: curr.data });
+                    return acc;
+                }
+                acc.push({
+                    isCompleted: false,
+                    incompleteData: curr.data,
+                    expectedDataSize: curr.header.messageLength,
+                    nextContinuationIndex: 0,
+                });
+                return acc;
+            }
+            const continuationPacketHeader = curr.header;
+            const existingEntryIndex = acc.findIndex((x) => {
+                if (x.isCompleted) return false;
+                if (x.nextContinuationIndex !== continuationPacketHeader.continuationIndex) return false;
+                if (x.incompleteData.length + curr.data.length > x.expectedDataSize) return false;
+                return true;
+            });
+
+            // TODO what to do with rogue packets? Currently just ignore them
+            if (existingEntryIndex === -1) return acc;
+            const existingEntry = acc[existingEntryIndex];
+            if (!existingEntry) return acc;
+            if (existingEntry.isCompleted) return acc;
+
+            const mergedArray = new Uint8Array(existingEntry.incompleteData.length + curr.data.length);
+            mergedArray.set(existingEntry.incompleteData);
+            mergedArray.set(curr.data, existingEntry.incompleteData.length);
+
+            if (mergedArray.length === existingEntry.expectedDataSize) {
+                acc.splice(existingEntryIndex, 1);
+                acc.push({ isCompleted: true, data: mergedArray });
+                return acc;
+            }
+
+            existingEntry.incompleteData = mergedArray;
+            existingEntry.nextContinuationIndex = (existingEntry.nextContinuationIndex + 1) % 16;
+            return acc;
+        }, [] as ProcessingMessage[]),
+        map((v) => v.filter((x) => x.isCompleted).map((x) => x as ProcessingMessageCompleted)),
+        mergeMap((v) => v)
     );
 }
