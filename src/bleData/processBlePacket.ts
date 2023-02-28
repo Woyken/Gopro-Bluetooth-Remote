@@ -1,4 +1,4 @@
-import { bufferCount, from, map, merge, skip, startWith, take, toArray } from 'rxjs';
+import { bufferCount, filter, from, fromEvent, map, merge, Observable, OperatorFunction, pipe, skip, startWith, take, tap, toArray, UnaryFunction } from 'rxjs';
 
 function getPacketHeaderForChunkData(chunkIndex: number) {
     // Not the first chunk, header will be smaller
@@ -50,7 +50,8 @@ interface ContinuationPacketHeader {
 
 type PacketHeader = StartPacketHeader | ContinuationPacketHeader;
 
-function parsePacketHeader(data: DataView): PacketHeader {
+export function parsePacketHeader(data: DataView): PacketHeader | undefined {
+    if (data.byteLength < 1) return undefined;
     const byte1 = data.getUint8(0);
     let headerSizeBytes = 1;
     // eslint-disable-next-line no-bitwise -- binary data manipulation
@@ -73,11 +74,13 @@ function parsePacketHeader(data: DataView): PacketHeader {
         messageLength = byte1 & 0b00011111;
     } else if (startHeaderType === startPacketHeaderTypes.extended13bit) {
         headerSizeBytes = 2;
+        if (data.byteLength < 2) return undefined;
         const byte2 = data.getUint8(1);
         // eslint-disable-next-line no-bitwise -- binary data manipulation
         messageLength = ((byte1 & 0b00011111) << 8) | byte2;
     } else if (startHeaderType === startPacketHeaderTypes.extended16bit) {
         headerSizeBytes = 3;
+        if (data.byteLength < 3) return undefined;
         const byte2 = data.getUint8(1);
         const byte3 = data.getUint8(2);
         // eslint-disable-next-line no-bitwise -- binary data manipulation
@@ -93,4 +96,28 @@ function parsePacketHeader(data: DataView): PacketHeader {
         headerSizeBytes,
         messageLength,
     } as const;
+}
+
+function filterNullish<T>(): UnaryFunction<Observable<T | null | undefined>, Observable<T>> {
+    return pipe(filter((x) => x != null) as OperatorFunction<T | null | undefined, T>);
+}
+
+function parseCharacteristicEvent(characteristic: BluetoothRemoteGATTCharacteristic) {
+    fromEvent(characteristic, 'characteristicvaluechanged').pipe(
+        map((ev) => {
+            const { value } = ev.target as BluetoothRemoteGATTCharacteristic;
+            return value;
+        }),
+        filterNullish(),
+        map((data) => {
+            if (data.byteLength < 1) return undefined;
+            const header = parsePacketHeader(data);
+            if (!header) return undefined;
+
+            return {
+                header,
+                data: new Uint8Array(data.buffer).slice(header.headerSizeBytes),
+            };
+        })
+    );
 }
