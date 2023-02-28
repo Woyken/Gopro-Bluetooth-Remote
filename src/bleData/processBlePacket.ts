@@ -28,3 +28,69 @@ export function processBleDataToPackets(data: number[]) {
     );
     return merge(initialPacket, continuationPackets);
 }
+
+const startPacketHeaderTypes = {
+    general: 0b00,
+    extended13bit: 0b01,
+    extended16bit: 0b10,
+    reserved: 0b11,
+} as const;
+
+interface StartPacketHeader {
+    isStart: true;
+    headerSizeBytes: number;
+    messageLength: number;
+}
+
+interface ContinuationPacketHeader {
+    isStart: false;
+    headerSizeBytes: 1;
+    continuationIndex: number;
+}
+
+type PacketHeader = StartPacketHeader | ContinuationPacketHeader;
+
+function parsePacketHeader(data: DataView): PacketHeader {
+    const byte1 = data.getUint8(0);
+    let headerSizeBytes = 1;
+    // eslint-disable-next-line no-bitwise -- binary data manipulation
+    const isStart = (byte1 & 0b10000000) >> 7 === 0b0;
+    if (!isStart) {
+        // Continuation packet
+        // eslint-disable-next-line no-bitwise -- binary data manipulation
+        const continuationIndex = byte1 & 0b01111111;
+        return {
+            isStart: false,
+            headerSizeBytes: 1,
+            continuationIndex,
+        } as const;
+    }
+    // eslint-disable-next-line no-bitwise -- binary data manipulation
+    const startHeaderType = (byte1 & 0b01100000) >> 5;
+    let messageLength: number;
+    if (startHeaderType === startPacketHeaderTypes.general) {
+        // eslint-disable-next-line no-bitwise -- binary data manipulation
+        messageLength = byte1 & 0b00011111;
+    } else if (startHeaderType === startPacketHeaderTypes.extended13bit) {
+        headerSizeBytes = 2;
+        const byte2 = data.getUint8(1);
+        // eslint-disable-next-line no-bitwise -- binary data manipulation
+        messageLength = ((byte1 & 0b00011111) << 8) | byte2;
+    } else if (startHeaderType === startPacketHeaderTypes.extended16bit) {
+        headerSizeBytes = 3;
+        const byte2 = data.getUint8(1);
+        const byte3 = data.getUint8(2);
+        // eslint-disable-next-line no-bitwise -- binary data manipulation
+        messageLength = (byte2 << 8) | byte3;
+    } else if (startHeaderType === startPacketHeaderTypes.reserved) {
+        // Reserved, not used, not sure what to do
+        messageLength = 0;
+    } else {
+        throw new Error('IMPOSSIBLE');
+    }
+    return {
+        isStart: true,
+        headerSizeBytes,
+        messageLength,
+    } as const;
+}
