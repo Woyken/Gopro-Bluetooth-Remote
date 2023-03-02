@@ -7,27 +7,33 @@ type Style = 'secondary' | 'contrast';
 
 type Props = Parameters<typeof RawButton.Root>['0'] & {
 	/** Buttons come with .secondary and .contrast styles. */
-	buttonStyle?: Style;
+	color?: Style;
 	/** And a classic .outline variant. */
 	outline?: boolean;
 	/** Enable a loading indicator. */
 	isLoading?: boolean;
+	tooltip?: string;
+	tooltipPlacement?: 'top' | 'right' | 'bottom' | 'left';
 };
 
 function Button(props: ParentProps<Props>) {
 	const [childrenProps, propsWithoutChildren] = splitProps(props, ['children']);
 	const [local, others] = splitProps(propsWithoutChildren, [
-		'buttonStyle',
+		'color',
 		'outline',
 		'isLoading',
+		'tooltip',
+		'tooltipPlacement',
 	]);
 	return (
 		<RawButton.Root
 			{...others}
 			aria-busy={local.isLoading}
+			data-tooltip={local.tooltip}
+			data-placement={local.tooltipPlacement}
 			class={clsx(
 				'button',
-				local.buttonStyle && `${local.buttonStyle}`,
+				local.color && `${local.color}`,
 				local.outline && 'outline',
 			)}
 		>
@@ -35,7 +41,5 @@ function Button(props: ParentProps<Props>) {
 		</RawButton.Root>
 	);
 }
-
-// Function ButtonGroup() 'buttons are-large'
 
 export default Button;

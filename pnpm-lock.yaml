@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@kobalte/core': ^0.6.2
+  '@mdi/js': ^7.1.96
   '@picocss/pico': ^1.5.7
   '@solid-primitives/i18n': ^1.2.1
   '@solidjs/meta': ^0.28.2
@@ -37,6 +38,7 @@ specifiers:
 
 dependencies:
   '@kobalte/core': 0.6.2_solid-js@1.6.11
+  '@mdi/js': 7.1.96
   '@picocss/pico': 1.5.7
   '@solid-primitives/i18n': 1.2.1_solid-js@1.6.11
   '@tanstack/solid-query': 4.24.10_solid-js@1.6.11
@@ -1686,6 +1688,10 @@ packages:
       '@solid-primitives/refs': 0.3.7_solid-js@1.6.11
       '@solid-primitives/utils': 4.0.1_solid-js@1.6.11
       solid-js: 1.6.11
+    dev: false
+
+  /@mdi/js/7.1.96:
+    resolution: {integrity: sha512-wlrJs6Ryhaa5CqhK3FjTfMRnb/s7HeLkKMFqwQySkK86cdN1TGdzpSM3O4tsmzCA1dYBeTbXvOwSE/Y42cUrvA==}
     dev: false
 
   /@nodelib/fs.scandir/2.1.5:
