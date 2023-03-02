@@ -11,6 +11,7 @@ export default function Root() {
 				<Title>SolidStart - With Vitest</Title>
 				<Meta charset="utf-8" />
 				<Meta name="viewport" content="width=device-width, initial-scale=1" />
+				<Meta name="color-scheme" content="dark light" />
 			</Head>
 			<Body>
 				<Suspense>

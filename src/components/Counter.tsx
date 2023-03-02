@@ -1,5 +1,4 @@
 import {createSignal} from 'solid-js';
-import './Counter.css';
 import {Button} from './lowLevel';
 
 export default function Counter() {
@@ -7,7 +6,7 @@ export default function Counter() {
 	return (
 		<button class="increment" onClick={() => setCount(count() + 1)}>
 			Clicks: {count()}
-			<Button color="danger" isRounded>
+			<Button buttonStyle='contrast'>
 				test1
 			</Button>
 		</button>
