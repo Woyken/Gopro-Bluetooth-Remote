@@ -1,33 +1,24 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ESNext"
-    ],
-    "useDefineForClassFields": true,
-    "allowJs": false,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "jsxImportSource": "solid-js",
+    "jsx": "preserve",
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "ESNext",
-    "moduleResolution": "Node",
     "noImplicitAny": true,
-    "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "noImplicitThis": true,
     "noUnusedParameters": true,
-    "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx",
-    "baseUrl": "src",
     "noUncheckedIndexedAccess": true,
+    "types": ["solid-start/env", "@testing-library/jest-dom", "web-bluetooth"],
+    "baseUrl": "./",
+    "paths": {
+      "~/*": ["./src/*"]
+    }
   },
-  "include": [
-    "src"
-  ]
+  "types": ["vitest"]
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export interface Manifest {
+export type Manifest = {
     start_url: string;
     scope: string;
     theme_color: string;
