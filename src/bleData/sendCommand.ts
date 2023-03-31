@@ -1,12 +1,4 @@
-import {
-	filter,
-	first,
-	firstValueFrom,
-	mergeMap,
-	of,
-	pipe,
-	switchMap,
-} from 'rxjs';
+import {first, firstValueFrom, mergeMap, of, pipe, switchMap} from 'rxjs';
 import {bluetoothDeviceState} from '~/store/goproBleServiceState';
 import {convertMessageToPackets} from './convertMessageToPackets';
 import {
@@ -20,36 +12,36 @@ type Command = {
 	commandData: Uint8Array | number[];
 };
 
-function sendCommand(command: Command) {
+async function sendCommand(command: Command) {
 	// TODO get command characteristic
 	const {characteristics} = bluetoothDeviceState;
 	if (!characteristics) throw new Error('no characteristics');
 	const {commandCharacteristic, commandResponseCharacteristic} =
 		characteristics;
 	//
-	void firstValueFrom(
+	const responsePromise = firstValueFrom(
+		fromCharacteristicEvent(commandResponseCharacteristic).pipe(
+			accumulatePacketsToMessage(),
+			parseMessageToCommandResponse(),
+			first((y) => y.commandId === command.commandId),
+		),
+	);
+	await firstValueFrom(
 		of(command).pipe(
-			mergeMap((x) => {
-                // TODO, how to split this command, start listening, and send request, then await the listening first response?
-				fromCharacteristicEvent(commandResponseCharacteristic).pipe(
-					accumulatePacketsToMessage(),
-					parseMessageToCommandResponse(),
-					first((y) => y.commandId === x.commandId),
-				);
-				const temp = 45; //
-				return [x];
-			}),
 			switchMap((x) => [x.commandId, ...x.commandData]),
 			convertMessageToPackets(),
 			sendPacket(commandCharacteristic),
 		),
 	);
+
+	return responsePromise;
 }
 
 function sendPacket(characteristic: BluetoothRemoteGATTCharacteristic) {
 	return pipe(
-		mergeMap(async (x: Uint8Array) =>
-			characteristic.writeValueWithoutResponse(x),
-		),
+		mergeMap(async (x: Uint8Array) => {
+			await characteristic.writeValueWithoutResponse(x);
+			return x;
+		}),
 	);
 }
