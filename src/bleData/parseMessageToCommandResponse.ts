@@ -6,7 +6,7 @@ type Message = {
 
 type CommandResponse = {
 	commandId: number;
-	responseCode: string;
+	responseCode: ReturnType<typeof parseCommandResponseCode>;
 	data: Uint8Array;
 };
 
@@ -49,7 +49,7 @@ function convertMessageToCommand(message: Message) {
 		commandId,
 		responseCode,
 		data: commandData,
-	};
+	} as const;
 }
 
 export function parseMessageToCommandResponse(): UnaryFunction<
@@ -60,4 +60,8 @@ export function parseMessageToCommandResponse(): UnaryFunction<
 		map((x) => convertMessageToCommand(x)),
 		filter((x): x is NonNullable<typeof x> => Boolean(x)),
 	);
+}
+
+export function filterCommandResponseById(id: number) {
+	return pipe(filter((x: CommandResponse) => x.commandId === id));
 }
