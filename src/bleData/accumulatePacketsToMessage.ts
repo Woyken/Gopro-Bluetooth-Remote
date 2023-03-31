@@ -172,9 +172,7 @@ export function accumulatePacketsToMessage() {
 			return acc;
 		}, [] as ProcessingMessage[]),
 		map((v) =>
-			v
-				.filter((x) => x.isCompleted)
-				.map((x) => x as ProcessingMessageCompleted),
+			v.filter((x): x is typeof x & {isCompleted: true} => x.isCompleted),
 		),
 		mergeMap((v) => v),
 	);
