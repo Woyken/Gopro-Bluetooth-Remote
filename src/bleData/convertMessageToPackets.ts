@@ -44,7 +44,7 @@ function getPacketHeaderForFirstChunkData(dataLength: number) {
 
 export function convertMessageToPackets(): UnaryFunction<
 	Observable<number>,
-	Observable<number[]>
+	Observable<Uint8Array>
 > {
 	return pipe(
 		map((x: number) => x),
@@ -63,5 +63,6 @@ export function convertMessageToPackets(): UnaryFunction<
 				),
 			),
 		),
+		map((x) => new Uint8Array(x)),
 	);
 }

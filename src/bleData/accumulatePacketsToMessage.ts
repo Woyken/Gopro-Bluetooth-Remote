@@ -2,11 +2,11 @@ import {
 	filter,
 	fromEvent,
 	map,
-	mergeMap,
 	type Observable,
 	pipe,
 	scan,
 	type UnaryFunction,
+	switchMap,
 } from 'rxjs';
 
 const startPacketHeaderTypes = {
@@ -174,14 +174,14 @@ export function accumulatePacketsToMessage() {
 		map((v) =>
 			v.filter((x): x is typeof x & {isCompleted: true} => x.isCompleted),
 		),
-		mergeMap((v) => v),
+		switchMap((v) => v),
 	);
 }
 
 export function fromCharacteristicEvent(
 	characteristic: BluetoothRemoteGATTCharacteristic,
 ) {
-	fromEvent(characteristic, 'characteristicvaluechanged').pipe(
+	return fromEvent(characteristic, 'characteristicvaluechanged').pipe(
 		map((ev) => {
 			const {value} = ev.target as BluetoothRemoteGATTCharacteristic;
 			return value;
