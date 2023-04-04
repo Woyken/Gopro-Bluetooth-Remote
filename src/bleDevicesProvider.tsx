@@ -29,6 +29,9 @@ export function useRequestBleDevice() {
 	};
 }
 
+/**
+ * Provides, saved and newly requested devices in single list
+ */
 export function useBleDevices() {
 	const ctx = useContext(BleDeviceContext);
 	if (!ctx) throw new Error('Missing BleDevicesProvider');
