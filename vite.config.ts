@@ -4,6 +4,7 @@ import solidStatic from 'solid-start-static';
 import solidDevtools from 'solid-devtools/vite';
 import {defineConfig} from 'vite';
 import {VitePWA as vitePWA, type VitePWAOptions} from 'vite-plugin-pwa';
+import mkcert from 'vite-plugin-mkcert';
 
 const pwaOptions: Partial<VitePWAOptions> = {
 	mode: 'development',
@@ -34,9 +35,14 @@ const pwaOptions: Partial<VitePWAOptions> = {
 };
 
 export default defineConfig({
+	server: {
+		https: true,
+		host: '0.0.0.0',
+	},
 	plugins: [
 		solid({adapter: solidStatic()}),
 		vitePWA(pwaOptions),
 		solidDevtools({autoname: true}),
+		mkcert(),
 	],
 });
