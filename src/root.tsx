@@ -1,9 +1,31 @@
 // @refresh reload
-import {Routes} from '@solidjs/router';
+import {Route, Routes} from '@solidjs/router';
 import {Suspense} from 'solid-js';
-import {Body, FileRoutes, Head, Html, Meta, Scripts, Title} from 'solid-start';
+import {
+	Body,
+	FileRoutes,
+	Head,
+	Html,
+	Meta,
+	Scripts,
+	Title,
+	useNavigate,
+} from 'solid-start';
 import {ErrorBoundary} from 'solid-start/error-boundary';
 import {BleDevicesProvider} from './bleDevicesProvider';
+
+function PageNotfound() {
+	const navigate = useNavigate();
+	return (
+		<button
+			onclick={() => {
+				navigate('/');
+			}}
+		>
+			Page not found, go home?
+		</button>
+	);
+}
 
 export default function Root() {
 	return (
@@ -20,6 +42,7 @@ export default function Root() {
 						<BleDevicesProvider>
 							<Routes>
 								<FileRoutes />
+								<Route path="*" component={PageNotfound} />
 							</Routes>
 						</BleDevicesProvider>
 					</ErrorBoundary>
