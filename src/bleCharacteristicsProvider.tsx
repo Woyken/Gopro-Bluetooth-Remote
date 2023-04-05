@@ -7,6 +7,7 @@ import {
 	map,
 	merge,
 	from as rxjsFrom,
+	tap,
 } from 'rxjs';
 import {
 	createContext,
@@ -17,7 +18,7 @@ import {
 } from 'solid-js';
 
 type Ctx = {
-	clickGattConnect$: Subject<unknown>;
+	clickGattConnect$: Subject<'clicked'>;
 	wifiApSsidCharacteristic: Observable<
 		BluetoothRemoteGATTCharacteristic | undefined
 	>;
@@ -55,10 +56,17 @@ const BleCharacteristicsContext = createContext<Ctx>();
 // This is not required to be done by user action, but probably preferable, since it will turn on GoPro device
 export function useConnectGatt() {
 	const ctx = useContext(BleCharacteristicsContext);
-	if (!ctx) throw new Error('Missing BleDeviceProvider');
+	if (!ctx) throw new Error('Missing BleCharacteristicsProvider');
 	return () => {
-		ctx.clickGattConnect$.next(1);
+		console.log('ctx.clickGattConnect$.next(1);');
+		ctx.clickGattConnect$.next('clicked');
 	};
+}
+
+export function useCommandResponseCharacteristic() {
+	const ctx = useContext(BleCharacteristicsContext);
+	if (!ctx) throw new Error('Missing BleCharacteristicsProvider');
+	return ctx.commandResponseCharacteristic;
 }
 
 type Props = {
@@ -76,11 +84,23 @@ export function BleCharacteristicsProvider(props: ParentProps<Props>) {
 
 	const gattDisconnected$ = device$.pipe(
 		switchMap((x) =>
-			fromEvent(x, 'gattserverdisconnected').pipe(map(() => undefined)),
+			fromEvent(x, 'gattserverdisconnected').pipe(
+				map(() => undefined),
+				tap(() => {
+					console.log('gattserverdisconnected');
+				}),
+			),
 		),
 	);
 	const gattServerConnect$ = clickGattConnect$.pipe(
-		switchMap(() => device$.pipe(switchMap(async (x) => x.gatt?.connect()))),
+		switchMap(() =>
+			device$.pipe(
+				tap(() => {
+					console.log('before x.gatt?.connect()');
+				}),
+				switchMap(async (x) => x.gatt?.connect()),
+			),
+		),
 	);
 	const gattServer$ = merge(gattDisconnected$, gattServerConnect$).pipe(
 		shareReplay(1),
