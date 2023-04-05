@@ -9,7 +9,7 @@ import {
 	merge,
 	scan,
 } from 'rxjs';
-import {createContext, type ParentProps, useContext} from 'solid-js';
+import {createContext, type ParentProps, useContext, onMount} from 'solid-js';
 
 type Ctx = {
 	requestBleDevice$: Subject<unknown>;
@@ -48,6 +48,16 @@ async function requestGoProBle() {
 	});
 }
 
+function onMountObs() {
+	const mount$ = new Subject();
+	onMount(() => {
+		mount$.next(1);
+		mount$.complete();
+	});
+
+	return mount$.asObservable();
+}
+
 export function BleDevicesProvider(props: ParentProps) {
 	const requestBleDevice$ = new Subject<unknown>();
 
@@ -55,11 +65,14 @@ export function BleDevicesProvider(props: ParentProps) {
 		switchMap(async () => requestGoProBle()),
 	);
 
-	const savedDeviceList$ = (
-		'bluetooth' in navigator && 'getDevices' in navigator.bluetooth
-			? from(navigator.bluetooth.getDevices())
-			: of([])
-	).pipe(mergeMap((x) => x));
+	const savedDeviceList$ = onMountObs().pipe(
+		switchMap(() =>
+			'bluetooth' in navigator && 'getDevices' in navigator.bluetooth
+				? from(navigator.bluetooth.getDevices())
+				: of([]),
+		),
+		mergeMap((x) => x),
+	);
 
 	const mergedDevices$ = merge(requestedDevice$, savedDeviceList$);
 
