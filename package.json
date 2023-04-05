@@ -42,6 +42,7 @@
 		"jsdom": "^21.1.0",
 		"prettier": "^2.8.4",
 		"sass": "^1.58.3",
+		"solid-devtools": "^0.26.0",
 		"solid-js": "^1.6.11",
 		"solid-start": "^0.2.22",
 		"solid-start-node": "^0.2.22",
