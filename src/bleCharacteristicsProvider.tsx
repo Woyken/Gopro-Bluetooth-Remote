@@ -1,19 +1,19 @@
 import {
 	Subject,
-	BehaviorSubject,
 	type Observable,
 	switchMap,
 	fromEvent,
 	shareReplay,
 	map,
 	merge,
+	from as rxjsFrom,
 } from 'rxjs';
 import {
 	createContext,
 	type ParentProps,
 	useContext,
-	createEffect,
-	onCleanup,
+	type Accessor,
+	observable,
 } from 'solid-js';
 
 type Ctx = {
@@ -65,19 +65,13 @@ type Props = {
 	device: BluetoothDevice;
 };
 
-function solidToRxjs(props: Props) {
-	const subject$ = new BehaviorSubject(props.device);
-	createEffect(() => {
-		subject$.next(props.device);
-	});
-	onCleanup(() => {
-		subject$.complete();
-	});
-	return subject$.asObservable();
+function solidToRxjs<T>(prop: Accessor<T>) {
+	const device$ = rxjsFrom(observable(prop));
+	return device$;
 }
 
 export function BleCharacteristicsProvider(props: ParentProps<Props>) {
-	const device$ = solidToRxjs(props);
+	const device$ = solidToRxjs(() => props.device);
 	const clickGattConnect$ = new Subject();
 
 	const gattDisconnected$ = device$.pipe(
