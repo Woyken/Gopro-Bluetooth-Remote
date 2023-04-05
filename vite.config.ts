@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import solid from 'solid-start/vite';
+import solidStatic from 'solid-start-static';
 import {defineConfig} from 'vite';
 import {VitePWA as vitePWA, type VitePWAOptions} from 'vite-plugin-pwa';
 
@@ -32,5 +33,5 @@ const pwaOptions: Partial<VitePWAOptions> = {
 };
 
 export default defineConfig({
-	plugins: [solid({ssr: false}), vitePWA(pwaOptions)],
+	plugins: [solid({adapter: solidStatic()}), vitePWA(pwaOptions)],
 });

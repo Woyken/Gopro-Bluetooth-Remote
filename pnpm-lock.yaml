@@ -30,6 +30,7 @@ specifiers:
   solid-js: ^1.6.11
   solid-start: ^0.2.22
   solid-start-node: ^0.2.22
+  solid-start-static: ^0.2.25
   typescript: ^4.9.5
   undici: ^5.20.0
   vite: ^4.1.4
@@ -66,8 +67,9 @@ devDependencies:
   prettier: 2.8.4
   sass: 1.58.3
   solid-js: 1.6.11
-  solid-start: 0.2.22_glxabd56qh7kqtjq7bhdxxj5jy
+  solid-start: 0.2.22_mmlqtnzf27bgeuilg46tqonmfm
   solid-start-node: 0.2.22_ppwjshleycygoco43sslduznmy
+  solid-start-static: 0.2.25_ppwjshleycygoco43sslduznmy
   typescript: 4.9.5
   undici: 5.20.0
   vite: 4.1.4_sass@1.58.3
@@ -1801,6 +1803,24 @@ packages:
       rollup: 3.17.3
     dev: true
 
+  /@rollup/plugin-node-resolve/15.0.2_rollup@3.17.3:
+    resolution: {integrity: sha512-Y35fRGUjC3FaurG722uhUuG8YHOJRJQbI6/CkbRkdPotSpDj9NtIN85z1zrcyDcCQIW4qp5mgG72U+gJ0TAFEg==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^2.78.0||^3.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+    dependencies:
+      '@rollup/pluginutils': 5.0.2_rollup@3.17.3
+      '@types/resolve': 1.20.2
+      deepmerge: 4.3.0
+      is-builtin-module: 3.2.1
+      is-module: 1.0.0
+      resolve: 1.22.1
+      rollup: 3.17.3
+    dev: true
+
   /@rollup/plugin-replace/2.4.2_rollup@2.79.1:
     resolution: {integrity: sha512-IGcu+cydlUMZ5En85jxHH4qj2hta/11BHq95iHEyb2sbgiN0eCdzvUcHw5gt9pBL5lTi4JDYJ1acCoMGpTvEZg==}
     peerDependencies:
@@ -2117,6 +2137,10 @@ packages:
     resolution: {integrity: sha512-yy7HuzQhj0dhGpD8RLXSZWEkLsV9ibvxvi6EiJ3bkqLAO1RGo0WbkWQiwpRlSFymTJRz0d3k5LM3kkx8ArDbLw==}
     dependencies:
       '@types/node': 18.14.2
+    dev: true
+
+  /@types/resolve/1.20.2:
+    resolution: {integrity: sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==}
     dev: true
 
   /@types/semver/7.3.13:
@@ -2818,6 +2842,11 @@ packages:
       utils-merge: 1.0.1
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /console-clear/1.1.1:
+    resolution: {integrity: sha512-pMD+MVR538ipqkG5JXeOEbKWS5um1H4LUUccUQG68qpeqBYbzYy79Gh55jkd2TtPdRfUaLWdv6LPP//5Zt0aPQ==}
+    engines: {node: '>=4'}
     dev: true
 
   /convert-source-map/1.9.0:
@@ -3783,6 +3812,11 @@ packages:
     resolution: {integrity: sha512-I0UBV/XOz1XkIJHEUDMZAbzCThU/H8DxmSfmdGcKPnVhu2VfFqr34jr9777IyaTYvxjedWhqVIilEDsCdP5G6g==}
     dev: true
 
+  /get-port/3.2.0:
+    resolution: {integrity: sha512-x5UJKlgeUiNT8nyo/AcnwLnZuZNcSjSw0kogRB+Whd1fjjFq4B1hySFxSFWWSn4mIBzg3sRNUDFYc4g5gjPoLg==}
+    engines: {node: '>=4'}
+    dev: true
+
   /get-port/6.1.2:
     resolution: {integrity: sha512-BrGGraKm2uPqurfGVj/z97/zv8dPleC6x9JBNRTrDNtCkkRF4rPwrQXFgL7+I+q8QSdU4ntLQX2D7KIxSy8nGw==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
@@ -4450,6 +4484,11 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
+  /kleur/4.1.5:
+    resolution: {integrity: sha512-o+NO+8WrRiQEE4/7nwRJhN1HWpVmJm511pBHUxPLtp0BUISzlBplORYSmTclCnJvQq2tKu/sgl3xVpkc7ZWuQQ==}
+    engines: {node: '>=6'}
+    dev: true
+
   /kolorist/1.7.0:
     resolution: {integrity: sha512-ymToLHqL02udwVdbkowNpzjFd6UzozMtshPQKVi5k1EjKRqKqBrOnE9QbLEb0/pV76SAiIT13hdL8R6suc+f3g==}
     dev: true
@@ -4473,6 +4512,11 @@ packages:
     dependencies:
       prelude-ls: 1.2.1
       type-check: 0.4.0
+    dev: true
+
+  /local-access/1.1.0:
+    resolution: {integrity: sha512-XfegD5pyTAfb+GY6chk283Ox5z8WexG56OvM06RWLpAc/UHozO8X6xAxEkIitZOtsSMM1Yr3DkHgW5W+onLhCw==}
+    engines: {node: '>=6'}
     dev: true
 
   /local-pkg/0.4.3:
@@ -5156,6 +5200,11 @@ packages:
       xmlchars: 2.2.0
     dev: true
 
+  /semiver/1.1.0:
+    resolution: {integrity: sha512-QNI2ChmuioGC1/xjyYwyZYADILWyW6AmS1UH6gDj/SFUUUS4MBAWs/7mxnkRPc/F4iHezDP+O8t0dO8WHiEOdg==}
+    engines: {node: '>=6'}
+    dev: true
+
   /semver/6.3.0:
     resolution: {integrity: sha512-b39TBaTSfV6yBrapU89p5fKekE2m/NwnDocOVruQFS1/veMgdzuPcnOM34M6CwxW8jH/lxEa5rBoDeUwu5HHTw==}
     hasBin: true
@@ -5207,6 +5256,21 @@ packages:
     resolution: {integrity: sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==}
     dev: true
 
+  /sirv-cli/2.0.2:
+    resolution: {integrity: sha512-OtSJDwxsF1NWHc7ps3Sa0s+dPtP15iQNJzfKVz+MxkEo3z72mCD+yu30ct79rPr0CaV1HXSOBp+MIY5uIhHZ1A==}
+    engines: {node: '>= 10'}
+    hasBin: true
+    dependencies:
+      console-clear: 1.1.1
+      get-port: 3.2.0
+      kleur: 4.1.5
+      local-access: 1.1.0
+      sade: 1.8.1
+      semiver: 1.1.0
+      sirv: 2.0.2
+      tinydate: 1.3.0
+    dev: true
+
   /sirv/2.0.2:
     resolution: {integrity: sha512-4Qog6aE29nIjAOKe/wowFTxOdmbEZKb+3tsLljaBRzJwtqto0BChD2zzH0LhgCSXiI+V7X+Y45v14wBZQ1TK3w==}
     engines: {node: '>= 10'}
@@ -5245,6 +5309,10 @@ packages:
       solid-js: 1.6.11
     dev: true
 
+  /solid-ssr/1.7.0:
+    resolution: {integrity: sha512-SK0nycd6gTVrsIHeNgOBrZoIVvpYExZMx4HAu/27zClaW3QAi2tf//RTG/uS/6vHPNdEX0+q6+nvErxQeyaswA==}
+    dev: true
+
   /solid-start-node/0.2.22_ppwjshleycygoco43sslduznmy:
     resolution: {integrity: sha512-BOLYzp9mkBRs2CvhFLxz66J1hlyxZoJd2x6BT9pKitm3qdbyTZTm0mLsMchgMNsXTBTxnhXOMATe3lectsV7fA==}
     peerDependencies:
@@ -5259,7 +5327,7 @@ packages:
       polka: 1.0.0-next.22
       rollup: 3.17.3
       sirv: 2.0.2
-      solid-start: 0.2.22_glxabd56qh7kqtjq7bhdxxj5jy
+      solid-start: 0.2.22_mmlqtnzf27bgeuilg46tqonmfm
       terser: 5.16.5
       undici: 5.20.0
       vite: 4.1.4_sass@1.58.3
@@ -5267,7 +5335,25 @@ packages:
       - supports-color
     dev: true
 
-  /solid-start/0.2.22_glxabd56qh7kqtjq7bhdxxj5jy:
+  /solid-start-static/0.2.25_ppwjshleycygoco43sslduznmy:
+    resolution: {integrity: sha512-yYeQnLLLQFc1mAhatwkfak6WK96SAPeJGzYmENCKLyHVPf2wzff2uBj2y5n2pdfAZnNcdCd2uXmOREVkL1rcPA==}
+    peerDependencies:
+      solid-start: '*'
+      undici: ^5.8.0
+      vite: '*'
+    dependencies:
+      '@rollup/plugin-commonjs': 24.0.1_rollup@3.17.3
+      '@rollup/plugin-json': 6.0.0_rollup@3.17.3
+      '@rollup/plugin-node-resolve': 15.0.2_rollup@3.17.3
+      rollup: 3.17.3
+      sirv-cli: 2.0.2
+      solid-ssr: 1.7.0
+      solid-start: 0.2.22_mmlqtnzf27bgeuilg46tqonmfm
+      undici: 5.20.0
+      vite: 4.1.4_sass@1.58.3
+    dev: true
+
+  /solid-start/0.2.22_mmlqtnzf27bgeuilg46tqonmfm:
     resolution: {integrity: sha512-9SfYRNyXUMzNVBx13nzuOqAGGJdsSG1E6gIM3CRDl0x85Nt+1zQTm74rRsBVMecI2EgI0gFOUEKFVM/dP4x8yA==}
     hasBin: true
     peerDependencies:
@@ -5331,6 +5417,7 @@ packages:
       sirv: 2.0.2
       solid-js: 1.6.11
       solid-start-node: 0.2.22_ppwjshleycygoco43sslduznmy
+      solid-start-static: 0.2.25_ppwjshleycygoco43sslduznmy
       terser: 5.16.5
       undici: 5.20.0
       vite: 4.1.4_sass@1.58.3
@@ -5564,6 +5651,11 @@ packages:
 
   /tinybench/2.3.1:
     resolution: {integrity: sha512-hGYWYBMPr7p4g5IarQE7XhlyWveh1EKhy4wUBS1LrHXCKYgvz+4/jCqgmJqZxxldesn05vccrtME2RLLZNW7iA==}
+    dev: true
+
+  /tinydate/1.3.0:
+    resolution: {integrity: sha512-7cR8rLy2QhYHpsBDBVYnnWXm8uRTr38RoZakFSW7Bs7PzfMPNZthuMLkwqZv7MTu8lhQ91cOFYS5a7iFj2oR3w==}
+    engines: {node: '>=4'}
     dev: true
 
   /tinypool/0.3.1:
