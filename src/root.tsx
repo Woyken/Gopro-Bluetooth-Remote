@@ -3,6 +3,7 @@ import {Routes} from '@solidjs/router';
 import {Suspense} from 'solid-js';
 import {Body, FileRoutes, Head, Html, Meta, Scripts, Title} from 'solid-start';
 import {ErrorBoundary} from 'solid-start/error-boundary';
+import {BleDevicesProvider} from './bleDevicesProvider';
 
 export default function Root() {
 	return (
@@ -16,9 +17,11 @@ export default function Root() {
 			<Body>
 				<Suspense>
 					<ErrorBoundary>
-						<Routes>
-							<FileRoutes />
-						</Routes>
+						<BleDevicesProvider>
+							<Routes>
+								<FileRoutes />
+							</Routes>
+						</BleDevicesProvider>
 					</ErrorBoundary>
 				</Suspense>
 				<Scripts />
