@@ -1,5 +1,5 @@
-import { Settings as SettingsV4 } from './settingsV4Json';
-import { Settings as SettingsV5 } from './settingsV5Json';
+import {type Settings as SettingsV4} from './settingsV4Json';
+import {type Settings as SettingsV5} from './settingsV5Json';
 
 export type SettingsJson = SettingsV4 | SettingsV5;
 

@@ -4,7 +4,7 @@ type Message = {
 	data: Uint8Array;
 };
 
-type CommandResponse = {
+export type CommandResponse = {
 	commandId: number;
 	responseCode: ReturnType<typeof parseCommandResponseCode>;
 	data: Uint8Array;

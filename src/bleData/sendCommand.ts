@@ -17,13 +17,13 @@ import {
 } from './accumulatePacketsToMessage';
 import {parseMessageToCommandResponse} from './parseMessageToCommandResponse';
 
-type Command = {
+export type Command = {
 	commandId: number;
 	commandData: Uint8Array | number[];
 };
 
 // In theory this might work, not tested
-function sendCommand() {
+export function sendCommand() {
 	// TODO get command characteristic
 	const {characteristics} = bluetoothDeviceState;
 	if (!characteristics) throw new Error('no characteristics');
