@@ -20,6 +20,7 @@
 		"@solid-primitives/i18n": "^1.2.1",
 		"@tanstack/solid-query": "^4.24.10",
 		"pako": "^2.1.0",
+		"rollup-plugin-visualizer": "^5.9.0",
 		"rxjs": "^7.8.0"
 	},
 	"devDependencies": {

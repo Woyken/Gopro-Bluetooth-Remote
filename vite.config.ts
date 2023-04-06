@@ -4,6 +4,7 @@ import solidStatic from 'solid-start-static';
 import solidDevtools from 'solid-devtools/vite';
 import {defineConfig} from 'vite';
 import {VitePWA as vitePWA, type VitePWAOptions} from 'vite-plugin-pwa';
+import {visualizer} from 'rollup-plugin-visualizer';
 import mkcert from 'vite-plugin-mkcert';
 
 const pwaOptions: Partial<VitePWAOptions> = {
@@ -44,5 +45,6 @@ export default defineConfig({
 		vitePWA(pwaOptions),
 		solidDevtools({autoname: true}),
 		mkcert(),
+		// visualizer(),
 	],
 });
