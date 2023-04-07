@@ -52,12 +52,9 @@ function convertMessageToCommand(message: Message) {
 	} as const;
 }
 
-export function parseMessageToCommandResponse(): UnaryFunction<
-	Observable<Message>,
-	Observable<CommandResponse>
-> {
+export function parseMessageToCommandResponse() {
 	return pipe(
-		map((x) => convertMessageToCommand(x)),
+		map((x: Message) => convertMessageToCommand(x)),
 		filter((x): x is NonNullable<typeof x> => Boolean(x)),
 	);
 }
