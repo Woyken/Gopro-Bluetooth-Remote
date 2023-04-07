@@ -8,6 +8,8 @@ import {
 	merge,
 	from as rxjsFrom,
 	tap,
+	combineLatest,
+	type ObservedValueOf,
 } from 'rxjs';
 import {
 	createContext,
@@ -16,6 +18,7 @@ import {
 	type Accessor,
 	observable,
 } from 'solid-js';
+import {filterNullish} from './bleData/accumulatePacketsToMessage';
 
 type Ctx = {
 	clickGattConnect$: Subject<'clicked'>;
@@ -61,6 +64,22 @@ export function useConnectGatt() {
 		console.log('ctx.clickGattConnect$.next(1);');
 		ctx.clickGattConnect$.next('clicked');
 	};
+}
+
+export type CommandSendResponseCharacteristics = ObservedValueOf<
+	ReturnType<typeof useCommandSendAndResponseCharacteristics>
+>;
+
+export function useCommandSendAndResponseCharacteristics() {
+	const ctx = useContext(BleCharacteristicsContext);
+	if (!ctx) throw new Error('Missing BleCharacteristicsProvider');
+
+	return combineLatest({
+		sendCharacteristic: ctx.commandCharacteristic.pipe(filterNullish()),
+		responseCharacteristic: ctx.commandResponseCharacteristic.pipe(
+			filterNullish(),
+		),
+	});
 }
 
 export function useCommandResponseCharacteristic() {

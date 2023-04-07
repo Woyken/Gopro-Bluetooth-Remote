@@ -80,7 +80,7 @@ export function parsePacketHeader(data: DataView): PacketHeader | undefined {
 	} as const;
 }
 
-function filterNullish<T>(): UnaryFunction<
+export function filterNullish<T>(): UnaryFunction<
 	Observable<T | undefined>,
 	Observable<T>
 > {
@@ -178,14 +178,16 @@ export function accumulatePacketsToMessage() {
 	);
 }
 
-export function fromCharacteristicEvent(
-	characteristic: BluetoothRemoteGATTCharacteristic,
-) {
-	return fromEvent(characteristic, 'characteristicvaluechanged').pipe(
-		map((ev) => {
-			const {value} = ev.target as BluetoothRemoteGATTCharacteristic;
-			return value;
-		}),
-		filterNullish(),
+export function fromCharacteristicEvent() {
+	return pipe(
+		switchMap((characteristic: BluetoothRemoteGATTCharacteristic) =>
+			fromEvent(characteristic, 'characteristicvaluechanged').pipe(
+				map((ev) => {
+					const {value} = ev.target as BluetoothRemoteGATTCharacteristic;
+					return value;
+				}),
+				filterNullish(),
+			),
+		),
 	);
 }
