@@ -66,20 +66,11 @@ export function useConnectGatt() {
 	};
 }
 
-export type CommandSendResponseCharacteristics = ObservedValueOf<
-	ReturnType<typeof useCommandSendAndResponseCharacteristics>
->;
-
-export function useCommandSendAndResponseCharacteristics() {
+export function useCommandSendCharacteristic() {
 	const ctx = useContext(BleCharacteristicsContext);
 	if (!ctx) throw new Error('Missing BleCharacteristicsProvider');
 
-	return combineLatest({
-		sendCharacteristic: ctx.commandCharacteristic.pipe(filterNullish()),
-		responseCharacteristic: ctx.commandResponseCharacteristic.pipe(
-			filterNullish(),
-		),
-	});
+	return ctx.commandCharacteristic;
 }
 
 export function useCommandResponseCharacteristic() {

@@ -2,12 +2,14 @@ import {
 	filter,
 	fromEvent,
 	map,
-	type Observable,
+	Observable,
 	pipe,
 	scan,
 	type UnaryFunction,
 	switchMap,
+	tap,
 } from 'rxjs';
+import {createLogger} from '~/logging/createLogger';
 
 const startPacketHeaderTypes = {
 	general: 0b00,
@@ -105,8 +107,10 @@ type ProcessingMessage =
 	| ProcessingMessageCompleted;
 
 export function accumulatePacketsToMessage() {
+	const logger = createLogger('[accumulatePacketsToMessage]');
 	return pipe(
 		map((data: DataView) => {
+			logger.log('[map]', '[data]', data);
 			const header = parsePacketHeader(data);
 			if (!header) return undefined;
 
@@ -114,6 +118,9 @@ export function accumulatePacketsToMessage() {
 				header,
 				data: new Uint8Array(data.buffer).slice(header.headerSizeBytes),
 			} as const;
+		}),
+		tap((x) => {
+			logger.log('[Parse]', '[Result]', x);
 		}),
 		filterNullish(),
 		// There must be a better way to accumulate packets into complete message than this
@@ -179,15 +186,65 @@ export function accumulatePacketsToMessage() {
 }
 
 export function fromCharacteristicEvent() {
+	const logger = createLogger('[fromCharacteristicEvent]');
 	return pipe(
-		switchMap((characteristic: BluetoothRemoteGATTCharacteristic) =>
-			fromEvent(characteristic, 'characteristicvaluechanged').pipe(
+		map((x: BluetoothRemoteGATTCharacteristic) => x),
+		(observable) =>
+			new Observable<BluetoothRemoteGATTCharacteristic>((subscriber) => {
+				logger.log('[new Observable]', observable, subscriber);
+				const notificationSubscriptions = new Set<
+					Promise<BluetoothRemoteGATTCharacteristic>
+				>();
+				const subscription = observable.subscribe({
+					async next(value) {
+						logger.log('[new Observable] [next]', value);
+						notificationSubscriptions.add(
+							value.startNotifications().then((x) => {
+								subscriber.next(x);
+								return x;
+							}),
+						);
+					},
+					complete() {
+						subscriber.complete();
+					},
+					error(err) {
+						subscriber.error(err);
+					},
+				});
+				return () => {
+					logger.log('[new Observable] [cleanup]');
+					notificationSubscriptions.forEach((promise) => {
+						// void promise.then(async (x) => x.stopNotifications());
+					});
+					subscription.unsubscribe();
+				};
+			}),
+		switchMap((characteristic) => {
+			logger.log('insideswitchmap', characteristic);
+			// const sub = new Subject<DataView>();
+			// characteristic.oncharacteristicvaluechanged = (ev) => {
+			// 	logger.log('manual subscribe 2 ', ev);
+			// 	// const {value} = ev.target as BluetoothRemoteGATTCharacteristic;
+			// 	// if (value) sub.next(value);
+			// };
+
+			// characteristic.addEventListener('characteristicvaluechanged', (ev) => {
+			// 	logger.log('manual subscribe', ev);
+			// 	// const {value} = ev.target as BluetoothRemoteGATTCharacteristic;
+			// 	// if (value) sub.next(value);
+			// });
+			// return sub;
+			return fromEvent(characteristic, 'characteristicvaluechanged').pipe(
+				tap((x) => {
+					logger.log('[fromEvent]', x);
+				}),
 				map((ev) => {
 					const {value} = ev.target as BluetoothRemoteGATTCharacteristic;
 					return value;
 				}),
 				filterNullish(),
-			),
-		),
+			);
+		}),
 	);
 }
