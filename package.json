@@ -7,7 +7,7 @@
     "@emotion/styled": "^11.3.0",
     "@mui/icons-material": "^5.0.5",
     "@mui/material": "^5.0.6",
-    "@reduxjs/toolkit": "^1.6.2",
+    "@reduxjs/toolkit": "^2.0.0",
     "@types/node": "16.11.6",
     "@types/react": "17.0.34",
     "@types/web-bluetooth": "0.0.11",
