@@ -11,7 +11,7 @@
     "@types/node": "16.11.6",
     "@types/react": "17.0.34",
     "@types/web-bluetooth": "0.0.11",
-    "i18next": "^21.6.6",
+    "i18next": "^26.0.0",
     "identity-obj-proxy": "^3.0.0",
     "pako": "^2.0.4",
     "re-reselect": "^4.0.0",
